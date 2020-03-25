@@ -1,25 +1,29 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <iostream>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <arpa/inet.h>
-#include <netdb.h>
-#include <unistd.h>
 #include <string.h>
 #include <string>
 
+// socket
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
+#include <unistd.h>
+
 #include <pthread.h>
 
-//#define HOST_ADDR "0.0.0.0"
-#define HOST_ADDR "134.122.89.177"
+#include "Requests.h"
+
+#define HOST_ADDR "0.0.0.0"
+//#define HOST_ADDR "134.122.89.177"
 #define HOST_PORT 1903
 #define BUFFER_SIZE 4096
 
 using namespace std;
 
-
 void *listener(void *arg);
+void *listen_response(void *arg);
+void print_usage();
 
 int main () {
     
@@ -38,22 +42,26 @@ int main () {
     }
     
     pthread_t listen_thread;
-    pthread_create(&listen_thread, NULL, listener, (void *)&sockfd);
+    pthread_create(&listen_thread, NULL, listen_response, (void *)&sockfd);
     
-    char temp[] = "hello\r\n\0";
-    send(sockfd, temp, strlen(temp), 0);
-    
-    char buffer_tx[BUFFER_SIZE];
+    print_usage();
     
     while (1) {
-        memset(&buffer_tx, 0, BUFFER_SIZE);
+        int input;
+        while (scanf(" %d", &input) != 1);
         
-        scanf(" %[^\n]", buffer_tx);
-
-        send(sockfd, buffer_tx, strlen(buffer_tx), 0);
-        
-        if (strcmp(buffer_tx, "quit") == 0) {
-            break;
+        if (input == 1) {
+            // send "fb login" request
+            //https://www.facebook.com/connect/login_success.html#access_token=EAAJQZBZANTOG0BAMlKrYd5EWok0NtT4pgaAoZCvg6TsEjDiptJE2ZCEdAJ3sPdi6WEbFAl19cYAKWNioeWAD9Cj5Y9b3LN0AnN0KMQcpNKlDsFZAHh1CKCcn42pEoccVfqhK6hgi77wLRYSJYNZAjCFkmTCNXWewgtFiQwJu8UQgl01wZBPsHQLhfMOy6PGZAjg8G4DOScZCs31LRCYEHenIP&data_access_expiration_time=1592853060&expires_in=6539
+            //https://www.facebook.com/connect/login_success.html#access_token=EAAJQZBZANTOG0BAPueEjX2jgNYqc3br7agj0rRYOmWMtyLsbG8N0Xous0S0VfYcikloxLBVZClD0ZCZBlOvWz5TbG3n4LRp9L8wWRWMHrSlaw0r4dGwDOX5bCqDwN3VgVkrPmUQlKQSNTH1b1XrDNqC2No7C8cRafItvxRKxOVAai6ZBBTpSsUF3exoyVn8cDJa65fIFYpjRd7QZBNaK2KH&data_access_expiration_time=1592873759&expires_in=3840
+            string access_token = "EAAJQZBZANTOG0BAPueEjX2jgNYqc3br7agj0rRYOmWMtyLsbG8N0Xous0S0VfYcikloxLBVZClD0ZCZBlOvWz5TbG3n4LRp9L8wWRWMHrSlaw0r4dGwDOX5bCqDwN3VgVkrPmUQlKQSNTH1b1XrDNqC2No7C8cRafItvxRKxOVAai6ZBBTpSsUF3exoyVn8cDJa65fIFYpjRd7QZBNaK2KH";
+            Requests request(sockfd);
+            request.send_request(REQ_FB_LOGIN, access_token);
+        }
+        else if (input == 2) {
+            // send "get online users" request
+            Requests request(sockfd);
+            request.send_request(REQ_GET_ONLINE_USERS, "");
         }
     }
     
@@ -62,6 +70,25 @@ int main () {
     return 0;
 }
 
+void *listen_response(void *arg) {
+    int sockfd = *((int *)arg);
+    Requests response(sockfd);
+    
+    while (1) {
+        if (!response.get_response())
+            break;
+    }
+    
+    close(sockfd);
+    return NULL;
+}
+
+void print_usage() {
+    cout << "1: send 'fb login' request" << endl;
+    cout << "2: send 'get online clients' request" << endl << endl;
+}
+
+#if 0
 void *listener(void *arg) {
     int sockfd = *((int *)arg);
     char rx_buffer[BUFFER_SIZE];
@@ -81,6 +108,6 @@ void *listener(void *arg) {
     close(sockfd);
     return NULL;
 }
-
+#endif
 
 
