@@ -2,32 +2,31 @@
 CXX= g++
 CFLAGS= -std=c++11
 LIBS= -lpthread -pthread -lcurl -lcrypto -lssl
-OBJS= client.o Protocol.o Requests.o Jwt.o base64.o utilities.o
+OBJS= client.o Protocol.o Requests.o base64.o utilities.o
 
-all: client
+all: build image
 
-client: $(OBJS)
-	$(CXX) $(CFLAGS) $(OBJS) $(LIBS) -o client
+image:
+	$(CXX) $(CFLAGS) -ggdb $(OBJS) $(LIBS) -o client
 
-client.o: client.cpp
-	$(CXX) $(CFLAGS) -c client.cpp -o client.o
+build: main Protocol Requests base64 utilities
 
-Protocol.o: Protocol.cpp Protocol.h
-	$(CXX) $(CFLAGS) -c Protocol.cpp -o Protocol.o
+main: client.cpp
+	$(CXX) $(CFLAGS) -c -g client.cpp -o client.o
 
-Requests.o: Requests.cpp Requests.h Protocol.h
-	$(CXX) $(CFLAGS) -c Requests.cpp -o Requests.o
+Protocol: Protocol.cpp Protocol.h
+	$(CXX) $(CFLAGS) -c -g Protocol.cpp -o Protocol.o
 
-Jwt.o: Jwt.cpp Jwt.h
-	$(CXX) $(CFLAGS) -c Jwt.cpp -o Jwt.o
+Requests: Requests.cpp Requests.h
+	$(CXX) $(CFLAGS) -c -g Requests.cpp -o Requests.o
 
-base64.o: base64.cpp base64.h 
-	$(CXX) $(CFLAGS) -c base64.cpp -o base64.o
+base64: base64.cpp base64.h 
+	$(CXX) $(CFLAGS) -c -g base64.cpp -o base64.o
 
-utilities.o: utilities.cpp utilities.h
-	$(CXX) $(CFLAGS) -c utilities.cpp -o utilities.o
+utilities: utilities.cpp utilities.h
+	$(CXX) $(CFLAGS) -c -g utilities.cpp -o utilities.o
 
 clean:
-	rm -rf *.o
+	rm -rf *.o client
 
-rebuild_all: clean all
+rebuild_all: clean build

@@ -18,6 +18,7 @@ Protocol::Protocol() {
     _length = 0;
     _data_length = 0;
     _buffer = NULL;
+    _state = PKT_ST_EMPTY;
 }
 
 Protocol::Protocol(uint8_t *buffer) {
@@ -29,7 +30,7 @@ Protocol::Protocol(uint8_t *buffer) {
     _length = _data_length + 5; // 1(header) + 2(length) + 2(crc)
     
     // check crc
-    uint16_t crc = gen_crc16(&_buffer[REQUEST_CODE_POS], _data_length);
+    uint16_t crc = gen_crc16(&_buffer[PKT_REQUEST_CODE], _data_length);
     if (crc != get_crc()) {
         throw ProtocolCrcException();
         return;
@@ -37,11 +38,10 @@ Protocol::Protocol(uint8_t *buffer) {
 }
 
 Protocol::~Protocol() {
-    //if (_buffer != NULL) {
+    if (_buffer != NULL) {
         free(_buffer);
         _buffer = NULL;
-    //}
-        
+    }   
 }
 
 // TODO: add error codes
@@ -49,8 +49,6 @@ bool Protocol::receive_packet(int sock) {
     _buffer = (uint8_t *)malloc(sizeof(uint8_t) * RX_BUFFER_SIZE);
     if (_buffer == NULL)
         return false;
-    
-    memset(_buffer, 0, RX_BUFFER_SIZE);
     
     if (recv(sock, _buffer, RX_BUFFER_SIZE, 0) == -1) {
         return false;
@@ -63,7 +61,8 @@ bool Protocol::receive_packet(int sock) {
     _data_length = GET_LENGTH(_buffer);
     _length = _data_length + 5; // 1(header) + 2(length) + 2(crc)
     
-    print_hex("rx packet", (char *)_buffer, _length);
+    const char header[] = "rx packet";
+    print_hex(header, (char *)_buffer, _length);
     
     return true;
 }
@@ -72,10 +71,9 @@ bool Protocol::check_crc() {
     if (_buffer == NULL)
         return 0;
     
-    uint16_t crc = gen_crc16(&_buffer[REQUEST_CODE_POS], _data_length);
-    if (crc != get_crc()) {
+    uint16_t crc = gen_crc16(&_buffer[PKT_REQUEST_CODE], _data_length);
+    if (crc != get_crc())
         return false;
-    }
     
     return true;
 }
@@ -100,6 +98,7 @@ uint16_t Protocol::get_length() {
 }
 
 void Protocol::free_buffer() {
+    printf("Protocol destructor\n");
     if (_buffer != NULL) {
         free(_buffer);
         _buffer = NULL;
@@ -110,7 +109,8 @@ void Protocol::send_packet(int sock) {
     if (_buffer == NULL)
         return;
     
-    print_hex("tx packet", (char *)_buffer, _length);
+    const char header[] = "tx packet";
+    print_hex(header, (char *)_buffer, _length);
     send(sock, _buffer, _length, 0);
 }
 
@@ -118,36 +118,40 @@ bool Protocol::set_header(uint8_t header) {
     if (_buffer != NULL)
         return false;
     
-    _buffer = (uint8_t *)malloc(sizeof(uint8_t) * 3);
-    
+    _buffer = (uint8_t *)malloc(sizeof(uint8_t) * 4); // 5: hdr+len+code
     if (_buffer == NULL)
         return false;
     
-    _length = 3;
     memset(_buffer, 0, _length);
-    _buffer[0] = header;
+    _buffer[PKT_HEADER] = header;
+    _length = 4;
+    _data_length++; // empty request code, will be filled by set_request_code()
     
     return true;
 }
 
+#if 0
+bool Protocol::set_ack(uint8_t ack) {
+    if (_buffer == NULL)
+        return false;
+    
+    _buffer[PKT_ACK] = ack;
+    _data_length++;
+    _length++;
+    
+    return true;
+}
+#endif
+
 uint8_t Protocol::get_request_code() {
-    return _buffer[REQUEST_CODE_POS];
+    return _buffer[PKT_REQUEST_CODE];
 }
 
 bool Protocol::set_request_code(uint8_t code) {
     if (_buffer == NULL)
         return false;
     
-    uint8_t *temp = (uint8_t *)realloc(_buffer, _length + 1);
-    
-    if (temp == NULL)
-        return false;
-    
-    _buffer = temp;
-    _buffer[3] = code;
-    
-    _data_length++;
-    _length++;
+    _buffer[PKT_REQUEST_CODE] = code;
     
     return true;
 }
@@ -160,7 +164,7 @@ string Protocol::get_data() {
     if (_buffer == NULL)
         return string("");
     
-    return string((char *)&_buffer[DATA_START_POS], _data_length - 1);
+    return string((char *)&_buffer[PKT_DATA_START], _data_length - 1);
 }
 
 bool Protocol::add_data(string data) {
@@ -182,6 +186,9 @@ bool Protocol::add_data(string data) {
     memccpy((char *)ptr, data.c_str(), sizeof(char), data.size());
     _length += data.size();
     _data_length += data.size();
+    printf("add data size: %d\n", (int)data.size());
+    printf("_data_lenght: %d\n", _data_length);
+    printf("_length: %d\n", _length);
     
     return true;
 }
@@ -200,13 +207,17 @@ bool Protocol::add_data(uint8_t *data, uint16_t len) {
     }
     _data_length += len;
     _length += len;
+    
+    printf("add data size: %d\n", len);
+    printf("_data_lenght: %d\n", _data_length);
+    printf("_length: %d\n", _length);
 }
 
 bool Protocol::set_crc() {
     if (_buffer == NULL)
         return false;
     
-    uint16_t crc16 = gen_crc16(&_buffer[REQUEST_CODE_POS], _data_length);
+    uint16_t crc16 = gen_crc16(&_buffer[PKT_REQUEST_CODE], _data_length);
     uint8_t *tmp = (uint8_t *)realloc(_buffer, sizeof(char) * (_length + 2));
 
     if (tmp == NULL)
@@ -219,11 +230,11 @@ bool Protocol::set_crc() {
     for (uint16_t i = 0; i < 2; i++) {
     *(ptr + i) = (uint8_t)NULL;
     }
-
+    
     _buffer[_length++] = B0(crc16); // crc low
     _buffer[_length++] = B1(crc16); // crc high
     set_length();
-
+    
     return true; 
 }
 
@@ -231,6 +242,6 @@ void Protocol::set_length() {
     if (_buffer == NULL)
         return;
     
-    _buffer[LENGTH_LOW_POS] = B0(_data_length);
-    _buffer[LENGTH_HIGH_POS] = B1(_data_length);
+    _buffer[PKT_LENGTH_LOW] = B0(_data_length);
+    _buffer[PKT_LENGTH_HIGH] = B1(_data_length);
 }

@@ -87,6 +87,9 @@ bool Jwt::decode() {
         cnt++;
     } while((head = strstr(tail, ".")) || (head = strstr(tail, "\r")));
     
+    //string temp = _token.substr(_token.length() - 1);
+    //_token = temp;
+    
     return true;
 } 
 

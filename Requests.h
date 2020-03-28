@@ -2,8 +2,9 @@
 #define _REQUESTS_H_
 
 #include "Protocol.h"
+#include "Jwt.h"
 
-#define TOKEN_SIZE 128
+#define FB_TOKEN_SIZE 256
 #define REQUEST_HEADER 0x01
 
 const std::string jwt_key = "bjk1903";
@@ -20,13 +21,10 @@ typedef enum{
 typedef enum {
     REQ_LOGIN,
     REQ_FB_LOGIN,
-    REQ_FB_LOGIN_SUCCES,
-    REQ_FB_LOGIN_FAIL,
     REQ_COUNT,
     REQ_LOGOUT,
     REQ_MATCH,
     REQ_GET_ONLINE_USERS,
-    REQ_GET_ONLINE_USERS_SUCCESS,
     REQ_DISCONNECT,
     REQ_ERROR,
 }RequestCodes;
@@ -44,6 +42,8 @@ class Requests {
   public:
 
   Requests(int sock);
+  ~Requests();
+  
   bool get_response();
   RequestErrorCodes check_request();
   void handle_request();
@@ -56,7 +56,6 @@ class Requests {
   
   int socket;
   
-  char token[TOKEN_SIZE];
   RequestCodes req_code;
   
   bool check_request_code();

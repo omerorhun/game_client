@@ -5,6 +5,7 @@
 #include "Requests.h"
 #include "Jwt.h"
 #include "Protocol.h"
+#include "utilities.h"
 
 // socket
 #include <sys/types.h>
@@ -14,13 +15,21 @@
 
 using namespace std;
 
+extern string g_token;
+
 Requests::Requests(int sock) {
     socket = sock;
+}
+
+Requests::~Requests() {
+    printf("request destructor\n");
 }
 
 void Requests::send_request(RequestCodes code, string data) {
     _out_packet.set_header(REQUEST_HEADER);
     _out_packet.set_request_code(code);
+    if (code != REQ_FB_LOGIN)
+        _out_packet.add_data(g_token);
     _out_packet.add_data(data);
     _out_packet.set_crc();
     
@@ -39,8 +48,11 @@ bool Requests::get_response() {
     
     if (!_in_packet.check_crc())
         cout << "crc error" << endl;
+    else
+        cout << "crc verified" << endl;
     
-    _in_packet.free_buffer();
+    handle_request();
+    
     return true;
 }
 
@@ -72,7 +84,12 @@ void Requests::handle_request() {
     
     _out_packet.set_header(REQUEST_HEADER);
     if (req_code == REQ_FB_LOGIN) {
-        
+        g_token = _in_packet.get_data();
+        printf("received data: %s\n", _in_packet.get_data().c_str());
+        print_hex((char *)"inpacket", (char *)_in_packet.get_data().c_str(), _in_packet.get_data().size());
+        printf("g_token: %s\n", g_token.c_str());
+        cout << "cout g_token: " << g_token << endl;
+        print_hex((char *)"token", (char *)g_token.c_str(), g_token.size());
     }
     else if (req_code == REQ_GET_ONLINE_USERS) {
         
