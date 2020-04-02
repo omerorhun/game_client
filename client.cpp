@@ -15,6 +15,8 @@
 
 #include "Requests.h"
 
+#define CONTINOUS_CONN 1
+
 #define HOST_ADDR "0.0.0.0"
 //#define HOST_ADDR "134.122.89.177"
 #define HOST_PORT 1903
@@ -51,7 +53,20 @@ int main (int argc, char **argv) {
     
     print_client_status((sockaddr_in)server_addr);
     print_usage();
+
+#if CONTINOUS_CONN
+    int sockfd = socket(AF_INET, SOCK_STREAM, 0);
+    int ret = connect(sockfd, (const sockaddr *)&server_addr, sizeof(server_addr));
+    if (ret == -1) {
+        cerr << "Can't connect to server\n";
+        return -1;
+    }
     
+    while (1) {
+        int input = 2;
+        printf("enter the command: ");
+        //while (scanf("%d", &input) != 1);
+#else
     while (1) {
         int input;
         printf("enter the command: ");
@@ -59,41 +74,48 @@ int main (int argc, char **argv) {
         
         int sockfd = socket(AF_INET, SOCK_STREAM, 0);
         int ret = connect(sockfd, (const sockaddr *)&server_addr, sizeof(server_addr));
-        
         if (ret == -1) {
             cerr << "Can't connect to server\n";
             return -1;
         }
-        
+#endif
         if (input == 1) {
             // send "fb login" request
-            
             printf("sending login with facebook request...\n");
             
-            //https://www.facebook.com/connect/login_success.html#access_token=EAAJQZBZANTOG0BAMlKrYd5EWok0NtT4pgaAoZCvg6TsEjDiptJE2ZCEdAJ3sPdi6WEbFAl19cYAKWNioeWAD9Cj5Y9b3LN0AnN0KMQcpNKlDsFZAHh1CKCcn42pEoccVfqhK6hgi77wLRYSJYNZAjCFkmTCNXWewgtFiQwJu8UQgl01wZBPsHQLhfMOy6PGZAjg8G4DOScZCs31LRCYEHenIP&data_access_expiration_time=1592853060&expires_in=6539
-            //https://www.facebook.com/connect/login_success.html#access_token=EAAJQZBZANTOG0BAPueEjX2jgNYqc3br7agj0rRYOmWMtyLsbG8N0Xous0S0VfYcikloxLBVZClD0ZCZBlOvWz5TbG3n4LRp9L8wWRWMHrSlaw0r4dGwDOX5bCqDwN3VgVkrPmUQlKQSNTH1b1XrDNqC2No7C8cRafItvxRKxOVAai6ZBBTpSsUF3exoyVn8cDJa65fIFYpjRd7QZBNaK2KH&data_access_expiration_time=1592873759&expires_in=3840
-            //https://www.facebook.com/connect/login_success.html#access_token=EAAJQZBZANTOG0BAJhvlgDMSTqql4enth7VKgiOIqOUYYuetZC3vGpG3dEZBdNofZCCvvE1M70hSq8iZAzjzAZA1dOdTzsPfhmNiRVyEARisNNBDLwIHGsuBaRPLIo74SPSVqxxlZAhFZBzoEFbZClkW498lpGZBzxbyKmBgxqNyDiEMOs9ieM1HUrl7FHeKBZCFyEAHfWCbZCltN9E4GWBUKWIwB9&data_access_expiration_time=1593101748&expires_in=6251
-            //https://www.facebook.com/connect/login_success.html#access_token=EAAJQZBZANTOG0BAAOp0ZBe7UJXUfM7bDujpA5CJFviJmxDDbU7VFZBGjMO0yY4Y8nujx4nVYQ47IymtA4ZBaZAL4Vbhz0UNWupYjFzziYjmNgwDahbeUCjUgw6ZCeKdZBNr3UKf89jf1Hh1lErBq1zMd03FwReJ3ysVW1jQisCthqavJAE9c4svYZB2SJhWD9t0CtsURfqSuKifNpopo14yzw&data_access_expiration_time=1593109134&expires_in=6065
-            //https://www.facebook.com/connect/login_success.html#access_token=EAAJQZBZANTOG0BAO09VDNAdOZANzz7MmIgSieysG8MpKEAcBS6feRZCyoJSBnIsUd0eZANw0EGbPVQ1GhYESYWSKsG837EIDGO9wVnKzKKxjaX33l0ZCiyZBAtAZBuSZApE6kCpqQoDYPKpjomtxAJMRBZAwh2Ma9MZAZBhdHZCBhboCVOzgJzkGmFFRcH0sdZB5ni1vlOeG1tQYPPZBts4NH1Jm7le&data_access_expiration_time=1593128305&expires_in=4895
-            string access_token = "EAAJQZBZANTOG0BAO09VDNAdOZANzz7MmIgSieysG8MpKEAcBS6feRZCyoJSBnIsUd0eZANw0EGbPVQ1GhYESYWSKsG837EIDGO9wVnKzKKxjaX33l0ZCiyZBAtAZBuSZApE6kCpqQoDYPKpjomtxAJMRBZAwh2Ma9MZAZBhdHZCBhboCVOzgJzkGmFFRcH0sdZB5ni1vlOeG1tQYPPZBts4NH1Jm7le";
+            //https://www.facebook.com/connect/login_success.html#access_token=EAAJQZBZANTOG0BAOgqyVQEIwbzp6dA7KIFBLXB4Kb2OF9L0DTT4XGAIAXyOhlx2bytkh9lliQZAqOfAtefG5XAW23Fq8fDjSU7sRN6STOXZCvkXmbecQT6ZCSGoKY9ohgDoKZBFUYQ71Y86z5T3zZBZAzL8RSos6bdH7Whf2XZC6QNVKxsTnEfzGXjNwLMaLh7ZCt02QygZAs5sa41NRCbQOBjo&data_access_expiration_time=1593306180&expires_in=7019
+            string access_token = "EAAJQZBZANTOG0BAOgqyVQEIwbzp6dA7KIFBLXB4Kb2OF9L0DTT4XGAIAXyOhlx2bytkh9lliQZAqOfAtefG5XAW23Fq8fDjSU7sRN6STOXZCvkXmbecQT6ZCSGoKY9ohgDoKZBFUYQ71Y86z5T3zZBZAzL8RSos6bdH7Whf2XZC6QNVKxsTnEfzGXjNwLMaLh7ZCt02QygZAs5sa41NRCbQOBjo";
+            
             Requests request(sockfd);
             request.send_request(REQ_FB_LOGIN, access_token);
         }
         else if (input == 2) {
             // send "get online users" request
-            
             printf("sending get online users request...\n");
             
             Requests request(sockfd);
             request.send_request(REQ_GET_ONLINE_USERS, "");
         }
+        else if (input == 3) {
+            // send logout request
+            printf("sending logout request\n");
+            
+            Requests request(sockfd);
+            request.send_request(REQ_LOGOUT, "");
+        }
+        else {
+            close(sockfd);
+            return 0;
+        }
         
         Requests response(sockfd);
         response.get_response();
         
+        sleep(3);
+#if CONTINOUS_CONN == 0
         close(sockfd);
+#endif
     }
-    
     
     return 0;
 }
@@ -139,7 +161,9 @@ bool get_args(int argc, char **argv, char *hostaddr, char **ipaddr, uint16_t *po
 
 void print_usage() {
     cout << "1: send 'fb login' request" << endl;
-    cout << "2: send 'get online clients' request" << endl << endl;
+    cout << "2: send 'get online clients' request" << endl;
+    cout << "3: send 'logout' request" << endl;
+    cout << endl;
 }
 
 void print_client_status(sockaddr_in client) {

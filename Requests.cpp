@@ -79,6 +79,9 @@ bool Requests::check_request_code() {
 #endif
 void Requests::handle_request() {
     RequestCodes req_code = (RequestCodes)_in_packet.get_request_code();
+    string indata = _in_packet.get_data();
+    
+    print_hex((const char *)"indata", (char *)indata.c_str(), indata.size());
     
     cout << "Request code: " << req_code << endl;
     
@@ -92,6 +95,16 @@ void Requests::handle_request() {
         print_hex((char *)"token", (char *)g_token.c_str(), g_token.size());
     }
     else if (req_code == REQ_GET_ONLINE_USERS) {
+        int count = (indata[0] << 0 & 0xFF) | ((indata[1] << 8) & 0xFF00);
+        printf("count: %d\n", count);
+        for (int i = 0; i < count; i++) {
+            int id = 
+                ((indata[i*4 + 2] << 0) & 0xFF) |
+                ((indata[i*4 + 3] << 8) & 0xFF00) |
+                ((indata[i*4 + 4] << 16) & 0xFF0000) |
+                ((indata[i*4 + 5] << 24) & 0xFF000000);
+            printf("id: %d\n", id);
+        }
         
     }
     else {
