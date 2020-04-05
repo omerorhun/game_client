@@ -5,16 +5,16 @@
 #include "json.hpp"
 
 #include "Jwt.h"
+#include "utilities.h"
 
 using namespace std;
 
 Jwt::Jwt(string token, string key) {
-    nlohmann::json header = {{"alg", "HS256"},{"typ", "JWT"}};
-    _header.append(header.dump());
     _key = key;
     _token = token;
-    
-    this->decode();
+    _is_valid = false;
+    if (this->decode())
+        _is_valid = true;
 }
 
 Jwt::Jwt(long user_id, long expire, string key) {
@@ -30,6 +30,8 @@ Jwt::Jwt(long user_id, long expire, string key) {
     _key = key;
     
     generate_token();
+    
+    _is_valid = true;
 }
 
 string Jwt::get_token() {
@@ -63,42 +65,60 @@ string Jwt::sign_packet() {
     return string((char *)signature, key_size);
 }
 
+// TODO: adjust this function. remove strstr funcs.
 bool Jwt::decode() {
     _token.append("\r");
     char *tkn = (char *)_token.c_str();
     
     char *tail = tkn;
     char *head = strstr((char *)tkn, ".");
-    
+        
     uint8_t cnt = 0;
     do {
-        uint16_t size = (head-tail);
+        if (head == NULL)
+            return false;
         
+        uint16_t size = (head-tail);
         char first[size];
-        for (uint8_t i = 0; i < size; i++) {
+        for (uint16_t i = 0; i < size; i++) {
             first[i] = tail[i];
         }
         
-        if (cnt == 1) _payload = base64_decode(string(first, size));
-        else _signature = base64_decode(string(first, size));
+        if (cnt == 0) {
+            string temp = base64_decode(string(first, size));
+            if (!nlohmann::json::accept(temp))
+                return false;
+            
+            _header = temp;
+        }
+        else if (cnt == 1) {
+            string temp = base64_decode(string(first, size));
+            if (!nlohmann::json::accept(temp))
+                return false;
+            
+            _payload = temp;
+        } 
+        else {
+            _signature = base64_decode(string(first, size));
+            break;
+        }
         
         tail = head + 1;
         
         cnt++;
     } while((head = strstr(tail, ".")) || (head = strstr(tail, "\r")));
     
-    //string temp = _token.substr(_token.length() - 1);
-    //_token = temp;
-    
     return true;
 } 
 
 bool Jwt::verify() {
-    string signature = sign_packet();
+    if (!_is_valid)
+        return false;
     
     if (is_expired())
         return false;
     
+    string signature = sign_packet();
     if (_signature.compare(signature) == 0)
         return true;
     
@@ -106,6 +126,9 @@ bool Jwt::verify() {
 }
 
 bool Jwt::is_expired() {
+    if (!_is_valid)
+        return false;
+    
     nlohmann::json payload_json = nlohmann::json::parse(_payload);
     time_t expire = payload_json["expire"];
     time_t now; // TODO: get time in UTC
@@ -117,4 +140,10 @@ bool Jwt::is_expired() {
         return false;
     
     return true;
+}
+
+int Jwt::get_uid() {
+    nlohmann::json plaod = nlohmann::json::parse(_payload);
+    int uid = plaod["id"];
+    return uid;
 }

@@ -65,7 +65,7 @@ int main (int argc, char **argv) {
     while (1) {
         int input = 2;
         printf("enter the command: ");
-        //while (scanf("%d", &input) != 1);
+        while (scanf("%d", &input) != 1);
 #else
     while (1) {
         int input;
@@ -79,12 +79,22 @@ int main (int argc, char **argv) {
             return -1;
         }
 #endif
-        if (input == 1) {
+        if (input == 1 || input == 5) {
             // send "fb login" request
             printf("sending login with facebook request...\n");
             
-            //https://www.facebook.com/connect/login_success.html#access_token=EAAJQZBZANTOG0BAOgqyVQEIwbzp6dA7KIFBLXB4Kb2OF9L0DTT4XGAIAXyOhlx2bytkh9lliQZAqOfAtefG5XAW23Fq8fDjSU7sRN6STOXZCvkXmbecQT6ZCSGoKY9ohgDoKZBFUYQ71Y86z5T3zZBZAzL8RSos6bdH7Whf2XZC6QNVKxsTnEfzGXjNwLMaLh7ZCt02QygZAs5sa41NRCbQOBjo&data_access_expiration_time=1593306180&expires_in=7019
-            string access_token = "EAAJQZBZANTOG0BAOgqyVQEIwbzp6dA7KIFBLXB4Kb2OF9L0DTT4XGAIAXyOhlx2bytkh9lliQZAqOfAtefG5XAW23Fq8fDjSU7sRN6STOXZCvkXmbecQT6ZCSGoKY9ohgDoKZBFUYQ71Y86z5T3zZBZAzL8RSos6bdH7Whf2XZC6QNVKxsTnEfzGXjNwLMaLh7ZCt02QygZAs5sa41NRCbQOBjo";
+            //https://www.facebook.com/connect/login_success.html#access_token=EAAJQZBZANTOG0BAF9D9lCDUVVk6g1v5Rmh3Fzb74q1X0x1uArERn3ASwhdFr7n0c0sv3CYv33zrLYYq6As96TzS9OrzR26d710IDJaftc4HzZBvPrIgStYqJ3hpaoIvNRkqDV5leK3qvZBTDTYDwuZA0j8ZCbT797CBk3ydUMoL6ZAvk8HT5wLyUJ4AT9RUa09MyisHcZACKRszZBHtyr05oj&data_access_expiration_time=1593829431&expires_in=5769
+            //https://www.facebook.com/connect/login_success.html#access_token=EAAJQZBZANTOG0BAPqnmzK8qGycRtkFPWbIuuTUoGXk0j8IhO0uchuakJefodEmlgy6RmR2d5PbifLCBAWW1p7iNFuMKyWgBnBgEZAKUJJ1Sg5knzeayGnv6ZALXQuahfZC3ZA2WIxg3GrQCK82daLia9Gs2ObLElgHXQE8fjW8qjzzm6dJPjeV9MKKZA12TBpoZD&data_access_expiration_time=1593829541&expires_in=5658
+            // ali veli's access token
+            string ali_token = "EAAJQZBZANTOG0BAF9D9lCDUVVk6g1v5Rmh3Fzb74q1X0x1uArERn3ASwhdFr7n0c0sv3CYv33zrLYYq6As96TzS9OrzR26d710IDJaftc4HzZBvPrIgStYqJ3hpaoIvNRkqDV5leK3qvZBTDTYDwuZA0j8ZCbT797CBk3ydUMoL6ZAvk8HT5wLyUJ4AT9RUa09MyisHcZACKRszZBHtyr05oj";
+            // ömer's access token
+            
+            string omer_token = "EAAJQZBZANTOG0BAPqnmzK8qGycRtkFPWbIuuTUoGXk0j8IhO0uchuakJefodEmlgy6RmR2d5PbifLCBAWW1p7iNFuMKyWgBnBgEZAKUJJ1Sg5knzeayGnv6ZALXQuahfZC3ZA2WIxg3GrQCK82daLia9Gs2ObLElgHXQE8fjW8qjzzm6dJPjeV9MKKZA12TBpoZD";
+            string access_token;
+            if (input == 5)
+                access_token = omer_token;
+            else
+                access_token = ali_token;
             
             Requests request(sockfd);
             request.send_request(REQ_FB_LOGIN, access_token);
@@ -98,10 +108,17 @@ int main (int argc, char **argv) {
         }
         else if (input == 3) {
             // send logout request
-            printf("sending logout request\n");
+            printf("sending logout request...\n");
             
             Requests request(sockfd);
             request.send_request(REQ_LOGOUT, "");
+        }
+        else if (input == 4) {
+            // send match request
+            printf("sending match request...\n");
+            
+            Requests request(sockfd);
+            request.send_request(REQ_MATCH, "");
         }
         else {
             close(sockfd);
@@ -111,7 +128,7 @@ int main (int argc, char **argv) {
         Requests response(sockfd);
         response.get_response();
         
-        sleep(3);
+        //sleep(3);
 #if CONTINOUS_CONN == 0
         close(sockfd);
 #endif

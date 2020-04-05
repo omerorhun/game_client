@@ -3,20 +3,13 @@
 
 #include "Protocol.h"
 #include "Jwt.h"
+#include "errors.h"
 
-#define FB_TOKEN_SIZE 256
 #define REQUEST_HEADER 0x01
+#define ACK 0x01
+#define NACK 0x02
 
-const std::string jwt_key = "bjk1903";
-
-typedef enum{
-    ERR_REQ_SUCCESS = 0,
-    ERR_REQ_WRONG_HEADER,
-    ERR_REQ_WRONG_REQ_CODE,
-    ERR_REQ_WRONG_LENGTH,
-    ERR_REQ_CRC,
-    ERR_REQ_UNKNOWN
-}RequestErrorCodes;
+#define GET_ONLINE_USERS_LEN 0
 
 typedef enum {
     REQ_LOGIN,
@@ -27,15 +20,9 @@ typedef enum {
     REQ_GET_ONLINE_USERS,
     REQ_DISCONNECT,
     REQ_ERROR,
+    REQ_CANCEL_MATCH,
+    REQ_START_GAME,
 }RequestCodes;
-
-static const int lengths[][2] = 
-{
-    {REQ_LOGIN, 0}, 
-    {REQ_GET_ONLINE_USERS, 0},
-};
-
-#define GET_ONLINE_USERS_LEN 0
 
 class Requests {
   
@@ -45,22 +32,27 @@ class Requests {
   ~Requests();
   
   bool get_response();
-  RequestErrorCodes check_request();
-  void handle_request();
+  ErrorCodes check_request();
+  ErrorCodes interpret_response(RequestCodes req_code, std::string indata);
   void send_response();
   void send_request(RequestCodes code, std::string data);
+  void prepare_error_packet(ErrorCodes err);
   
   private:
   Protocol _in_packet;
   Protocol _out_packet;
   
   int socket;
-  
   RequestCodes req_code;
+  
+  bool set_header(uint8_t header);
+  bool set_request_code(RequestCodes req_code);
+  bool set_token(std::string token);
+  bool add_data(std::string data);
+  bool add_data(uint8_t *data, uint16_t len);
   
   bool check_request_code();
   bool check_length();
-  void prepare_error_packet(RequestErrorCodes err);
 };
 
 

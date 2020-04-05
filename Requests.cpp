@@ -26,11 +26,11 @@ Requests::~Requests() {
 }
 
 void Requests::send_request(RequestCodes code, string data) {
-    _out_packet.set_header(REQUEST_HEADER);
-    _out_packet.set_request_code(code);
+    set_header(REQUEST_HEADER);
+    set_request_code(code);
     if (code != REQ_FB_LOGIN)
-        _out_packet.add_data(g_token);
-    _out_packet.add_data(data);
+        add_data(g_token);
+    add_data(data);
     _out_packet.set_crc();
     
     _out_packet.send_packet(socket);
@@ -41,23 +41,36 @@ void Requests::send_response() {
 }
 
 bool Requests::get_response() {
+    string indata = "";
+    RequestCodes req_code;
+    ErrorCodes err;
+    
     if (!_in_packet.receive_packet(socket)) {
         cerr << "ERROR RECEIVE PACKET" << endl;
         return false;
     }
     
-    if (!_in_packet.check_crc())
+    if (!_in_packet.check_crc()) {
         cout << "crc error" << endl;
-    else
-        cout << "crc verified" << endl;
+        return false;
+    }
     
-    handle_request();
+    req_code = (RequestCodes)_in_packet.get_request_code();
+    indata = _in_packet.get_data();
+    
+    _in_packet.free_buffer(); // i wont use receiving buffer anymore, free.
+    
+    err = interpret_response(req_code, indata);
+    if (err != ERR_SUCCESS) {
+        cerr << "ERROR INTERPRET: " << err << endl;
+        return false;
+    }
     
     return true;
 }
 
-RequestErrorCodes Requests::check_request() {
-    RequestErrorCodes ret = ERR_REQ_UNKNOWN;
+ErrorCodes Requests::check_request() {
+    ErrorCodes ret = ERR_REQ_UNKNOWN;
     
     // check header
     if (_in_packet.get_header() != REQUEST_HEADER)
@@ -67,32 +80,18 @@ RequestErrorCodes Requests::check_request() {
     if (!_in_packet.check_crc())
         return ERR_REQ_CRC;
     
-    return ERR_REQ_SUCCESS;
+    return ERR_SUCCESS;
 }
-#if 0
-bool Requests::check_request_code() {
-    if (_in_packet.get_request_code() < REQ_COUNT)
-        return true;
-    
-    return false;
-}
-#endif
-void Requests::handle_request() {
-    RequestCodes req_code = (RequestCodes)_in_packet.get_request_code();
-    string indata = _in_packet.get_data();
-    
+
+ErrorCodes Requests::interpret_response(RequestCodes req_code, string indata) {
     print_hex((const char *)"indata", (char *)indata.c_str(), indata.size());
     
     cout << "Request code: " << req_code << endl;
     
     _out_packet.set_header(REQUEST_HEADER);
     if (req_code == REQ_FB_LOGIN) {
-        g_token = _in_packet.get_data();
-        printf("received data: %s\n", _in_packet.get_data().c_str());
-        print_hex((char *)"inpacket", (char *)_in_packet.get_data().c_str(), _in_packet.get_data().size());
+        g_token = indata;
         printf("g_token: %s\n", g_token.c_str());
-        cout << "cout g_token: " << g_token << endl;
-        print_hex((char *)"token", (char *)g_token.c_str(), g_token.size());
     }
     else if (req_code == REQ_GET_ONLINE_USERS) {
         int count = (indata[0] << 0 & 0xFF) | ((indata[1] << 8) & 0xFF00);
@@ -105,21 +104,47 @@ void Requests::handle_request() {
                 ((indata[i*4 + 5] << 24) & 0xFF000000);
             printf("id: %d\n", id);
         }
-        
     }
-    else {
-        // unknown request received
-        _in_packet.free_buffer();
-        prepare_error_packet(ERR_REQ_WRONG_REQ_CODE);
+    else if(req_code == REQ_MATCH) {
+        // TODO: print opponent data
+        int op_uid = 
+                ((indata[0] << 0) & 0xFF) |
+                ((indata[1] << 8) & 0xFF00) |
+                ((indata[2] << 16) & 0xFF0000) |
+                ((indata[3] << 24) & 0xFF000000);
+        printf("op_uid: %d\n", op_uid);
+    }
+    else if (req_code == REQ_ERROR) {
+        // TODO: print error
     }
     
-    return;
+    return ERR_SUCCESS;
 }
 
-void Requests::prepare_error_packet(RequestErrorCodes err) {
+void Requests::prepare_error_packet(ErrorCodes err) {
     _out_packet.set_request_code(REQ_ERROR);
     string errcode = to_string(err);
     _out_packet.add_data(errcode);
     _out_packet.set_crc();
 }
 
+bool Requests::set_header(uint8_t header) {
+    return _out_packet.set_header(header);
+}
+
+bool Requests::set_request_code(RequestCodes req_code) {
+    return _out_packet.set_request_code((uint8_t)(req_code & 0xFF));
+}
+
+bool Requests::set_token(string token) {
+    return _out_packet.add_data(token);
+}
+
+bool Requests::add_data(string data) {
+    _out_packet.add_data(data);
+    return true;
+}
+
+bool Requests::add_data(uint8_t *data, uint16_t len) {
+    return _out_packet.add_data(data, len);
+}

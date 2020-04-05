@@ -11,6 +11,7 @@ class Jwt {
     Jwt(long user_id, long expire, std::string key);
     std::string get_token();
     bool verify();
+    int get_uid();
     
     private:
     std::string _header;
@@ -18,6 +19,7 @@ class Jwt {
     std::string _signature;
     std::string _key;
     std::string _token;
+    bool _is_valid;
     
     std::string sign_packet();
     std::string generate_token();
