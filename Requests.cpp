@@ -6,6 +6,7 @@
 #include "Jwt.h"
 #include "Protocol.h"
 #include "utilities.h"
+#include "json.hpp"
 
 // socket
 #include <sys/types.h>
@@ -106,13 +107,27 @@ ErrorCodes Requests::interpret_response(RequestCodes req_code, string indata) {
         }
     }
     else if(req_code == REQ_MATCH) {
-        // TODO: print opponent data
+        nlohmann::json user_json;
+        
+        if (nlohmann::json::accept(indata)) {
+            user_json = nlohmann::json::parse(indata);
+        }
+        else {
+            printf("not json data\n");
+            return ERR_REQ_UNKNOWN;
+        }
+        
+        // print opponent data
         int op_uid = 
                 ((indata[0] << 0) & 0xFF) |
                 ((indata[1] << 8) & 0xFF00) |
                 ((indata[2] << 16) & 0xFF0000) |
                 ((indata[3] << 24) & 0xFF000000);
-        printf("op_uid: %d\n", op_uid);
+        
+        string username = user_json["name"];
+        op_uid = user_json["id"];
+        
+        printf("matched with %s [%d]\n", username.c_str(), op_uid);
     }
     else if (req_code == REQ_ERROR) {
         // TODO: print error

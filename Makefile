@@ -7,7 +7,7 @@ OBJS= client.o Protocol.o Requests.o base64.o utilities.o
 all: build image
 
 image:
-	$(CXX) $(CFLAGS) -ggdb $(OBJS) $(LIBS) -o client
+	$(CXX) $(CFLAGS) $(OBJS) $(LIBS) -o client
 
 build: main Protocol Requests base64 utilities
 
