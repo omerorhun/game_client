@@ -83,13 +83,13 @@ int main (int argc, char **argv) {
             // send "fb login" request
             printf("sending login with facebook request...\n");
             
-            //https://www.facebook.com/connect/login_success.html#access_token=EAAJQZBZANTOG0BAE9xBQNrv9Q5ApgdYv2AKyKW3N8S8FZA5ckHZAY7ZCImrXGhDuO6CEzGbLiuvzL0u16g8L9wjPZBv3vc7RHwGoqg8c8hc22QWZA00HoQGVv2USs4jMqlSnU3n6aZA4DqrezInjoZATPZBJL2A5dSkfdqLZCg0eWV3X1psBtZBgTK1pJVc9H5S3KJHMVBMMZBkFo6ggfNCCq2e9j&data_access_expiration_time=1593903047&expires_in=4152
-            //https://www.facebook.com/connect/login_success.html#access_token=EAAJQZBZANTOG0BACqXYsZCi2TWtecqZBU8rZAiOWThbmWaSgKDn8sMSFyMbm5Bx0dgml7wlpNqQedrFHgf2f7Brnvt6anJMJ8ZAtVb1P8ItmZAuZArPpuY3OXJZA3YI275ZAd43yF0caEq9F97ANvMqFSMG8Lx9byXPglI5PQEUXe5oQpJGcceQoYsMumVqohEOuoZD&data_access_expiration_time=1593903203&expires_in=3997
+            //https://www.facebook.com/connect/login_success.html#access_token=EAAJQZBZANTOG0BAGZBS9d8ISYsQiITZBgCJPeNLa2W5NZA423Sc29R6plg0ilfaahHMYpU4BwsEoNicP1ZBnTAiB9wGjW7ZC87Hu6p9HBJeUbMERMyKPBUDQvLZBjpY6ebDm8ZCZBsUhpNlX40RQppU3hwnNzCNuESQslKvtZBZAGDd1Jwe7bcsEJ5lGZB2ZCsw4AQGyrvYDTWussWcW6ZB6M3wRY3p&data_access_expiration_time=1594087206&expires_in=7194
+            //https://www.facebook.com/connect/login_success.html#access_token=EAAJQZBZANTOG0BAMdzZB2votsJEpzhqLNnB9d6NoavBwLvvP9xeJBZAOeEvWFGgdaTj1IsZB3D0Tpu0lG6fIBqDKDPyI97G1Q1mywFZB8jV6SZAbhvLd5slZAwrkaLo4C3F4jU3sjLbSqZCkBAzOHDZAKNBfOAepeQQgLtrZAgSTNiiXHNDmPOp6N90D6PFZATXF0MQZD&data_access_expiration_time=1594087248&expires_in=7151
             // ali veli's access token
-            string ali_token = "EAAJQZBZANTOG0BAE9xBQNrv9Q5ApgdYv2AKyKW3N8S8FZA5ckHZAY7ZCImrXGhDuO6CEzGbLiuvzL0u16g8L9wjPZBv3vc7RHwGoqg8c8hc22QWZA00HoQGVv2USs4jMqlSnU3n6aZA4DqrezInjoZATPZBJL2A5dSkfdqLZCg0eWV3X1psBtZBgTK1pJVc9H5S3KJHMVBMMZBkFo6ggfNCCq2e9j";
+            string ali_token = "EAAJQZBZANTOG0BAGZBS9d8ISYsQiITZBgCJPeNLa2W5NZA423Sc29R6plg0ilfaahHMYpU4BwsEoNicP1ZBnTAiB9wGjW7ZC87Hu6p9HBJeUbMERMyKPBUDQvLZBjpY6ebDm8ZCZBsUhpNlX40RQppU3hwnNzCNuESQslKvtZBZAGDd1Jwe7bcsEJ5lGZB2ZCsw4AQGyrvYDTWussWcW6ZB6M3wRY3p";
             // ömer's access token
             
-            string omer_token = "EAAJQZBZANTOG0BACqXYsZCi2TWtecqZBU8rZAiOWThbmWaSgKDn8sMSFyMbm5Bx0dgml7wlpNqQedrFHgf2f7Brnvt6anJMJ8ZAtVb1P8ItmZAuZArPpuY3OXJZA3YI275ZAd43yF0caEq9F97ANvMqFSMG8Lx9byXPglI5PQEUXe5oQpJGcceQoYsMumVqohEOuoZD";
+            string omer_token = "EAAJQZBZANTOG0BAMdzZB2votsJEpzhqLNnB9d6NoavBwLvvP9xeJBZAOeEvWFGgdaTj1IsZB3D0Tpu0lG6fIBqDKDPyI97G1Q1mywFZB8jV6SZAbhvLd5slZAwrkaLo4C3F4jU3sjLbSqZCkBAzOHDZAKNBfOAepeQQgLtrZAgSTNiiXHNDmPOp6N90D6PFZATXF0MQZD";
             string access_token;
             if (input == 5)
                 access_token = omer_token;
@@ -119,6 +119,17 @@ int main (int argc, char **argv) {
             
             Requests request(sockfd);
             request.send_request(REQ_MATCH, "");
+        }
+        else if (input == 6) {
+            // accept game
+            
+            Requests request(sockfd);
+            request.send_request(REQ_START_GAME, "");
+        }
+        else if (input == 7) {
+            // reject game
+            Requests request(sockfd);
+            request.send_request(REQ_CANCEL_MATCH, "");
         }
         else {
             close(sockfd);

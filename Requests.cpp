@@ -129,6 +129,13 @@ ErrorCodes Requests::interpret_response(RequestCodes req_code, string indata) {
         
         printf("matched with %s [%d]\n", username.c_str(), op_uid);
     }
+    else if (req_code == REQ_CANCEL_MATCH) {
+        printf("match cancelled\n");
+    }
+    else if (req_code == REQ_START_GAME) {
+        printf("game started\n");
+        printf("indata: %s\n", indata.c_str());
+    }
     else if (req_code == REQ_ERROR) {
         // TODO: print error
     }

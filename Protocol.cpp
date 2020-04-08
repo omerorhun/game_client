@@ -52,7 +52,7 @@ bool Protocol::receive_packet(int sock) {
     
     // TEST: testing timeout
     struct timeval tv;
-    tv.tv_sec = 5;
+    tv.tv_sec = 20;
     tv.tv_usec = 0;
     setsockopt(sock, SOL_SOCKET, SO_RCVTIMEO, (const char*)&tv, sizeof tv);
     if (recv(sock, _buffer, RX_BUFFER_SIZE, 0) == -1) {

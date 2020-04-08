@@ -3,7 +3,7 @@
 
 #include <string>
 
-#define RX_BUFFER_SIZE 1024
+#define RX_BUFFER_SIZE 1024*10
 #define TOKEN_SIZE 142
 
 #define PROTOCOL_HEADER 0x01
