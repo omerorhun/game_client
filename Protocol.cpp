@@ -11,6 +11,7 @@
 
 #include "Protocol.h"
 #include "utilities.h"
+#include "debug.h"
 
 using namespace std;
 
@@ -45,16 +46,17 @@ Protocol::~Protocol() {
 }
 
 // TODO: add error codes
-bool Protocol::receive_packet(int sock) {
+bool Protocol::receive_packet(int sock, time_t timeout) {
     _buffer = (uint8_t *)malloc(sizeof(uint8_t) * RX_BUFFER_SIZE);
     if (_buffer == NULL)
         return false;
     
     // TEST: testing timeout
     struct timeval tv;
-    tv.tv_sec = 20;
+    tv.tv_sec = timeout;
     tv.tv_usec = 0;
-    setsockopt(sock, SOL_SOCKET, SO_RCVTIMEO, (const char*)&tv, sizeof tv);
+    if (timeout != 0)
+        setsockopt(sock, SOL_SOCKET, SO_RCVTIMEO, (const char*)&tv, sizeof tv);
     if (recv(sock, _buffer, RX_BUFFER_SIZE, 0) == -1) {
         return false;
     }
@@ -67,7 +69,7 @@ bool Protocol::receive_packet(int sock) {
     _length = _data_length + 5; // 1(header) + 2(length) + 2(crc)
     
     const char header[] = "rx packet";
-    print_hex(header, (char *)_buffer, _length);
+    mlog.log_hex(header, (char *)_buffer, _length);
     
     return true;
 }
@@ -103,7 +105,7 @@ uint16_t Protocol::get_length() {
 }
 
 void Protocol::free_buffer() {
-    printf("Protocol destructor\n");
+    mlog.log_debug("Protocol destructor");
     if (_buffer != NULL) {
         free(_buffer);
         _buffer = NULL;
@@ -115,7 +117,7 @@ void Protocol::send_packet(int sock) {
         return;
     
     const char header[] = "tx packet";
-    print_hex(header, (char *)_buffer, _length);
+    mlog.log_hex(header, (char *)_buffer, _length);
     send(sock, _buffer, _length, 0);
 }
 
@@ -191,9 +193,9 @@ bool Protocol::add_data(string data) {
     memccpy((char *)ptr, data.c_str(), sizeof(char), data.size());
     _length += data.size();
     _data_length += data.size();
-    printf("add data size: %d\n", (int)data.size());
-    printf("_data_lenght: %d\n", _data_length);
-    printf("_length: %d\n", _length);
+    mlog.log_debug("add data size: %d", (int)data.size());
+    mlog.log_debug("_data_lenght: %d", _data_length);
+    mlog.log_debug("_length: %d", _length);
     
     return true;
 }
@@ -213,9 +215,9 @@ bool Protocol::add_data(uint8_t *data, uint16_t len) {
     _data_length += len;
     _length += len;
     
-    printf("add data size: %d\n", len);
-    printf("_data_lenght: %d\n", _data_length);
-    printf("_length: %d\n", _length);
+    mlog.log_debug("add data size: %d", len);
+    mlog.log_debug("_data_lenght: %d", _data_length);
+    mlog.log_debug("_length: %d", _length);
 }
 
 bool Protocol::set_crc() {

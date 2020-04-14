@@ -62,7 +62,7 @@ class Protocol {
   bool check_token(std::string key);
   
   void send_packet(int sock);
-  bool receive_packet(int sock);
+  bool receive_packet(int sock, time_t timeout);
   
   void free_buffer();
   

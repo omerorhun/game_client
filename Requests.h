@@ -31,12 +31,13 @@ class Requests {
   Requests(int sock);
   ~Requests();
   
-  bool get_response();
+  bool get_response(time_t timeout);
   ErrorCodes check_request();
   ErrorCodes interpret_response(RequestCodes req_code, std::string indata);
   void send_response();
   void send_request(RequestCodes code, std::string data);
   void prepare_error_packet(ErrorCodes err);
+  RequestCodes get_next_requets();
   
   private:
   Protocol _in_packet;
@@ -44,6 +45,7 @@ class Requests {
   
   int socket;
   RequestCodes req_code;
+  RequestCodes _next_request;
   
   bool set_header(uint8_t header);
   bool set_request_code(RequestCodes req_code);

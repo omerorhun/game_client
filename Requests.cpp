@@ -7,6 +7,7 @@
 #include "Protocol.h"
 #include "utilities.h"
 #include "json.hpp"
+#include "debug.h"
 
 // socket
 #include <sys/types.h>
@@ -23,7 +24,7 @@ Requests::Requests(int sock) {
 }
 
 Requests::~Requests() {
-    printf("request destructor\n");
+    mlog.log_debug("request destructor");
 }
 
 void Requests::send_request(RequestCodes code, string data) {
@@ -41,18 +42,18 @@ void Requests::send_response() {
     _out_packet.send_packet(socket);
 }
 
-bool Requests::get_response() {
+bool Requests::get_response(time_t timeout) {
     string indata = "";
     RequestCodes req_code;
     ErrorCodes err;
     
-    if (!_in_packet.receive_packet(socket)) {
+    if (!_in_packet.receive_packet(socket, timeout)) {
         cerr << "ERROR RECEIVE PACKET" << endl;
         return false;
     }
     
     if (!_in_packet.check_crc()) {
-        cout << "crc error" << endl;
+        mlog.log_error("crc error");
         return false;
     }
     
@@ -85,25 +86,25 @@ ErrorCodes Requests::check_request() {
 }
 
 ErrorCodes Requests::interpret_response(RequestCodes req_code, string indata) {
-    print_hex((const char *)"indata", (char *)indata.c_str(), indata.size());
+    mlog.log_hex((const char *)"indata", (char *)indata.c_str(), indata.size());
     
-    cout << "Request code: " << req_code << endl;
+    mlog.log_debug("Request code: %d", req_code);
     
     _out_packet.set_header(REQUEST_HEADER);
     if (req_code == REQ_FB_LOGIN) {
         g_token = indata;
-        printf("g_token: %s\n", g_token.c_str());
+        mlog.log_debug("g_token: %s", g_token.c_str());
     }
     else if (req_code == REQ_GET_ONLINE_USERS) {
         int count = (indata[0] << 0 & 0xFF) | ((indata[1] << 8) & 0xFF00);
-        printf("count: %d\n", count);
+        mlog.log_debug("count: %d", count);
         for (int i = 0; i < count; i++) {
             int id = 
                 ((indata[i*4 + 2] << 0) & 0xFF) |
                 ((indata[i*4 + 3] << 8) & 0xFF00) |
                 ((indata[i*4 + 4] << 16) & 0xFF0000) |
                 ((indata[i*4 + 5] << 24) & 0xFF000000);
-            printf("id: %d\n", id);
+            mlog.log_debug("id: %d", id);
         }
     }
     else if(req_code == REQ_MATCH) {
@@ -113,7 +114,7 @@ ErrorCodes Requests::interpret_response(RequestCodes req_code, string indata) {
             user_json = nlohmann::json::parse(indata);
         }
         else {
-            printf("not json data\n");
+            mlog.log_debug("not json data");
             return ERR_REQ_UNKNOWN;
         }
         
@@ -127,14 +128,14 @@ ErrorCodes Requests::interpret_response(RequestCodes req_code, string indata) {
         string username = user_json["name"];
         op_uid = user_json["id"];
         
-        printf("matched with %s [%d]\n", username.c_str(), op_uid);
+        mlog.log_debug("matched with %s [%d]", username.c_str(), op_uid);
     }
     else if (req_code == REQ_CANCEL_MATCH) {
-        printf("match cancelled\n");
+        mlog.log_debug("match cancelled");
     }
     else if (req_code == REQ_START_GAME) {
-        printf("game started\n");
-        printf("indata: %s\n", indata.c_str());
+        mlog.log_debug("game started");
+        mlog.log_debug("indata: %s", indata.c_str());
     }
     else if (req_code == REQ_ERROR) {
         // TODO: print error
@@ -169,4 +170,8 @@ bool Requests::add_data(string data) {
 
 bool Requests::add_data(uint8_t *data, uint16_t len) {
     return _out_packet.add_data(data, len);
+}
+
+RequestCodes Requests::get_next_requets() {
+    return _next_request;
 }

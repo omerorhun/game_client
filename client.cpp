@@ -14,6 +14,7 @@
 #include <pthread.h>
 
 #include "Requests.h"
+#include "debug.h"
 
 #define CONTINOUS_CONN 1
 
@@ -29,7 +30,14 @@ void *listen_response(void *arg);
 void print_usage();
 void print_client_status(sockaddr_in client);
 bool get_args(int argc, char **argv, char *hostaddr, char **ipaddr, uint16_t *port);
+void start_manuel_mode(int sockfd);
+void start_bot(int sockfd);
+FILE *generate_filename();
+
 string g_token = "";
+
+string g_fbToken = "";
+Dlogger mlog;
 
 int main (int argc, char **argv) {
     //int sockfd = socket(AF_INET, SOCK_STREAM, 0);
@@ -37,14 +45,23 @@ int main (int argc, char **argv) {
     char *ip_addr;
     uint16_t port = HOST_PORT;
     
+    FILE *fd = generate_filename();
+    
+    if (fd == NULL)
+        return 0;
+    
+    mlog.log_reset_fp();
+    mlog.log_set_fp(fd);
+    
+    mlog.log_info("new client started");
+    
     if(!get_args(argc, argv, host_addr, &ip_addr, &port)) {
-        printf("usage: client <host-address> <*port>\n");
-        printf("*: optional\n");
+        mlog.log_debug("usage: client host=<host-address> port=<port> token=<token>");
         return 0;
     }
     
-    printf("host: %s\n", host_addr);
-    printf("port: %hu\n", port);
+    mlog.log_debug("host: %s", host_addr);
+    mlog.log_debug("port: %hu", port);
     
     sockaddr_in server_addr;
     server_addr.sin_family = AF_INET;
@@ -54,42 +71,76 @@ int main (int argc, char **argv) {
     print_client_status((sockaddr_in)server_addr);
     print_usage();
 
-#if CONTINOUS_CONN
     int sockfd = socket(AF_INET, SOCK_STREAM, 0);
     int ret = connect(sockfd, (const sockaddr *)&server_addr, sizeof(server_addr));
     if (ret == -1) {
-        cerr << "Can't connect to server\n";
+        mlog.log_error("Can't connect to server");
         return -1;
     }
     
+    if (g_fbToken.empty()) {
+        mlog.log_info("manuel mode");
+        start_manuel_mode(sockfd);
+    }
+    else {
+        mlog.log_info("bot mode");
+        start_bot(sockfd);
+    }
+    
+    return 0;
+}
+
+void start_bot(int sockfd) {
+    RequestCodes req = REQ_FB_LOGIN;
+    
+    while (1) {
+        if (req == REQ_FB_LOGIN) {
+            mlog.log_debug("sending facebook login request");
+            Requests request(sockfd);
+            request.send_request(REQ_FB_LOGIN, g_fbToken);
+            request.get_response(0);
+            req = request.get_next_requets();
+            req = REQ_MATCH;
+        }
+        else if (req == REQ_MATCH) {
+            mlog.log_debug("sending match request");
+            Requests request(sockfd);
+            request.send_request(REQ_MATCH, "");
+            request.get_response(0);
+            req = REQ_START_GAME;
+        }
+        else if (req == REQ_START_GAME) {
+            mlog.log_debug("sending start game request");
+            Requests request(sockfd);
+            request.send_request(REQ_START_GAME, "");
+            request.get_response(0);
+            break;
+        }
+    }
+    
+    close(sockfd);
+}
+
+void start_manuel_mode(int sockfd) {
+    
     while (1) {
         int input = 2;
-        printf("enter the command: ");
+        mlog.log_debug("enter the command: ");
         while (scanf("%d", &input) != 1);
-#else
-    while (1) {
-        int input;
-        printf("enter the command: ");
-        while (scanf("%d", &input) != 1);
-        
-        int sockfd = socket(AF_INET, SOCK_STREAM, 0);
-        int ret = connect(sockfd, (const sockaddr *)&server_addr, sizeof(server_addr));
-        if (ret == -1) {
-            cerr << "Can't connect to server\n";
-            return -1;
-        }
-#endif
+
         if (input == 1 || input == 5) {
             // send "fb login" request
-            printf("sending login with facebook request...\n");
+            mlog.log_debug("sending login with facebook request...");
             
-            //https://www.facebook.com/connect/login_success.html#access_token=EAAJQZBZANTOG0BAGZBS9d8ISYsQiITZBgCJPeNLa2W5NZA423Sc29R6plg0ilfaahHMYpU4BwsEoNicP1ZBnTAiB9wGjW7ZC87Hu6p9HBJeUbMERMyKPBUDQvLZBjpY6ebDm8ZCZBsUhpNlX40RQppU3hwnNzCNuESQslKvtZBZAGDd1Jwe7bcsEJ5lGZB2ZCsw4AQGyrvYDTWussWcW6ZB6M3wRY3p&data_access_expiration_time=1594087206&expires_in=7194
-            //https://www.facebook.com/connect/login_success.html#access_token=EAAJQZBZANTOG0BAMdzZB2votsJEpzhqLNnB9d6NoavBwLvvP9xeJBZAOeEvWFGgdaTj1IsZB3D0Tpu0lG6fIBqDKDPyI97G1Q1mywFZB8jV6SZAbhvLd5slZAwrkaLo4C3F4jU3sjLbSqZCkBAzOHDZAKNBfOAepeQQgLtrZAgSTNiiXHNDmPOp6N90D6PFZATXF0MQZD&data_access_expiration_time=1594087248&expires_in=7151
+            //https://www.facebook.com/connect/login_success.html#access_token=EAAJQZBZANTOG0BAEfRmgpICrcdZCOvOrZAT5NqPmEIdO9KTknvk3uIgFJVDLR18qqXzx5JxbwZB0uxlBXABzfYAUD9j7eHoYgKI93Bebd9ZCNNWhzWD0cKxg3PJZCHd6xNvfMHW2HzdffYgaOliTpnQL5axWmIQUBtlxXE6syibj0xspfPfIBxqjUgBEjeqkIPahgR7ztixo3Ce4lcZAGzoC&data_access_expiration_time=1594639957&expires_in=5243
+	        //https://www.facebook.com/connect/login_success.html#access_token=EAAJQZBZANTOG0BAKGodLSwSSqLw6sjGQRToCZCzdp7HeZAU3mohyAnd7vJdjXZCCuyeb3I3TYpKWbLCxGimh8v3ZCESfJCsH1siZBvtDnZAvXJylArZAaRzKcEZBpqbRd5lIkJMkeIMZBZCQPZBZAbrbeM5Ui2CbmubvOdTUPgu2O35IEuhZCdR8d3ZCXiLe8D7N3gDjppIZD&data_access_expiration_time=1594447770&expires_in=6630
+            
             // ali veli's access token
-            string ali_token = "EAAJQZBZANTOG0BAGZBS9d8ISYsQiITZBgCJPeNLa2W5NZA423Sc29R6plg0ilfaahHMYpU4BwsEoNicP1ZBnTAiB9wGjW7ZC87Hu6p9HBJeUbMERMyKPBUDQvLZBjpY6ebDm8ZCZBsUhpNlX40RQppU3hwnNzCNuESQslKvtZBZAGDd1Jwe7bcsEJ5lGZB2ZCsw4AQGyrvYDTWussWcW6ZB6M3wRY3p";
+            string ali_token =
+	    "EAAJQZBZANTOG0BAEfRmgpICrcdZCOvOrZAT5NqPmEIdO9KTknvk3uIgFJVDLR18qqXzx5JxbwZB0uxlBXABzfYAUD9j7eHoYgKI93Bebd9ZCNNWhzWD0cKxg3PJZCHd6xNvfMHW2HzdffYgaOliTpnQL5axWmIQUBtlxXE6syibj0xspfPfIBxqjUgBEjeqkIPahgR7ztixo3Ce4lcZAGzoC";
             // ömer's access token
             
-            string omer_token = "EAAJQZBZANTOG0BAMdzZB2votsJEpzhqLNnB9d6NoavBwLvvP9xeJBZAOeEvWFGgdaTj1IsZB3D0Tpu0lG6fIBqDKDPyI97G1Q1mywFZB8jV6SZAbhvLd5slZAwrkaLo4C3F4jU3sjLbSqZCkBAzOHDZAKNBfOAepeQQgLtrZAgSTNiiXHNDmPOp6N90D6PFZATXF0MQZD";
+            string omer_token = "EAAJQZBZANTOG0BAOAjRFp7jriJWv0ThQgcxxBxEBTl8KrmXDc0UUTTSzjhE85hsCGYSlu7J7B8vOpLJvTSS5xploUzfkFaLh8cNMZBBnG3TFmyJsHUckJeCGAZBo3wOBoZAbvWxdFlaGnxYQjO74aNZAbJwbOO1C8ZAh9vuZCOT6RkwUVt4NmwfnIyGvzurKqVwZD";
             string access_token;
             if (input == 5)
                 access_token = omer_token;
@@ -101,21 +152,21 @@ int main (int argc, char **argv) {
         }
         else if (input == 2) {
             // send "get online users" request
-            printf("sending get online users request...\n");
+            mlog.log_debug("sending get online users request...");
             
             Requests request(sockfd);
             request.send_request(REQ_GET_ONLINE_USERS, "");
         }
         else if (input == 3) {
             // send logout request
-            printf("sending logout request...\n");
+            mlog.log_debug("sending logout request...");
             
             Requests request(sockfd);
             request.send_request(REQ_LOGOUT, "");
         }
         else if (input == 4) {
             // send match request
-            printf("sending match request...\n");
+            mlog.log_debug("sending match request...");
             
             Requests request(sockfd);
             request.send_request(REQ_MATCH, "");
@@ -133,19 +184,13 @@ int main (int argc, char **argv) {
         }
         else {
             close(sockfd);
-            return 0;
+            return;
         }
         
         Requests response(sockfd);
-        response.get_response();
-        
-        //sleep(3);
-#if CONTINOUS_CONN == 0
-        close(sockfd);
-#endif
+        response.get_response(20);
     }
     
-    return 0;
 }
 
 void *listen_response(void *arg) {
@@ -153,7 +198,7 @@ void *listen_response(void *arg) {
     Requests response(sockfd);
     
     while (1) {
-        if (!response.get_response())
+        if (!response.get_response(0))
             break;
     }
     
@@ -162,36 +207,92 @@ void *listen_response(void *arg) {
 }
 
 bool get_args(int argc, char **argv, char *hostaddr, char **ipaddr, uint16_t *port) {
-    if (argc > 3)
-        return false;
-    
     memset(hostaddr, 0, HOST_ADDR_SIZE);
-    if (argc > 1) strcpy(hostaddr, argv[1]);
-    else strcpy(hostaddr, HOST_ADDR);
+    
+    // set default values
+    strcpy(hostaddr, HOST_ADDR);
+    *port = HOST_PORT;
+    
+    
+    // check token, host, port, userid
+    for (int i = 0; i < argc; i++) {
+        
+        char *ptr = strstr(argv[i], "=");
+        ptr++;
+        
+        if (strstr(argv[i], "port=")) {
+            // get port no
+            uint16_t temp = atoi(ptr);
+            if (isdigit(ptr[0])) {
+                *port = temp;
+            }
+        }
+        else if (strstr(argv[i], "host=")) {
+            // get host name
+            strcpy(hostaddr, ptr);
+        }
+        else if (strstr(argv[i], "token=")) {
+            // get token value
+            g_fbToken = string(ptr);
+        }
+        else if (strstr(argv[i], "userid=")) {
+            // do nothing for now
+        }
+        else {
+            // do nothing
+        }
+    }
     
     hostent *addr = gethostbyname(hostaddr);
     if (addr == NULL) {
-        printf("Error: Invalid host-address\n");
+        mlog.log_error("Error: Invalid host-address");
         return false;
     }
     
     *ipaddr = inet_ntoa(*((struct in_addr*)addr->h_addr_list[0]));
     
-    if (argc == 3) {
-        uint16_t temp = atoi(argv[2]);
-        
-        if (isdigit(argv[2][0]))
-            *port = temp;
-    }
-    
     return true;
 }
 
 void print_usage() {
-    cout << "1: send 'fb login' request" << endl;
-    cout << "2: send 'get online clients' request" << endl;
-    cout << "3: send 'logout' request" << endl;
-    cout << endl;
+    mlog.log_info("1: send 'fb login' request");
+    mlog.log_info("2: send 'get online clients' request");
+    mlog.log_info("3: send 'logout' request\n");
+}
+
+FILE *generate_filename() {
+    char command[64];
+    char filepath[32];
+    char filename[32];
+    time_t now = time(NULL);
+    struct tm *tm_st = localtime(&now);
+    
+    memset(command, 0, 64);
+    memset(filepath, 0, 32);
+    sprintf(filepath, "logs/%04d-%02d-%02d", tm_st->tm_year + 1900,
+                                                        tm_st->tm_mon + 1,
+                                                        tm_st->tm_mday);
+    sprintf(command, "mkdir -p %s", filepath);
+    
+    // create path if doesn't exists
+    system(command);
+    int try_count = 0;
+    do {
+        memset(filename, 0, 64);
+        
+        sprintf(filename, "%s/client_%02d-%02d-%02d.log", filepath,
+                                                        tm_st->tm_hour,
+                                                        tm_st->tm_min,
+                                                        tm_st->tm_sec);
+        if (try_count > 0) {
+            int len = strlen(filename);
+            sprintf(&filename[len], "-%d", try_count);
+        }
+        
+        try_count++;
+    } while (access(filename, F_OK) != -1);
+    
+    return fopen(filename, "a+");
 }
 
 void print_client_status(sockaddr_in client) {
@@ -205,36 +306,12 @@ void print_client_status(sockaddr_in client) {
                                             host, NI_MAXHOST, svc, NI_MAXSERV, 0);
     
     if (result) {
-        cout << string(host) << " connected to " << string(svc) << endl;
+        mlog.log_info("%s connected to %s" , host, svc);
     }
     else {
         inet_ntop(AF_INET, &client.sin_addr, host, NI_MAXHOST);
-        cout << string(host) << " connected to " << ntohs(client.sin_port) << endl;
+        mlog.log_info("%s connected to %hu", host, ntohs(client.sin_port));
     }
     
     return;
 }
-
-#if 0
-void *listener(void *arg) {
-    int sockfd = *((int *)arg);
-    char rx_buffer[BUFFER_SIZE];
-    
-    while (1) {
-        memset(&rx_buffer, 0, BUFFER_SIZE);
-        
-        int rx_size = recv(sockfd, rx_buffer, BUFFER_SIZE, 0);
-        
-        if (rx_size == 0)
-            break;
-        
-        cout << "Server: " << string(rx_buffer) << endl;
-        
-    }
-    
-    close(sockfd);
-    return NULL;
-}
-#endif
-
-

@@ -2,14 +2,14 @@
 CXX= g++
 CFLAGS= -std=c++11
 LIBS= -lpthread -pthread -lcurl -lcrypto -lssl
-OBJS= client.o Protocol.o Requests.o base64.o utilities.o
+OBJS= client.o Protocol.o Requests.o base64.o utilities.o debug.o
 
 all: build image
 
 image:
 	$(CXX) $(CFLAGS) $(OBJS) $(LIBS) -o client
 
-build: main Protocol Requests base64 utilities
+build: main Protocol Requests base64 utilities debug
 
 main: client.cpp
 	$(CXX) $(CFLAGS) -c -g client.cpp -o client.o
@@ -25,6 +25,9 @@ base64: base64.cpp base64.h
 
 utilities: utilities.cpp utilities.h
 	$(CXX) $(CFLAGS) -c -g utilities.cpp -o utilities.o
+
+debug: debug.cpp debug.h
+	$(CXX) $(CFLAGS) -c -g debug.cpp -o debug.o
 
 clean:
 	rm -rf *.o client

@@ -3,6 +3,7 @@
 #include <ctype.h>
 
 #include "utilities.h"
+#include "debug.h"
 
 void print_hex(const char *header, char *buffer, uint16_t len) {
     
