@@ -15,6 +15,7 @@
 
 #include "Requests.h"
 #include "debug.h"
+#include "json.hpp"
 
 #define CONTINOUS_CONN 1
 
@@ -26,13 +27,13 @@
 using namespace std;
 
 void *listener(void *arg);
-void *listen_response(void *arg);
+void *listen_for_notifications(void *arg);
 void print_usage();
 void print_client_status(sockaddr_in client);
 bool get_args(int argc, char **argv, char *hostaddr, char **ipaddr, uint16_t *port);
 void start_manuel_mode(int sockfd);
 void start_bot(int sockfd);
-FILE *generate_filename();
+FILE *generate_log_file();
 
 string g_token = "";
 
@@ -45,7 +46,7 @@ int main (int argc, char **argv) {
     char *ip_addr;
     uint16_t port = HOST_PORT;
     
-    FILE *fd = generate_filename();
+    FILE *fd = generate_log_file();
     
     if (fd == NULL)
         return 0;
@@ -114,7 +115,18 @@ void start_bot(int sockfd) {
             Requests request(sockfd);
             request.send_request(REQ_START_GAME, "");
             request.get_response(0);
+            req = REQ_GAME_ANSWER;
             break;
+        }
+        else if (req == REQ_GAME_ANSWER) {
+            mlog.log_debug("sending game answer request");
+            Requests request(sockfd);
+            nlohmann::json answer_json;
+            answer_json["answer"] = "c";
+            string data = answer_json.dump();
+            request.send_request(REQ_GAME_ANSWER, data);
+            request.get_response(0);
+            req = REQ_GAME_ANSWER;
         }
     }
     
@@ -122,25 +134,27 @@ void start_bot(int sockfd) {
 }
 
 void start_manuel_mode(int sockfd) {
-    
+    pthread_t listen_thread;
+    bool by_pass = false;
     while (1) {
         int input = 2;
         mlog.log_debug("enter the command: ");
+        
         while (scanf("%d", &input) != 1);
-
+        
         if (input == 1 || input == 5) {
             // send "fb login" request
             mlog.log_debug("sending login with facebook request...");
             
-            //https://www.facebook.com/connect/login_success.html#access_token=EAAJQZBZANTOG0BAEfRmgpICrcdZCOvOrZAT5NqPmEIdO9KTknvk3uIgFJVDLR18qqXzx5JxbwZB0uxlBXABzfYAUD9j7eHoYgKI93Bebd9ZCNNWhzWD0cKxg3PJZCHd6xNvfMHW2HzdffYgaOliTpnQL5axWmIQUBtlxXE6syibj0xspfPfIBxqjUgBEjeqkIPahgR7ztixo3Ce4lcZAGzoC&data_access_expiration_time=1594639957&expires_in=5243
-	        //https://www.facebook.com/connect/login_success.html#access_token=EAAJQZBZANTOG0BAKGodLSwSSqLw6sjGQRToCZCzdp7HeZAU3mohyAnd7vJdjXZCCuyeb3I3TYpKWbLCxGimh8v3ZCESfJCsH1siZBvtDnZAvXJylArZAaRzKcEZBpqbRd5lIkJMkeIMZBZCQPZBZAbrbeM5Ui2CbmubvOdTUPgu2O35IEuhZCdR8d3ZCXiLe8D7N3gDjppIZD&data_access_expiration_time=1594447770&expires_in=6630
+            //https://www.facebook.com/connect/login_success.html#access_token=EAAJQZBZANTOG0BAKwjJIfqnFkf8E42ytYyhs9cleH4WttpaHBy7Ew5811Kq3w1KNZAeDyxudfkviZB5riafKQ59ZCHaN8vP0tHOhKwb4jteZCZAuWR0x84gPUIinmwJyrhrMdSZC79awUxQWtWZCgyX4YJYHdiZBwzNJtqaYhn9qzIgnf90JGjcZCzXFlSWjhZBFKHeIhWs43KdqThA4nXlSUveA&data_access_expiration_time=1595112992&expires_in=3808
+	        //https://www.facebook.com/connect/login_success.html#access_token=EAAJQZBZANTOG0BACHzsBJlaALceQZBlCiQwdbEG5tAUWxYrKAaOxDoCMvs3BPkgP6EWScnjhdNZBnbivO0FORSSEkfrKlMK51fUjiZAKey1UDZAf23o5IdJQjCfByWOGQlM5YgZAIOWy2UvDZA0uS4yh8xZAd8QdXQyuXV8w5oAR1jFBLTttkaBGRRmVtqmMPPUwZD&data_access_expiration_time=1595113010&expires_in=3790
             
             // ali veli's access token
             string ali_token =
-	    "EAAJQZBZANTOG0BAEfRmgpICrcdZCOvOrZAT5NqPmEIdO9KTknvk3uIgFJVDLR18qqXzx5JxbwZB0uxlBXABzfYAUD9j7eHoYgKI93Bebd9ZCNNWhzWD0cKxg3PJZCHd6xNvfMHW2HzdffYgaOliTpnQL5axWmIQUBtlxXE6syibj0xspfPfIBxqjUgBEjeqkIPahgR7ztixo3Ce4lcZAGzoC";
+	    "EAAJQZBZANTOG0BAKwjJIfqnFkf8E42ytYyhs9cleH4WttpaHBy7Ew5811Kq3w1KNZAeDyxudfkviZB5riafKQ59ZCHaN8vP0tHOhKwb4jteZCZAuWR0x84gPUIinmwJyrhrMdSZC79awUxQWtWZCgyX4YJYHdiZBwzNJtqaYhn9qzIgnf90JGjcZCzXFlSWjhZBFKHeIhWs43KdqThA4nXlSUveA";
             // ömer's access token
             
-            string omer_token = "EAAJQZBZANTOG0BAOAjRFp7jriJWv0ThQgcxxBxEBTl8KrmXDc0UUTTSzjhE85hsCGYSlu7J7B8vOpLJvTSS5xploUzfkFaLh8cNMZBBnG3TFmyJsHUckJeCGAZBo3wOBoZAbvWxdFlaGnxYQjO74aNZAbJwbOO1C8ZAh9vuZCOT6RkwUVt4NmwfnIyGvzurKqVwZD";
+            string omer_token = "EAAJQZBZANTOG0BACHzsBJlaALceQZBlCiQwdbEG5tAUWxYrKAaOxDoCMvs3BPkgP6EWScnjhdNZBnbivO0FORSSEkfrKlMK51fUjiZAKey1UDZAf23o5IdJQjCfByWOGQlM5YgZAIOWy2UvDZA0uS4yh8xZAd8QdXQyuXV8w5oAR1jFBLTttkaBGRRmVtqmMPPUwZD";
             string access_token;
             if (input == 5)
                 access_token = omer_token;
@@ -176,27 +190,41 @@ void start_manuel_mode(int sockfd) {
             
             Requests request(sockfd);
             request.send_request(REQ_START_GAME, "");
+            pthread_create(&listen_thread, NULL, listen_for_notifications, (void *)&sockfd);
+            by_pass = true;
         }
         else if (input == 7) {
             // reject game
             Requests request(sockfd);
             request.send_request(REQ_CANCEL_MATCH, "");
         }
+        else if (input == 8) {
+            // send game answer request
+            Requests request(sockfd);
+            string data;
+            nlohmann::json answer_json;
+            answer_json["answer"] = "a";
+            data = answer_json.dump();
+            request.send_request(REQ_GAME_ANSWER, data);
+            //by_pass = true;
+        }
         else {
             close(sockfd);
             return;
         }
         
-        Requests response(sockfd);
-        response.get_response(20);
+        if (!by_pass) {
+            Requests response(sockfd);
+            response.get_response(20);
+        }
     }
     
 }
 
-void *listen_response(void *arg) {
+void *listen_for_notifications(void *arg) {
     int sockfd = *((int *)arg);
     Requests response(sockfd);
-    
+    mlog.log_debug("listening for notifications...");
     while (1) {
         if (!response.get_response(0))
             break;
@@ -260,7 +288,7 @@ void print_usage() {
     mlog.log_info("3: send 'logout' request\n");
 }
 
-FILE *generate_filename() {
+FILE *generate_log_file() {
     char command[64];
     char filepath[32];
     char filename[32];
@@ -280,13 +308,17 @@ FILE *generate_filename() {
     do {
         memset(filename, 0, 64);
         
-        sprintf(filename, "%s/client_%02d-%02d-%02d.log", filepath,
+        sprintf(filename, "%s/client_%02d-%02d-%02d", filepath,
                                                         tm_st->tm_hour,
                                                         tm_st->tm_min,
                                                         tm_st->tm_sec);
         if (try_count > 0) {
             int len = strlen(filename);
-            sprintf(&filename[len], "-%d", try_count);
+            sprintf(&filename[len], "-%d.log", try_count);
+        }
+        else {
+            int len = strlen(filename);
+            sprintf(&filename[len], ".log");
         }
         
         try_count++;

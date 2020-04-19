@@ -22,6 +22,7 @@ typedef enum {
     REQ_ERROR,
     REQ_CANCEL_MATCH,
     REQ_START_GAME,
+    REQ_GAME_ANSWER
 }RequestCodes;
 
 class Requests {
