@@ -11,6 +11,8 @@
 #include <unistd.h>
 #include <netdb.h>
 
+#include <ev.h>
+
 #include <pthread.h>
 
 #include "Requests.h"
@@ -35,10 +37,15 @@ void start_manuel_mode(int sockfd);
 void start_bot(int sockfd);
 FILE *generate_log_file();
 
+void *start_loop(void *arg);
+void read_callback(struct ev_loop *loop, ev_io *watcher, int revents);
+
 string g_token = "";
 
 string g_fbToken = "";
 Dlogger mlog;
+
+bool gb_is_active = false;
 
 int main (int argc, char **argv) {
     //int sockfd = socket(AF_INET, SOCK_STREAM, 0);
@@ -92,43 +99,67 @@ int main (int argc, char **argv) {
 }
 
 void start_bot(int sockfd) {
-    RequestCodes req = REQ_FB_LOGIN;
+    pthread_t listen_thread;
+    Requests request(sockfd);
+    request.set_next_requets(REQ_FB_LOGIN);
+    
+    struct ev_loop *loop;
+    loop = ev_loop_new(0);
+    ev_io watcher;
+    ev_io_init(&watcher, read_callback , sockfd, EV_READ);
+    ev_io_start(loop, &watcher);
+    watcher.data = (void *)&request;
+    
+    gb_is_active = true;
+    //pthread_create(&listen_thread, NULL, listen_for_notifications, (void *)&request);
+    pthread_create(&listen_thread, NULL, start_loop, (void *)loop);
     
     while (1) {
+        RequestCodes req = request.get_next_requets();
+        if (req != REQ_IDLE)
+            request.clear_out_packet();
+        
         if (req == REQ_FB_LOGIN) {
             mlog.log_debug("sending facebook login request");
-            Requests request(sockfd);
             request.send_request(REQ_FB_LOGIN, g_fbToken);
-            request.get_response(0);
-            req = request.get_next_requets();
-            req = REQ_MATCH;
+            request.set_next_requets(REQ_IDLE);
         }
         else if (req == REQ_MATCH) {
             mlog.log_debug("sending match request");
-            Requests request(sockfd);
             request.send_request(REQ_MATCH, "");
-            request.get_response(0);
-            req = REQ_START_GAME;
+            request.set_next_requets(REQ_IDLE);
         }
-        else if (req == REQ_START_GAME) {
+        else if (req == REQ_GAME_START) {
             mlog.log_debug("sending start game request");
-            Requests request(sockfd);
-            request.send_request(REQ_START_GAME, "");
-            request.get_response(0);
-            req = REQ_GAME_ANSWER;
-            break;
+            request.send_request(REQ_GAME_START, "");
+            request.set_next_requets(REQ_IDLE);
         }
         else if (req == REQ_GAME_ANSWER) {
             mlog.log_debug("sending game answer request");
-            Requests request(sockfd);
             nlohmann::json answer_json;
-            answer_json["answer"] = "c";
+            uint8_t random = rand()%4;
+            char answer;
+            sprintf(&answer, "%c", 'a' + random);
+            answer_json["answer"] = &answer;
             string data = answer_json.dump();
             request.send_request(REQ_GAME_ANSWER, data);
-            request.get_response(0);
-            req = REQ_GAME_ANSWER;
+            request.set_next_requets(REQ_IDLE);
         }
+        else if (req == REQ_GAME_FINISH) {
+            mlog.log_debug("sending game finish request");
+            request.send_request(REQ_GAME_FINISH, "");
+            break;
+        }
+        else if (req == REQ_IDLE) {
+            // do nothing
+        }
+        
+        if (!gb_is_active)
+            break;
     }
+    
+    ev_io_stop(loop, &watcher);
+    ev_loop_destroy(loop);
     
     close(sockfd);
 }
@@ -136,6 +167,22 @@ void start_bot(int sockfd) {
 void start_manuel_mode(int sockfd) {
     pthread_t listen_thread;
     bool by_pass = false;
+    Requests req(sockfd);
+    
+    struct ev_loop *loop;
+    loop = ev_loop_new(0);
+    ev_io watcher;
+    ev_io_init(&watcher, read_callback , sockfd, EV_READ);
+    ev_io_start(loop, &watcher);
+    watcher.data = (void *)&req;
+    
+    gb_is_active = true;
+    //pthread_create(&listen_thread, NULL, listen_for_notifications, (void *)&request);
+    pthread_create(&listen_thread, NULL, start_loop, (void *)loop);
+    
+    // pthread_create(&listen_thread, NULL, listen_for_notifications, (void *)&req);
+    // by_pass = true;
+    
     while (1) {
         int input = 2;
         mlog.log_debug("enter the command: ");
@@ -146,15 +193,15 @@ void start_manuel_mode(int sockfd) {
             // send "fb login" request
             mlog.log_debug("sending login with facebook request...");
             
-            //https://www.facebook.com/connect/login_success.html#access_token=EAAJQZBZANTOG0BAKwjJIfqnFkf8E42ytYyhs9cleH4WttpaHBy7Ew5811Kq3w1KNZAeDyxudfkviZB5riafKQ59ZCHaN8vP0tHOhKwb4jteZCZAuWR0x84gPUIinmwJyrhrMdSZC79awUxQWtWZCgyX4YJYHdiZBwzNJtqaYhn9qzIgnf90JGjcZCzXFlSWjhZBFKHeIhWs43KdqThA4nXlSUveA&data_access_expiration_time=1595112992&expires_in=3808
-	        //https://www.facebook.com/connect/login_success.html#access_token=EAAJQZBZANTOG0BACHzsBJlaALceQZBlCiQwdbEG5tAUWxYrKAaOxDoCMvs3BPkgP6EWScnjhdNZBnbivO0FORSSEkfrKlMK51fUjiZAKey1UDZAf23o5IdJQjCfByWOGQlM5YgZAIOWy2UvDZA0uS4yh8xZAd8QdXQyuXV8w5oAR1jFBLTttkaBGRRmVtqmMPPUwZD&data_access_expiration_time=1595113010&expires_in=3790
+            //https://www.facebook.com/connect/login_success.html#access_token=EAAJQZBZANTOG0BADrCDQRh9B8A6SB6ar6lzQrXjnPZBzztrNkcu47M8zuWKmjf711eHj3F6ZCHxc6UkKhZBgwK0NZBy1E2XZCC8oKPVNrtttOIrlCZBhFyulZBSEMSVLvSJmSBUDVTsAfJgV9rzCEZBR1pz0BBN9zqgZAjOyujl9ZBa0XGLgENJrZCZCUGZBS2PiIfpUige6fiRb5rNzC9xoIwtVcaK&data_access_expiration_time=1595504625&expires_in=4574
+	        //https://www.facebook.com/connect/login_success.html#access_token=EAAJQZBZANTOG0BAFy5bvRcZAc8kcMbtWGnjTZA26xAVXHhKIrI8ZAUXIfdSJJWMRdg88m7F1LkoPDxkDYmyK9ptLS28Ac4pgiilCCyrMZBDqp3OkyADbJkdXOoxwhUlCXCFonr2fJM3m6XpNeAugLyjZA5UoiJNIymzwd7LhXZCrZA4daQSuY0IgMJiR2vhZC5oJMZD&data_access_expiration_time=1595467648&expires_in=5552
             
             // ali veli's access token
             string ali_token =
-	    "EAAJQZBZANTOG0BAKwjJIfqnFkf8E42ytYyhs9cleH4WttpaHBy7Ew5811Kq3w1KNZAeDyxudfkviZB5riafKQ59ZCHaN8vP0tHOhKwb4jteZCZAuWR0x84gPUIinmwJyrhrMdSZC79awUxQWtWZCgyX4YJYHdiZBwzNJtqaYhn9qzIgnf90JGjcZCzXFlSWjhZBFKHeIhWs43KdqThA4nXlSUveA";
+	    "EAAJQZBZANTOG0BADrCDQRh9B8A6SB6ar6lzQrXjnPZBzztrNkcu47M8zuWKmjf711eHj3F6ZCHxc6UkKhZBgwK0NZBy1E2XZCC8oKPVNrtttOIrlCZBhFyulZBSEMSVLvSJmSBUDVTsAfJgV9rzCEZBR1pz0BBN9zqgZAjOyujl9ZBa0XGLgENJrZCZCUGZBS2PiIfpUige6fiRb5rNzC9xoIwtVcaK";
             // ömer's access token
             
-            string omer_token = "EAAJQZBZANTOG0BACHzsBJlaALceQZBlCiQwdbEG5tAUWxYrKAaOxDoCMvs3BPkgP6EWScnjhdNZBnbivO0FORSSEkfrKlMK51fUjiZAKey1UDZAf23o5IdJQjCfByWOGQlM5YgZAIOWy2UvDZA0uS4yh8xZAd8QdXQyuXV8w5oAR1jFBLTttkaBGRRmVtqmMPPUwZD";
+            string omer_token = "EAAJQZBZANTOG0BAFy5bvRcZAc8kcMbtWGnjTZA26xAVXHhKIrI8ZAUXIfdSJJWMRdg88m7F1LkoPDxkDYmyK9ptLS28Ac4pgiilCCyrMZBDqp3OkyADbJkdXOoxwhUlCXCFonr2fJM3m6XpNeAugLyjZA5UoiJNIymzwd7LhXZCrZA4daQSuY0IgMJiR2vhZC5oJMZD";
             string access_token;
             if (input == 5)
                 access_token = omer_token;
@@ -189,9 +236,7 @@ void start_manuel_mode(int sockfd) {
             // accept game
             
             Requests request(sockfd);
-            request.send_request(REQ_START_GAME, "");
-            pthread_create(&listen_thread, NULL, listen_for_notifications, (void *)&sockfd);
-            by_pass = true;
+            request.send_request(REQ_GAME_START, "");
         }
         else if (input == 7) {
             // reject game
@@ -208,30 +253,64 @@ void start_manuel_mode(int sockfd) {
             request.send_request(REQ_GAME_ANSWER, data);
             //by_pass = true;
         }
+        else if (input == 9) {
+            // send resign request
+            Requests request(sockfd);
+            request.send_request(REQ_GAME_RESIGN, "");
+        }
+        else if (input == 10) {
+            // send game finish request
+            Requests request(sockfd);
+            // for now, dont send results
+            request.send_request(REQ_GAME_FINISH, "");
+        }
         else {
             close(sockfd);
             return;
         }
         
-        if (!by_pass) {
-            Requests response(sockfd);
-            response.get_response(20);
-        }
+        // if (!by_pass) {
+        //     Requests response(sockfd);
+        //     response.get_response(20);
+        // }
     }
     
 }
 
 void *listen_for_notifications(void *arg) {
-    int sockfd = *((int *)arg);
-    Requests response(sockfd);
+    Requests *response = (Requests *)arg;
+    
+    gb_is_active = true;
+    
     mlog.log_debug("listening for notifications...");
     while (1) {
-        if (!response.get_response(0))
+        response->clear_in_packet();
+        if (!response->get_response(40)) {
+            mlog.log_error("RECEIVE ERROR");
             break;
+        }
     }
     
-    close(sockfd);
+    gb_is_active = false;
+    
     return NULL;
+}
+
+void read_callback(struct ev_loop *loop, ev_io *watcher, int revents) {
+    Requests *request = (Requests *)watcher->data;
+    
+    if (!request->get_response(20)) {
+        mlog.log_error("RECEIVE ERROR!");
+        gb_is_active = false;
+    }
+}
+
+void *start_loop(void *arg) {
+    struct ev_loop *loop = (struct ev_loop *)arg;
+    
+    gb_is_active = true;
+    
+    ev_run(loop, 0);
 }
 
 bool get_args(int argc, char **argv, char *hostaddr, char **ipaddr, uint16_t *port) {

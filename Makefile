@@ -1,7 +1,7 @@
 
 CXX= g++
 CFLAGS= -std=c++11
-LIBS= -lpthread -pthread -lcurl -lcrypto -lssl
+LIBS= -lpthread -pthread -lcurl -lcrypto -lssl -lev
 OBJS= client.o Protocol.o Requests.o base64.o utilities.o debug.o
 
 all: build image

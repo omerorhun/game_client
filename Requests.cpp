@@ -49,11 +49,13 @@ bool Requests::get_response(time_t timeout) {
     
     if (!_in_packet.receive_packet(socket, timeout)) {
         cerr << "ERROR RECEIVE PACKET" << endl;
+        close(socket);
         return false;
     }
     
     if (!_in_packet.check_crc()) {
         mlog.log_error("crc error");
+        close(socket);
         return false;
     }
     
@@ -85,8 +87,9 @@ ErrorCodes Requests::check_request() {
     return ERR_SUCCESS;
 }
 
+int g_question_no = 0;
+
 ErrorCodes Requests::interpret_response(RequestCodes req_code, string indata) {
-    mlog.log_hex((const char *)"indata", (char *)indata.c_str(), indata.size());
     
     mlog.log_debug("Request code: %d", req_code);
     
@@ -94,17 +97,18 @@ ErrorCodes Requests::interpret_response(RequestCodes req_code, string indata) {
     if (req_code == REQ_FB_LOGIN) {
         g_token = indata;
         mlog.log_debug("g_token: %s", g_token.c_str());
+        
+        _next_request = REQ_MATCH;
     }
     else if (req_code == REQ_GET_ONLINE_USERS) {
         int count = (indata[0] << 0 & 0xFF) | ((indata[1] << 8) & 0xFF00);
         mlog.log_debug("count: %d", count);
         for (int i = 0; i < count; i++) {
-            int id = 
-                ((indata[i*4 + 2] << 0) & 0xFF) |
-                ((indata[i*4 + 3] << 8) & 0xFF00) |
-                ((indata[i*4 + 4] << 16) & 0xFF0000) |
-                ((indata[i*4 + 5] << 24) & 0xFF000000);
-            mlog.log_debug("id: %d", id);
+            char *cpy = (char *)indata.c_str();
+            mlog.log_hex("cpy", cpy, 10);
+            uint64_t uid = GET_64(cpy + i*8 + 2);
+                
+            mlog.log_debug("id: %lu", uid);
         }
     }
     else if(req_code == REQ_MATCH) {
@@ -114,31 +118,68 @@ ErrorCodes Requests::interpret_response(RequestCodes req_code, string indata) {
             user_json = nlohmann::json::parse(indata);
         }
         else {
-            mlog.log_debug("not json data");
-            return ERR_REQ_UNKNOWN;
+            mlog.log_debug("send match requests' ack received");
+            return ERR_SUCCESS;
         }
         
         // print opponent data
-        int op_uid = 
-                ((indata[0] << 0) & 0xFF) |
-                ((indata[1] << 8) & 0xFF00) |
-                ((indata[2] << 16) & 0xFF0000) |
-                ((indata[3] << 24) & 0xFF000000);
-        
         string username = user_json["name"];
-        op_uid = user_json["id"];
-        
+        uint64_t op_uid = user_json["id"];
         mlog.log_debug("matched with %s [%d]", username.c_str(), op_uid);
+        
+        _next_request = REQ_GAME_START;
     }
     else if (req_code == REQ_CANCEL_MATCH) {
+        // receive ack
         mlog.log_debug("match cancelled");
     }
-    else if (req_code == REQ_START_GAME) {
+    else if (req_code == REQ_GAME_START) {
         mlog.log_debug("game started");
-        mlog.log_debug("indata: %s", indata.c_str());
+        
+        g_question_no = 0;
+        
+        _next_request = REQ_GAME_ANSWER;
+    }
+    else if (req_code == REQ_GAME_ANSWER) {
+        // receive ack
+        mlog.log_debug("send answer's ack received");
+    }
+    else if (req_code == REQ_GAME_OPPONENT_ANSWER) {
+        // receive opponent answer
+        mlog.log_debug("opponent answer received");
+        mlog.log_debug("%s", indata.c_str());
+    }
+    else if (req_code == REQ_GAME_QUESTION_COMPLETED) {
+        // count questions
+        g_question_no++;
+        
+        mlog.log_debug("next question %d\n", g_question_no);
+        
+        if (g_question_no == 5) {
+            // if last question, send finish game request
+            _next_request = REQ_GAME_FINISH;
+        }
+        else {
+            _next_request = REQ_GAME_ANSWER;
+        }
+        
+    }
+    else if (req_code == REQ_GAME_OPPONENT_RESIGNED) {
+        
+        mlog.log_debug("opponent resigned\n");
+        
+        // send game finish request
+        _next_request = REQ_GAME_FINISH;
+    }
+    else if (req_code == REQ_GAME_OPPONENT_TIMEOUT) {
+        mlog.log_debug("opponent has timed out\n");
+        
+        // send game finish request
+        _next_request = REQ_GAME_FINISH;
     }
     else if (req_code == REQ_ERROR) {
         // TODO: print error
+        mlog.log_error("error\n");
     }
     
     return ERR_SUCCESS;
@@ -174,4 +215,16 @@ bool Requests::add_data(uint8_t *data, uint16_t len) {
 
 RequestCodes Requests::get_next_requets() {
     return _next_request;
+}
+
+void Requests::set_next_requets(RequestCodes req_code) {
+    _next_request = req_code;
+}
+
+void Requests::clear_out_packet() {
+    _out_packet.clear();
+}
+
+void Requests::clear_in_packet() {
+    _in_packet.clear();
 }

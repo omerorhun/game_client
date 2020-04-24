@@ -48,15 +48,17 @@ Protocol::~Protocol() {
 // TODO: add error codes
 bool Protocol::receive_packet(int sock, time_t timeout) {
     _buffer = (uint8_t *)malloc(sizeof(uint8_t) * RX_BUFFER_SIZE);
+    memset(_buffer, 0, RX_BUFFER_SIZE);
     if (_buffer == NULL)
         return false;
     
-    // TEST: testing timeout
+    // set timeout
     struct timeval tv;
     tv.tv_sec = timeout;
     tv.tv_usec = 0;
     if (timeout != 0)
         setsockopt(sock, SOL_SOCKET, SO_RCVTIMEO, (const char*)&tv, sizeof tv);
+    
     if (recv(sock, _buffer, RX_BUFFER_SIZE, 0) == -1) {
         return false;
     }
@@ -105,11 +107,18 @@ uint16_t Protocol::get_length() {
 }
 
 void Protocol::free_buffer() {
-    mlog.log_debug("Protocol destructor");
     if (_buffer != NULL) {
         free(_buffer);
         _buffer = NULL;
     }
+}
+
+void Protocol::clear() {
+    free_buffer();
+    _length = 0;
+    _data_length = 0;
+    _buffer = NULL;
+    _state = PKT_ST_EMPTY;
 }
 
 void Protocol::send_packet(int sock) {

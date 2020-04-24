@@ -65,6 +65,7 @@ class Protocol {
   bool receive_packet(int sock, time_t timeout);
   
   void free_buffer();
+  void clear();
   
   private:
   uint8_t *_buffer;

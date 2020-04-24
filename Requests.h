@@ -21,8 +21,15 @@ typedef enum {
     REQ_DISCONNECT,
     REQ_ERROR,
     REQ_CANCEL_MATCH,
-    REQ_START_GAME,
-    REQ_GAME_ANSWER
+    REQ_GAME_START,
+    REQ_GAME_ANSWER,
+    REQ_GAME_OPPONENT_ANSWER,
+    REQ_GAME_QUESTION_COMPLETED,
+    REQ_GAME_RESIGN,
+    REQ_GAME_OPPONENT_RESIGNED,
+    REQ_GAME_OPPONENT_TIMEOUT,
+    REQ_GAME_FINISH,
+    REQ_IDLE
 }RequestCodes;
 
 class Requests {
@@ -39,6 +46,10 @@ class Requests {
   void send_request(RequestCodes code, std::string data);
   void prepare_error_packet(ErrorCodes err);
   RequestCodes get_next_requets();
+  void set_next_requets(RequestCodes req_code);
+  
+  void clear_out_packet();
+  void clear_in_packet();
   
   private:
   Protocol _in_packet;
