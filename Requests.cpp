@@ -134,8 +134,10 @@ ErrorCodes Requests::interpret_response(RequestCodes req_code, string indata) {
         mlog.log_debug("match cancelled");
     }
     else if (req_code == REQ_GAME_START) {
+        mlog.log_debug("game start ack");
+    }
+    else if (req_code == REQ_GAME_ACCEPTED) {
         mlog.log_debug("game started");
-        
         g_question_no = 0;
         
         _next_request = REQ_GAME_ANSWER;

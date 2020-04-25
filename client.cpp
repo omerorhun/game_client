@@ -193,15 +193,15 @@ void start_manuel_mode(int sockfd) {
             // send "fb login" request
             mlog.log_debug("sending login with facebook request...");
             
-            //https://www.facebook.com/connect/login_success.html#access_token=EAAJQZBZANTOG0BADrCDQRh9B8A6SB6ar6lzQrXjnPZBzztrNkcu47M8zuWKmjf711eHj3F6ZCHxc6UkKhZBgwK0NZBy1E2XZCC8oKPVNrtttOIrlCZBhFyulZBSEMSVLvSJmSBUDVTsAfJgV9rzCEZBR1pz0BBN9zqgZAjOyujl9ZBa0XGLgENJrZCZCUGZBS2PiIfpUige6fiRb5rNzC9xoIwtVcaK&data_access_expiration_time=1595504625&expires_in=4574
-	        //https://www.facebook.com/connect/login_success.html#access_token=EAAJQZBZANTOG0BAFy5bvRcZAc8kcMbtWGnjTZA26xAVXHhKIrI8ZAUXIfdSJJWMRdg88m7F1LkoPDxkDYmyK9ptLS28Ac4pgiilCCyrMZBDqp3OkyADbJkdXOoxwhUlCXCFonr2fJM3m6XpNeAugLyjZA5UoiJNIymzwd7LhXZCrZA4daQSuY0IgMJiR2vhZC5oJMZD&data_access_expiration_time=1595467648&expires_in=5552
+            //https://www.facebook.com/connect/login_success.html#access_token=EAAJQZBZANTOG0BAJw2U2ZCHSOVCZCpCgE6mzyMdGu8GBLq88FS0xTh5MZAKZBOC1GuUO2LdI06B9eJcd5SN0mM1U7aD0N9eQfb0oXLhgKRbZCpZBURHKcqyLu8dR1XRW86QLXr9AChY7VHazVcpZCMv1pbQLeOU0xXpw7CJ7vWAS2HUZBTw6wg13Csq77KCXChmZCUd3HcMcW9YRruRTrsbLpcq&data_access_expiration_time=1595555049&expires_in=4551
+	        //https://www.facebook.com/connect/login_success.html#access_token=EAAJQZBZANTOG0BAOgCtumrhDcOuHVdRcAyT9oq5FRZAiFeIvTtyNBNbeCNcYixZAkb4J0fyeNHkfyVkMokwyZAIoQhbF0RYjKsYeiVofayDhPNa0feftAtqt23F0zpYAwxvSaNib34P5AhZBVJUkUKSHFuUAj8dFHsXzBWKUnaC0TZBiCsPeVGFl1Sye5NZBjlIZD&data_access_expiration_time=1595555066&expires_in=4534
             
             // ali veli's access token
             string ali_token =
-	    "EAAJQZBZANTOG0BADrCDQRh9B8A6SB6ar6lzQrXjnPZBzztrNkcu47M8zuWKmjf711eHj3F6ZCHxc6UkKhZBgwK0NZBy1E2XZCC8oKPVNrtttOIrlCZBhFyulZBSEMSVLvSJmSBUDVTsAfJgV9rzCEZBR1pz0BBN9zqgZAjOyujl9ZBa0XGLgENJrZCZCUGZBS2PiIfpUige6fiRb5rNzC9xoIwtVcaK";
+	    "EAAJQZBZANTOG0BAJw2U2ZCHSOVCZCpCgE6mzyMdGu8GBLq88FS0xTh5MZAKZBOC1GuUO2LdI06B9eJcd5SN0mM1U7aD0N9eQfb0oXLhgKRbZCpZBURHKcqyLu8dR1XRW86QLXr9AChY7VHazVcpZCMv1pbQLeOU0xXpw7CJ7vWAS2HUZBTw6wg13Csq77KCXChmZCUd3HcMcW9YRruRTrsbLpcq";
             // ömer's access token
             
-            string omer_token = "EAAJQZBZANTOG0BAFy5bvRcZAc8kcMbtWGnjTZA26xAVXHhKIrI8ZAUXIfdSJJWMRdg88m7F1LkoPDxkDYmyK9ptLS28Ac4pgiilCCyrMZBDqp3OkyADbJkdXOoxwhUlCXCFonr2fJM3m6XpNeAugLyjZA5UoiJNIymzwd7LhXZCrZA4daQSuY0IgMJiR2vhZC5oJMZD";
+            string omer_token = "EAAJQZBZANTOG0BAOgCtumrhDcOuHVdRcAyT9oq5FRZAiFeIvTtyNBNbeCNcYixZAkb4J0fyeNHkfyVkMokwyZAIoQhbF0RYjKsYeiVofayDhPNa0feftAtqt23F0zpYAwxvSaNib34P5AhZBVJUkUKSHFuUAj8dFHsXzBWKUnaC0TZBiCsPeVGFl1Sye5NZBjlIZD";
             string access_token;
             if (input == 5)
                 access_token = omer_token;
