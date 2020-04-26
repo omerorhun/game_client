@@ -41,6 +41,7 @@ class Requests {
   ~Requests();
   
   bool get_response(time_t timeout);
+  bool get_response(std::string buff);
   ErrorCodes check_request();
   ErrorCodes interpret_response(RequestCodes req_code, std::string indata);
   void send_response();
@@ -48,6 +49,7 @@ class Requests {
   void prepare_error_packet(ErrorCodes err);
   RequestCodes get_next_requets();
   void set_next_requets(RequestCodes req_code);
+  int get_socket();
   
   void clear_out_packet();
   void clear_in_packet();
@@ -56,7 +58,7 @@ class Requests {
   Protocol _in_packet;
   Protocol _out_packet;
   
-  int socket;
+  int _socket;
   RequestCodes req_code;
   RequestCodes _next_request;
   

@@ -11,18 +11,18 @@
 #include <unistd.h>
 #include <netdb.h>
 
-#include <ev.h>
-
 #include <pthread.h>
 
 #include "Requests.h"
 #include "debug.h"
 #include "json.hpp"
 
+#include <queue>
+#include <mutex>
+
 #define CONTINOUS_CONN 1
 
 #define HOST_ADDR "0.0.0.0"
-//#define HOST_ADDR "134.122.89.177"
 #define HOST_PORT 1903
 #define BUFFER_SIZE 4096
 #define HOST_ADDR_SIZE 64
@@ -30,6 +30,7 @@ using namespace std;
 
 void *listener(void *arg);
 void *listen_for_notifications(void *arg);
+void *recv_response(void *arg);
 void print_usage();
 void print_client_status(sockaddr_in client);
 bool get_args(int argc, char **argv, char *hostaddr, char **ipaddr, uint16_t *port);
@@ -37,14 +38,11 @@ void start_manuel_mode(int sockfd);
 void start_bot(int sockfd);
 FILE *generate_log_file();
 
-void *start_loop(void *arg);
-void read_callback(struct ev_loop *loop, ev_io *watcher, int revents);
-
+queue<string> responses;
+mutex g_responses_mtx;
 string g_token = "";
-
 string g_fbToken = "";
 Dlogger mlog;
-
 bool gb_is_active = false;
 
 int main (int argc, char **argv) {
@@ -78,7 +76,7 @@ int main (int argc, char **argv) {
     
     print_client_status((sockaddr_in)server_addr);
     print_usage();
-
+    
     int sockfd = socket(AF_INET, SOCK_STREAM, 0);
     int ret = connect(sockfd, (const sockaddr *)&server_addr, sizeof(server_addr));
     if (ret == -1) {
@@ -99,20 +97,15 @@ int main (int argc, char **argv) {
 }
 
 void start_bot(int sockfd) {
-    pthread_t listen_thread;
+    pthread_t listen_thread, response_thread;
     Requests request(sockfd);
+    
+    pthread_create(&listen_thread, NULL, listen_for_notifications, (void *)&sockfd);
+    pthread_create(&response_thread, NULL, recv_response, (void *)&request);
+    
     request.set_next_requets(REQ_FB_LOGIN);
     
-    struct ev_loop *loop;
-    loop = ev_loop_new(0);
-    ev_io watcher;
-    ev_io_init(&watcher, read_callback , sockfd, EV_READ);
-    ev_io_start(loop, &watcher);
-    watcher.data = (void *)&request;
-    
     gb_is_active = true;
-    //pthread_create(&listen_thread, NULL, listen_for_notifications, (void *)&request);
-    pthread_create(&listen_thread, NULL, start_loop, (void *)loop);
     
     while (1) {
         RequestCodes req = request.get_next_requets();
@@ -158,30 +151,19 @@ void start_bot(int sockfd) {
             break;
     }
     
-    ev_io_stop(loop, &watcher);
-    ev_loop_destroy(loop);
+    gb_is_active = false;
     
     close(sockfd);
 }
 
 void start_manuel_mode(int sockfd) {
-    pthread_t listen_thread;
-    bool by_pass = false;
-    Requests req(sockfd);
+    pthread_t listen_thread, responses_thread;
+    Requests request(sockfd);
     
-    struct ev_loop *loop;
-    loop = ev_loop_new(0);
-    ev_io watcher;
-    ev_io_init(&watcher, read_callback , sockfd, EV_READ);
-    ev_io_start(loop, &watcher);
-    watcher.data = (void *)&req;
+    pthread_create(&listen_thread, NULL, listen_for_notifications, (void *)&sockfd);
+    pthread_create(&responses_thread, NULL, recv_response, (void *)&request);
     
     gb_is_active = true;
-    //pthread_create(&listen_thread, NULL, listen_for_notifications, (void *)&request);
-    pthread_create(&listen_thread, NULL, start_loop, (void *)loop);
-    
-    // pthread_create(&listen_thread, NULL, listen_for_notifications, (void *)&req);
-    // by_pass = true;
     
     while (1) {
         int input = 2;
@@ -189,128 +171,159 @@ void start_manuel_mode(int sockfd) {
         
         while (scanf("%d", &input) != 1);
         
+        request.clear_out_packet();
+        
         if (input == 1 || input == 5) {
             // send "fb login" request
             mlog.log_debug("sending login with facebook request...");
             
-            //https://www.facebook.com/connect/login_success.html#access_token=EAAJQZBZANTOG0BAJw2U2ZCHSOVCZCpCgE6mzyMdGu8GBLq88FS0xTh5MZAKZBOC1GuUO2LdI06B9eJcd5SN0mM1U7aD0N9eQfb0oXLhgKRbZCpZBURHKcqyLu8dR1XRW86QLXr9AChY7VHazVcpZCMv1pbQLeOU0xXpw7CJ7vWAS2HUZBTw6wg13Csq77KCXChmZCUd3HcMcW9YRruRTrsbLpcq&data_access_expiration_time=1595555049&expires_in=4551
-	        //https://www.facebook.com/connect/login_success.html#access_token=EAAJQZBZANTOG0BAOgCtumrhDcOuHVdRcAyT9oq5FRZAiFeIvTtyNBNbeCNcYixZAkb4J0fyeNHkfyVkMokwyZAIoQhbF0RYjKsYeiVofayDhPNa0feftAtqt23F0zpYAwxvSaNib34P5AhZBVJUkUKSHFuUAj8dFHsXzBWKUnaC0TZBiCsPeVGFl1Sye5NZBjlIZD&data_access_expiration_time=1595555066&expires_in=4534
+            //https://www.facebook.com/connect/login_success.html#access_token=EAAJQZBZANTOG0BALH86zsbaIhWdd5GVwiKLwgO0l4un3cc0apXZCCrE7frW2LF7bCSd9ZCZA336rgZBZAyfcW6XxtcRZCVY0v9qZA828FTQroHVenf6YpVsoAMqph8MHqP2wcOSYlWMVef2u444xhj55mc7ZCeybRVpe4TEo3CPMrUxLEakw1ri1ECKN6NWhLmBYuT8oBL2e386r5YCgUJXfDC&data_access_expiration_time=1595642692&expires_in=6908
+	        //https://www.facebook.com/connect/login_success.html#access_token=EAAJQZBZANTOG0BAAw8yGDIqwfZCMxRTcL3f39YCBratTnil4JZB21zvsptmpHGneY3HPfQLzP9ZAZAvuXNlfXPOtFGAZCNSXBhHtXgCYxclDyjRF4tnn7h7ZAWcXWIj996EFAlaKyspH75ioQ3EnLPAyYfJ6oZBY0mJUYZCZC46eXjDjCjEkrbidzYf1fU8lkNcGb8ZD&data_access_expiration_time=1595642713&expires_in=6887
             
             // ali veli's access token
             string ali_token =
-	    "EAAJQZBZANTOG0BAJw2U2ZCHSOVCZCpCgE6mzyMdGu8GBLq88FS0xTh5MZAKZBOC1GuUO2LdI06B9eJcd5SN0mM1U7aD0N9eQfb0oXLhgKRbZCpZBURHKcqyLu8dR1XRW86QLXr9AChY7VHazVcpZCMv1pbQLeOU0xXpw7CJ7vWAS2HUZBTw6wg13Csq77KCXChmZCUd3HcMcW9YRruRTrsbLpcq";
+	    "EAAJQZBZANTOG0BALH86zsbaIhWdd5GVwiKLwgO0l4un3cc0apXZCCrE7frW2LF7bCSd9ZCZA336rgZBZAyfcW6XxtcRZCVY0v9qZA828FTQroHVenf6YpVsoAMqph8MHqP2wcOSYlWMVef2u444xhj55mc7ZCeybRVpe4TEo3CPMrUxLEakw1ri1ECKN6NWhLmBYuT8oBL2e386r5YCgUJXfDC";
             // ömer's access token
             
-            string omer_token = "EAAJQZBZANTOG0BAOgCtumrhDcOuHVdRcAyT9oq5FRZAiFeIvTtyNBNbeCNcYixZAkb4J0fyeNHkfyVkMokwyZAIoQhbF0RYjKsYeiVofayDhPNa0feftAtqt23F0zpYAwxvSaNib34P5AhZBVJUkUKSHFuUAj8dFHsXzBWKUnaC0TZBiCsPeVGFl1Sye5NZBjlIZD";
+            string omer_token = "EAAJQZBZANTOG0BAAw8yGDIqwfZCMxRTcL3f39YCBratTnil4JZB21zvsptmpHGneY3HPfQLzP9ZAZAvuXNlfXPOtFGAZCNSXBhHtXgCYxclDyjRF4tnn7h7ZAWcXWIj996EFAlaKyspH75ioQ3EnLPAyYfJ6oZBY0mJUYZCZC46eXjDjCjEkrbidzYf1fU8lkNcGb8ZD";
             string access_token;
             if (input == 5)
                 access_token = omer_token;
             else
                 access_token = ali_token;
             
-            Requests request(sockfd);
             request.send_request(REQ_FB_LOGIN, access_token);
         }
         else if (input == 2) {
             // send "get online users" request
             mlog.log_debug("sending get online users request...");
-            
-            Requests request(sockfd);
             request.send_request(REQ_GET_ONLINE_USERS, "");
         }
         else if (input == 3) {
             // send logout request
             mlog.log_debug("sending logout request...");
-            
-            Requests request(sockfd);
             request.send_request(REQ_LOGOUT, "");
         }
         else if (input == 4) {
             // send match request
             mlog.log_debug("sending match request...");
-            
-            Requests request(sockfd);
             request.send_request(REQ_MATCH, "");
         }
         else if (input == 6) {
             // accept game
-            
-            Requests request(sockfd);
             request.send_request(REQ_GAME_START, "");
         }
         else if (input == 7) {
             // reject game
-            Requests request(sockfd);
             request.send_request(REQ_CANCEL_MATCH, "");
         }
         else if (input == 8) {
             // send game answer request
-            Requests request(sockfd);
             string data;
             nlohmann::json answer_json;
             answer_json["answer"] = "a";
             data = answer_json.dump();
             request.send_request(REQ_GAME_ANSWER, data);
-            //by_pass = true;
         }
         else if (input == 9) {
             // send resign request
-            Requests request(sockfd);
             request.send_request(REQ_GAME_RESIGN, "");
         }
         else if (input == 10) {
             // send game finish request
-            Requests request(sockfd);
             // for now, dont send results
             request.send_request(REQ_GAME_FINISH, "");
         }
         else {
+            gb_is_active = false;
             close(sockfd);
             return;
         }
-        
-        // if (!by_pass) {
-        //     Requests response(sockfd);
-        //     response.get_response(20);
-        // }
     }
     
 }
 
+void *recv_response(void *arg) {
+    Requests *response = (Requests*)arg;
+    
+    while(1) {
+        if (responses.size()) {
+            string next_response = responses.front();
+            
+            g_responses_mtx.lock();
+            responses.pop();
+            g_responses_mtx.unlock();
+            
+            if (!response->get_response(next_response))
+                break;
+        }
+    }
+    
+    gb_is_active = false;
+}
+
 void *listen_for_notifications(void *arg) {
-    Requests *response = (Requests *)arg;
+    int sockfd = *((int *)arg);
+    char rx_buffer[RX_BUFFER_SIZE];
+    uint16_t rx_len = 0;
+    uint16_t expected = RX_BUFFER_SIZE; // set expected size to max
+    bool ignore = true;
+    
+    memset(rx_buffer, 0, RX_BUFFER_SIZE);
     
     gb_is_active = true;
     
     mlog.log_debug("listening for notifications...");
     while (1) {
-        response->clear_in_packet();
-        if (!response->get_response(40)) {
-            mlog.log_error("RECEIVE ERROR");
+        if (!gb_is_active)
+            break;
+        
+        char ch;
+        if (recv(sockfd, &ch, 1, 0) == -1) {
+            gb_is_active = false;
             break;
         }
+        
+        // connection closed by server
+        if ((ch == NULL) && (rx_len == 0)) {
+            gb_is_active = false;
+            break;
+        }
+        
+        if (ch == REQUEST_HEADER) {
+            // start to store data
+            ignore = false;
+        }
+        
+        // if data is useless, ignore
+        if (ignore) {
+            mlog.log_warn("ignore: 0x%02x ", ch);
+            continue;
+        }
+        
+        // add byte to the buffer
+        rx_buffer[rx_len++] = ch;
+        
+        // if 3 bytes received, then get the length of the request
+        if (rx_len == 3) {
+            expected = GET_LENGTH(rx_buffer) + 5;
+        }
+        
+        if (rx_len == expected) {
+            ignore = true;
+            
+            // transmit the request to the interpreter
+            g_responses_mtx.lock();
+            responses.push(string((char *)rx_buffer, rx_len));
+            g_responses_mtx.unlock();
+            
+            memset(rx_buffer, 0, RX_BUFFER_SIZE);
+            rx_len = 0;
+            
+            // set expected size to max, until a real packet received
+            expected = RX_BUFFER_SIZE;
+        }
     }
-    
-    gb_is_active = false;
-    
-    return NULL;
-}
-
-void read_callback(struct ev_loop *loop, ev_io *watcher, int revents) {
-    Requests *request = (Requests *)watcher->data;
-    
-    if (!request->get_response(20)) {
-        mlog.log_error("RECEIVE ERROR!");
-        gb_is_active = false;
-    }
-}
-
-void *start_loop(void *arg) {
-    struct ev_loop *loop = (struct ev_loop *)arg;
-    
-    gb_is_active = true;
-    
-    ev_run(loop, 0);
 }
 
 bool get_args(int argc, char **argv, char *hostaddr, char **ipaddr, uint16_t *port) {

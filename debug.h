@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <string>
+#include <mutex>
 
 #define LOG_VERSION "0.1.0"
 #define LOG_USE_COLOR
@@ -49,7 +50,7 @@ class Dlogger {
     FILE *_fp;
     int _level;
     int _quiet;
-    
+    std::mutex _hex_mtx;
     
     static const char *level_names[];
 

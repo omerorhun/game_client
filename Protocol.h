@@ -63,6 +63,7 @@ class Protocol {
   
   void send_packet(int sock);
   bool receive_packet(int sock, time_t timeout);
+  bool receive_packet(std::string buffer);
   
   void free_buffer();
   void clear();

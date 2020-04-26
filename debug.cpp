@@ -112,7 +112,7 @@ void Dlogger::log_log(int level, const char *file, int line, const char *fmt, ..
   }
 
   /* Acquire lock */
-  //lock();
+  _hex_mtx.lock();
 
   /* Get current time */
   time_t t = time(NULL);
@@ -151,7 +151,7 @@ void Dlogger::log_log(int level, const char *file, int line, const char *fmt, ..
   }
 
   /* Release lock */
-  //unlock();
+  _hex_mtx.unlock();
 }
 
 void Dlogger::log_dhex(int level, const char *header, char *buffer, uint16_t len, const char *file, int line) {

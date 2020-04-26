@@ -1,3 +1,4 @@
 *.log*
 *.o
-logs/2020-04-16/client_12-31-53.log-1
+client
+*.json

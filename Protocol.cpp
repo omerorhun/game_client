@@ -18,7 +18,7 @@ using namespace std;
 Protocol::Protocol() {
     _length = 0;
     _data_length = 0;
-    _buffer = NULL;
+    _buffer = (uint8_t *)malloc(sizeof(uint8_t));
     _state = PKT_ST_EMPTY;
 }
 
@@ -43,6 +43,27 @@ Protocol::~Protocol() {
         free(_buffer);
         _buffer = NULL;
     }   
+}
+
+bool Protocol::receive_packet(string buff) {
+    if (buff.empty())
+        return false;
+    
+    uint8_t *temp = (uint8_t *)realloc(_buffer, sizeof(uint8_t) * buff.size());
+    if (temp == NULL)
+        return false;
+    
+    _buffer = temp;
+    memcpy(_buffer, buff.c_str(), buff.size());
+    
+    // get length;
+    _data_length = GET_LENGTH(_buffer);
+    _length = _data_length + 5; // 1(header) + 2(length) + 2(crc)
+    
+    const char header[] = "rx packet";
+    mlog.log_hex(header, (char *)_buffer, _length);
+    
+    return true;
 }
 
 // TODO: add error codes
@@ -117,7 +138,7 @@ void Protocol::clear() {
     free_buffer();
     _length = 0;
     _data_length = 0;
-    _buffer = NULL;
+    _buffer = (uint8_t *)malloc(sizeof(uint8_t));
     _state = PKT_ST_EMPTY;
 }
 
@@ -131,12 +152,11 @@ void Protocol::send_packet(int sock) {
 }
 
 bool Protocol::set_header(uint8_t header) {
-    if (_buffer != NULL)
+    uint8_t *temp = (uint8_t *)realloc(_buffer, sizeof(uint8_t) * 4); // 5: hdr+len+code
+    if (temp == NULL)
         return false;
     
-    _buffer = (uint8_t *)malloc(sizeof(uint8_t) * 4); // 5: hdr+len+code
-    if (_buffer == NULL)
-        return false;
+    _buffer = temp;
     
     memset(_buffer, 0, _length);
     _buffer[PKT_HEADER] = header;
@@ -145,19 +165,6 @@ bool Protocol::set_header(uint8_t header) {
     
     return true;
 }
-
-#if 0
-bool Protocol::set_ack(uint8_t ack) {
-    if (_buffer == NULL)
-        return false;
-    
-    _buffer[PKT_ACK] = ack;
-    _data_length++;
-    _length++;
-    
-    return true;
-}
-#endif
 
 uint8_t Protocol::get_request_code() {
     return _buffer[PKT_REQUEST_CODE];
@@ -192,6 +199,7 @@ bool Protocol::add_data(string data) {
         return false;
     
     _buffer = tmp;
+    
     uint8_t *ptr = &_buffer[_length];
     
     // set zero new allocated memory
@@ -202,9 +210,6 @@ bool Protocol::add_data(string data) {
     memccpy((char *)ptr, data.c_str(), sizeof(char), data.size());
     _length += data.size();
     _data_length += data.size();
-    mlog.log_debug("add data size: %d", (int)data.size());
-    mlog.log_debug("_data_lenght: %d", _data_length);
-    mlog.log_debug("_length: %d", _length);
     
     return true;
 }
@@ -218,15 +223,13 @@ bool Protocol::add_data(uint8_t *data, uint16_t len) {
         return false;
     
     _buffer = tmp;
+    
     for (uint16_t i = 0; i < len; i++) {
         _buffer[_length + i] = data[i];
     }
+    
     _data_length += len;
     _length += len;
-    
-    mlog.log_debug("add data size: %d", len);
-    mlog.log_debug("_data_lenght: %d", _data_length);
-    mlog.log_debug("_length: %d", _length);
 }
 
 bool Protocol::set_crc() {
@@ -240,6 +243,7 @@ bool Protocol::set_crc() {
     return false;
 
     _buffer = tmp;
+    
     uint8_t *ptr = &_buffer[_length];
 
     // set zero new allocated memory

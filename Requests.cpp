@@ -20,7 +20,7 @@ using namespace std;
 extern string g_token;
 
 Requests::Requests(int sock) {
-    socket = sock;
+    _socket = sock;
 }
 
 Requests::~Requests() {
@@ -35,11 +35,46 @@ void Requests::send_request(RequestCodes code, string data) {
     add_data(data);
     _out_packet.set_crc();
     
-    _out_packet.send_packet(socket);
+    _out_packet.send_packet(_socket);
 }
 
 void Requests::send_response() {
-    _out_packet.send_packet(socket);
+    _out_packet.send_packet(_socket);
+}
+
+int Requests::get_socket() {
+    return _socket;
+}
+
+bool Requests::get_response(string buff) {
+    string indata = "";
+    RequestCodes req_code;
+    ErrorCodes err;
+    
+    if (!_in_packet.receive_packet(buff)) {
+        cerr << "ERROR RECEIVE PACKET" << endl;
+        close(_socket);
+        return false;
+    }
+    
+    if (!_in_packet.check_crc()) {
+        mlog.log_error("crc error");
+        close(_socket);
+        return false;
+    }
+    
+    req_code = (RequestCodes)_in_packet.get_request_code();
+    indata = _in_packet.get_data();
+    
+    _in_packet.free_buffer(); // i wont use receiving buffer anymore, free.
+    
+    err = interpret_response(req_code, indata);
+    if (err != ERR_SUCCESS) {
+        cerr << "ERROR INTERPRET: " << err << endl;
+        return false;
+    }
+    
+    return true;
 }
 
 bool Requests::get_response(time_t timeout) {
@@ -47,15 +82,15 @@ bool Requests::get_response(time_t timeout) {
     RequestCodes req_code;
     ErrorCodes err;
     
-    if (!_in_packet.receive_packet(socket, timeout)) {
+    if (!_in_packet.receive_packet(_socket, timeout)) {
         cerr << "ERROR RECEIVE PACKET" << endl;
-        close(socket);
+        close(_socket);
         return false;
     }
     
     if (!_in_packet.check_crc()) {
         mlog.log_error("crc error");
-        close(socket);
+        close(_socket);
         return false;
     }
     
@@ -93,7 +128,6 @@ ErrorCodes Requests::interpret_response(RequestCodes req_code, string indata) {
     
     mlog.log_debug("Request code: %d", req_code);
     
-    _out_packet.set_header(REQUEST_HEADER);
     if (req_code == REQ_FB_LOGIN) {
         g_token = indata;
         mlog.log_debug("g_token: %s", g_token.c_str());
@@ -224,6 +258,7 @@ void Requests::set_next_requets(RequestCodes req_code) {
 }
 
 void Requests::clear_out_packet() {
+    mlog.log_debug("clear out packet");
     _out_packet.clear();
 }
 
