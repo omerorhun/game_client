@@ -8,6 +8,7 @@
 #include "utilities.h"
 #include "json.hpp"
 #include "debug.h"
+#include "globals.h"
 
 // socket
 #include <sys/types.h>
@@ -16,8 +17,6 @@
 #include <unistd.h>
 
 using namespace std;
-
-extern string g_token;
 
 Requests::Requests(int sock) {
     _socket = sock;
@@ -31,7 +30,7 @@ void Requests::send_request(RequestCodes code, string data) {
     set_header(REQUEST_HEADER);
     set_request_code(code);
     if (code != REQ_FB_LOGIN)
-        add_data(g_token);
+        add_data(g_user_info.token);
     add_data(data);
     _out_packet.set_crc();
     
@@ -129,8 +128,8 @@ ErrorCodes Requests::interpret_response(RequestCodes req_code, string indata) {
     mlog.log_debug("Request code: %d", req_code);
     
     if (req_code == REQ_FB_LOGIN) {
-        g_token = indata;
-        mlog.log_debug("g_token: %s", g_token.c_str());
+        g_user_info.token = indata;
+        mlog.log_debug("token: %s", g_user_info.token.c_str());
         
         _next_request = REQ_MATCH;
     }
@@ -146,10 +145,10 @@ ErrorCodes Requests::interpret_response(RequestCodes req_code, string indata) {
         }
     }
     else if(req_code == REQ_MATCH) {
-        nlohmann::json user_json;
+        nlohmann::json match_response_json;
         
         if (nlohmann::json::accept(indata)) {
-            user_json = nlohmann::json::parse(indata);
+            match_response_json = nlohmann::json::parse(indata);
         }
         else {
             mlog.log_debug("send match requests' ack received");
@@ -157,8 +156,9 @@ ErrorCodes Requests::interpret_response(RequestCodes req_code, string indata) {
         }
         
         // print opponent data
-        string username = user_json["name"];
-        uint64_t op_uid = user_json["id"];
+        string username = match_response_json["name"];
+        uint64_t op_uid = match_response_json["id"];
+        g_user_info.current_game_id = match_response_json["game_id"];
         mlog.log_debug("matched with %s [%d]", username.c_str(), op_uid);
         
         _next_request = REQ_GAME_START;
