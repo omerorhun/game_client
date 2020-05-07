@@ -3,6 +3,7 @@
 #include <string.h>
 
 #include "Requests.h"
+#include "GameClient.h"
 #include "Jwt.h"
 #include "Protocol.h"
 #include "utilities.h"
@@ -17,6 +18,8 @@
 #include <unistd.h>
 
 using namespace std;
+
+const std::string jwt_key = "bjk1903";
 
 Requests::Requests(int sock) {
     _socket = sock;
@@ -33,7 +36,6 @@ void Requests::send_request(RequestCodes code, string data) {
         add_data(g_user_info.token);
     add_data(data);
     _out_packet.set_crc();
-    
     _out_packet.send_packet(_socket);
 }
 
@@ -128,8 +130,16 @@ ErrorCodes Requests::interpret_response(RequestCodes req_code, string indata) {
     mlog.log_debug("Request code: %d", req_code);
     
     if (req_code == REQ_FB_LOGIN) {
+        // save jwt token
         g_user_info.token = indata;
+        
         mlog.log_debug("token: %s", g_user_info.token.c_str());
+        
+        // parse jwt token for uid
+        Jwt jtoken = Jwt(indata, jwt_key);
+        
+        // get and save uid
+        g_user_info.uid = jtoken.get_uid();
         
         _next_request = REQ_MATCH;
     }
@@ -140,7 +150,7 @@ ErrorCodes Requests::interpret_response(RequestCodes req_code, string indata) {
             char *cpy = (char *)indata.c_str();
             mlog.log_hex("cpy", cpy, 10);
             uint64_t uid = GET_64(cpy + i*8 + 2);
-                
+            
             mlog.log_debug("id: %lu", uid);
         }
     }
@@ -158,14 +168,22 @@ ErrorCodes Requests::interpret_response(RequestCodes req_code, string indata) {
         // print opponent data
         string username = match_response_json["name"];
         uint64_t op_uid = match_response_json["id"];
-        g_user_info.current_game_id = match_response_json["game_id"];
+        int game_id = match_response_json["game_id"];
         mlog.log_debug("matched with %s [%d]", username.c_str(), op_uid);
+        
+        GameClient *game = GameClient::get_instance();
+        
+        game->set_uid(1, g_user_info.uid);
+        game->set_uid(0, op_uid);
+        game->set_game_id(game_id);
         
         _next_request = REQ_GAME_START;
     }
     else if (req_code == REQ_CANCEL_MATCH) {
         // receive ack
         mlog.log_debug("match cancelled");
+        // TODO: something
+        
     }
     else if (req_code == REQ_GAME_START) {
         mlog.log_debug("game start ack");
@@ -173,6 +191,10 @@ ErrorCodes Requests::interpret_response(RequestCodes req_code, string indata) {
     else if (req_code == REQ_GAME_ACCEPTED) {
         mlog.log_debug("game started");
         g_question_no = 0;
+        GameClient *game = GameClient::get_instance();
+        nlohmann::json questions = nlohmann::json::parse(indata);
+        
+        game->set_questions(questions);
         
         _next_request = REQ_GAME_ANSWER;
     }
@@ -184,6 +206,17 @@ ErrorCodes Requests::interpret_response(RequestCodes req_code, string indata) {
         // receive opponent answer
         mlog.log_debug("opponent answer received");
         mlog.log_debug("%s", indata.c_str());
+        
+        nlohmann::json op_answer_json = nlohmann::json::parse(indata);
+        string op_answer = op_answer_json["answer"];
+        
+        GameClient *game = GameClient::get_instance();
+        if (game->check_answer(game->get_op_uid(), op_answer)) {
+            mlog.log_info("opponent's answer is right");
+        }
+        else {
+            mlog.log_info("opponent's answer is wrong");
+        }
     }
     else if (req_code == REQ_GAME_QUESTION_COMPLETED) {
         // count questions
@@ -191,14 +224,14 @@ ErrorCodes Requests::interpret_response(RequestCodes req_code, string indata) {
         
         mlog.log_debug("next question %d\n", g_question_no);
         
-        if (g_question_no == 5) {
+        GameClient *game = GameClient::get_instance();
+        if (game->finish_question()) {
             // if last question, send finish game request
             _next_request = REQ_GAME_FINISH;
         }
         else {
             _next_request = REQ_GAME_ANSWER;
         }
-        
     }
     else if (req_code == REQ_GAME_OPPONENT_RESIGNED) {
         

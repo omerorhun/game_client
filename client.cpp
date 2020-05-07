@@ -14,6 +14,7 @@
 #include <pthread.h>
 
 #include "Requests.h"
+#include "GameClient.h"
 #include "debug.h"
 #include "json.hpp"
 #include "globals.h"
@@ -46,6 +47,7 @@ bool gb_is_active = false;
 UserInformation g_user_info;
 
 int main (int argc, char **argv) {
+    srand(time(NULL));
     g_user_info.current_game_id = 0;
     g_user_info.token = "";
     //int sockfd = socket(AF_INET, SOCK_STREAM, 0);
@@ -128,7 +130,7 @@ void start_bot(int sockfd) {
             mlog.log_debug("sending start game request");
             
             nlohmann::json json_data;
-            json_data["game_id"] = g_user_info.current_game_id;
+            json_data["game_id"] = GameClient::get_instance()->get_game_id();
             json_data["category"] = (uint8_t)1;
             
             request.send_request(REQ_GAME_START, json_data.dump());
@@ -136,13 +138,21 @@ void start_bot(int sockfd) {
         }
         else if (req == REQ_GAME_ANSWER) {
             mlog.log_debug("sending game answer request");
+            GameClient *game = GameClient::get_instance();
             
             nlohmann::json json_data;
             
             char answer[2]  = {0,0};
             answer[0] = 'a' + (char)(rand()%4);
             json_data["answer"] = answer;
-            json_data["game_id"] = g_user_info.current_game_id;
+            json_data["game_id"] = game->get_game_id();
+            
+            if (game->check_answer(game->get_my_uid(), string(answer))) {
+                mlog.log_info("your answer is right");
+            }
+            else {
+                mlog.log_info("your answer is wrong");
+            }
             
             request.send_request(REQ_GAME_ANSWER, json_data.dump());
             request.set_next_requets(REQ_IDLE);
@@ -150,12 +160,35 @@ void start_bot(int sockfd) {
         else if (req == REQ_GAME_FINISH) {
             mlog.log_debug("sending game finish request");
             
+            GameClient *game = GameClient::get_instance();
+            uint8_t category = 1;
+            
             nlohmann::json json_data;
-            json_data["game_id"] = g_user_info.current_game_id;
+            json_data["game_id"] = game->get_game_id();
+            nlohmann::json results;
+            results["winner"] = game->get_winner();
+            
+            nlohmann::json users;
+            for (int i = 0; i < 2; i++) {
+                GameUser me = game->get_results(i);
+                
+                nlohmann::json user;
+                user["uid"] = me.uid;
+                for (int j = 0; j < 3; j++) {
+                    nlohmann::json tour;
+                    tour["category"] = me.tour_result[j].category;
+                    tour["right"] = me.tour_result[j].right;
+                    tour["wrong"] = me.tour_result[j].wrong;
+                    
+                    user["tours"].push_back(tour);
+                }
+                users.push_back(user);
+            }
+            
+            results["users"] = users;
+            json_data["results"] = results;
             
             request.send_request(REQ_GAME_FINISH, json_data.dump());
-            
-            g_user_info.current_game_id = 0;
             break;
         }
         else if (req == REQ_IDLE) {
@@ -192,15 +225,14 @@ void start_manuel_mode(int sockfd) {
             // send "fb login" request
             mlog.log_debug("sending login with facebook request...");
             
-            //https://www.facebook.com/connect/login_success.html#access_token=EAAJQZBZANTOG0BAH3kvwa8r98HuGd4fiosGDxEXl5wCWwZClkQ8RH3mEEZC1BxEWNeqEBzpgeKgQOZCjI9UOhLaltB5xB6r4Ho8SZB6JRcIYH1WAW9O8jCE2V9f7xKmRWmOTCEpRX3JUFxURSjk5T93sC21EZBCgZBmCkViYst4iIfZBX3ZAASYBZBxXCSn4GUHeNwzOdkP3Gqzqhd4y6FlEgeP&data_access_expiration_time=1596162555&expires_in=5445
-	        //https://www.facebook.com/connect/login_success.html#access_token=EAAJQZBZANTOG0BAJrhx9Ua3ImzGOvqZB7ib4Udx6TENwWsAB2lLq3hE1C48ZAbOPDgDZBTyqZBq62u5YZB6OZAEtsWEEWUo7KZB9GpWz523ZCrld8rQ7cj749BvRZAgntx8Dk38BhgYqj4KGGdpZAlZBOug8okZBb9P2NwNNb1pHg0wTOuv8QJxh9VOzkYetGpM5fL2MYZD&data_access_expiration_time=1596162567&expires_in=5432
+	        //https://www.facebook.com/connect/login_success.html#access_token=EAAJQZBZANTOG0BAP9fJwPigbbSZClF6JLnRsaAenKzBDW9hcvzZAZAnKmBf7Tw3FlYHLgmAB8m41ZCRaBMVCT0ZBwbodm8716DaVd0X9qXLKZA9foWNpfrm91OEWJxwnXk0wHdnjZC1ggZBjZCn1jaRGfSl7H3HuNHHDlGm9SD1s216Gfe9lgrTJpCdVI4AKMseiGrCjeKiZAVGd4fp3mob5ZBOEW&data_access_expiration_time=1596516926&expires_in=3873
+            //https://www.facebook.com/connect/login_success.html#access_token=EAAJQZBZANTOG0BABZCVG9wTj2bXEHn1oOf7uxxdpPoBlSZA0hrkEX4lvf6ixCOABEn7pebvVztnAuc82lsAA2AF3Vn0T1ZC2AXASsJtqZBtIliZBFzZCNWGXXr2ka9ZAaWgObwZAV6md3tCZBlMA6ZC6KIGfIVWFfNW3bVg50aYVB3YVAk6KMyIZBKZCYgWf2yxDAYRAYZD&data_access_expiration_time=1596516940&expires_in=3860
             
             // ali veli's access token
             string ali_token =
-	    "EAAJQZBZANTOG0BAH3kvwa8r98HuGd4fiosGDxEXl5wCWwZClkQ8RH3mEEZC1BxEWNeqEBzpgeKgQOZCjI9UOhLaltB5xB6r4Ho8SZB6JRcIYH1WAW9O8jCE2V9f7xKmRWmOTCEpRX3JUFxURSjk5T93sC21EZBCgZBmCkViYst4iIfZBX3ZAASYBZBxXCSn4GUHeNwzOdkP3Gqzqhd4y6FlEgeP";
+	    "EAAJQZBZANTOG0BAP9fJwPigbbSZClF6JLnRsaAenKzBDW9hcvzZAZAnKmBf7Tw3FlYHLgmAB8m41ZCRaBMVCT0ZBwbodm8716DaVd0X9qXLKZA9foWNpfrm91OEWJxwnXk0wHdnjZC1ggZBjZCn1jaRGfSl7H3HuNHHDlGm9SD1s216Gfe9lgrTJpCdVI4AKMseiGrCjeKiZAVGd4fp3mob5ZBOEW";
             // ömer's access token
-            
-            string omer_token = "EAAJQZBZANTOG0BAJrhx9Ua3ImzGOvqZB7ib4Udx6TENwWsAB2lLq3hE1C48ZAbOPDgDZBTyqZBq62u5YZB6OZAEtsWEEWUo7KZB9GpWz523ZCrld8rQ7cj749BvRZAgntx8Dk38BhgYqj4KGGdpZAlZBOug8okZBb9P2NwNNb1pHg0wTOuv8QJxh9VOzkYetGpM5fL2MYZD";
+            string omer_token = "EAAJQZBZANTOG0BABZCVG9wTj2bXEHn1oOf7uxxdpPoBlSZA0hrkEX4lvf6ixCOABEn7pebvVztnAuc82lsAA2AF3Vn0T1ZC2AXASsJtqZBtIliZBFzZCNWGXXr2ka9ZAaWgObwZAV6md3tCZBlMA6ZC6KIGfIVWFfNW3bVg50aYVB3YVAk6KMyIZBKZCYgWf2yxDAYRAYZD";
             string access_token;
             if (input == 5)
                 access_token = omer_token;
@@ -230,7 +262,7 @@ void start_manuel_mode(int sockfd) {
             mlog.log_debug("sending game start request...");
             
             nlohmann::json json_data;
-            json_data["game_id"] = g_user_info.current_game_id;
+            json_data["game_id"] = GameClient::get_instance()->get_game_id();
             json_data["category"] = (uint8_t)1;
             
             request.send_request(REQ_GAME_START, json_data.dump());
@@ -240,19 +272,27 @@ void start_manuel_mode(int sockfd) {
             mlog.log_debug("sending cancel match request...");
             
             nlohmann::json json_data;
-            json_data["game_id"] = g_user_info.current_game_id;
+            json_data["game_id"] = GameClient::get_instance()->get_game_id();
             
             request.send_request(REQ_CANCEL_MATCH, json_data.dump());
         }
         else if (input == 8) {
             // send game answer request
             mlog.log_debug("sending game answer request...");
-            
+            GameClient *game = GameClient::get_instance();
             nlohmann::json json_data;
+            
             char answer[2]  = {0,0};
             answer[0] = 'a' + (char)(rand()%4);
             json_data["answer"] = answer;
-            json_data["game_id"] = g_user_info.current_game_id;
+            json_data["game_id"] = game->get_game_id();
+            
+            if (game->check_answer(game->get_my_uid(), string(answer))) {
+                mlog.log_info("your answer is right");
+            }
+            else {
+                mlog.log_info("your answer is wrong");
+            }
             
             request.send_request(REQ_GAME_ANSWER, json_data.dump());
         }
@@ -261,18 +301,41 @@ void start_manuel_mode(int sockfd) {
             mlog.log_debug("sending game resign request...");
             
             nlohmann::json json_data;
-            json_data["game_id"] = g_user_info.current_game_id;
+            json_data["game_id"] = GameClient::get_instance()->get_game_id();
             
             request.send_request(REQ_GAME_RESIGN, json_data.dump());
         }
         else if (input == 10) {
             // send game finish request
             mlog.log_debug("sending cancel match request...");
+            GameClient *game = GameClient::get_instance();
+            uint8_t category = 1;
             
             nlohmann::json json_data;
-            json_data["game_id"] = g_user_info.current_game_id;
+            json_data["game_id"] = game->get_game_id();
+            nlohmann::json results;
+            results["winner"] = game->get_winner();
             
-            // for now, dont send results
+            nlohmann::json users;
+            for (int i = 0; i < 2; i++) {
+                GameUser me = game->get_results(i);
+                
+                nlohmann::json user;
+                user["uid"] = me.uid;
+                for (int j = 0; j < 3; j++) {
+                    nlohmann::json tour;
+                    tour["category"] = me.tour_result[j].category;
+                    tour["right"] = me.tour_result[j].right;
+                    tour["wrong"] = me.tour_result[j].wrong;
+                    
+                    user["tours"].push_back(tour);
+                }
+                users.push_back(user);
+            }
+            
+            results["users"] = users;
+            json_data["results"] = results;
+            
             request.send_request(REQ_GAME_FINISH, json_data.dump());
         }
         else {
@@ -280,6 +343,9 @@ void start_manuel_mode(int sockfd) {
             close(sockfd);
             return;
         }
+        
+        if (!gb_is_active)
+            break;
     }
     
 }
@@ -319,7 +385,7 @@ void *listen_for_notifications(void *arg) {
         if (!gb_is_active)
             break;
         
-        char ch;
+        char ch = 0;
         if (recv(sockfd, &ch, 1, 0) == -1) {
             gb_is_active = false;
             break;
@@ -327,12 +393,14 @@ void *listen_for_notifications(void *arg) {
         
         // connection closed by server
         if ((ch == 0) && (rx_len == 0)) {
+            mlog.log_debug("connection closed by peer");
             gb_is_active = false;
             break;
         }
         
         if (ch == REQUEST_HEADER) {
             // start to store data
+            mlog.log_debug("header received");
             ignore = false;
         }
         
