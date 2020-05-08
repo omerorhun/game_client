@@ -133,6 +133,9 @@ void start_bot(int sockfd) {
             json_data["game_id"] = GameClient::get_instance()->get_game_id();
             json_data["category"] = (uint8_t)1;
             
+            
+            useconds_t answer_delay = 1000*1000;
+            usleep(answer_delay);
             request.send_request(REQ_GAME_START, json_data.dump());
             request.set_next_requets(REQ_IDLE);
         }
@@ -154,6 +157,8 @@ void start_bot(int sockfd) {
                 mlog.log_info("your answer is wrong");
             }
             
+            useconds_t answer_delay = 1000*1000;
+            usleep(answer_delay);
             request.send_request(REQ_GAME_ANSWER, json_data.dump());
             request.set_next_requets(REQ_IDLE);
         }
@@ -188,6 +193,8 @@ void start_bot(int sockfd) {
             results["users"] = users;
             json_data["results"] = results;
             
+            useconds_t answer_delay = 1000*1000;
+            usleep(answer_delay);
             request.send_request(REQ_GAME_FINISH, json_data.dump());
             break;
         }
@@ -225,14 +232,14 @@ void start_manuel_mode(int sockfd) {
             // send "fb login" request
             mlog.log_debug("sending login with facebook request...");
             
-	        //https://www.facebook.com/connect/login_success.html#access_token=EAAJQZBZANTOG0BAP9fJwPigbbSZClF6JLnRsaAenKzBDW9hcvzZAZAnKmBf7Tw3FlYHLgmAB8m41ZCRaBMVCT0ZBwbodm8716DaVd0X9qXLKZA9foWNpfrm91OEWJxwnXk0wHdnjZC1ggZBjZCn1jaRGfSl7H3HuNHHDlGm9SD1s216Gfe9lgrTJpCdVI4AKMseiGrCjeKiZAVGd4fp3mob5ZBOEW&data_access_expiration_time=1596516926&expires_in=3873
-            //https://www.facebook.com/connect/login_success.html#access_token=EAAJQZBZANTOG0BABZCVG9wTj2bXEHn1oOf7uxxdpPoBlSZA0hrkEX4lvf6ixCOABEn7pebvVztnAuc82lsAA2AF3Vn0T1ZC2AXASsJtqZBtIliZBFzZCNWGXXr2ka9ZAaWgObwZAV6md3tCZBlMA6ZC6KIGfIVWFfNW3bVg50aYVB3YVAk6KMyIZBKZCYgWf2yxDAYRAYZD&data_access_expiration_time=1596516940&expires_in=3860
+	        //https://www.facebook.com/connect/login_success.html#access_token=EAAJQZBZANTOG0BAHFanKkdeWByg5UweRwvFM32sS4ZCXpbCtvh4Un8mGvi2C6rS88ZCeM3ZC8uQHvMyFP1y4g5tlXzHvE2dHPXttULcaCWeCOqLIk38U1DfvyLOJtWaGI6iRRWj17H0Bt4JhndQQwcqS7knBsCrvf8EXJgCaZBjfJB0R5VDTOrlciMj5Br68hGvjTfAoXsaKZCHu0hS21rc&data_access_expiration_time=1596690182&expires_in=7018
+            //https://www.facebook.com/connect/login_success.html#access_token=EAAJQZBZANTOG0BALDbLhxI0U2NYnCyxjE30few0bR9P5Vbq0CEieUA0hzMaATgAWRLPUbixVy86cEnjziLFO8kaGALJpOkrIpy3pAbGFq4weZAOn9JgpgDy6YA7bMAAsW1ISPkXVRA6WTwvu4ejvQtoSYQwSluaFWSKTFWcuC0EUfZCD92wFW72NyATzGFMZD&data_access_expiration_time=1596690200&expires_in=7000
             
             // ali veli's access token
             string ali_token =
-	    "EAAJQZBZANTOG0BAP9fJwPigbbSZClF6JLnRsaAenKzBDW9hcvzZAZAnKmBf7Tw3FlYHLgmAB8m41ZCRaBMVCT0ZBwbodm8716DaVd0X9qXLKZA9foWNpfrm91OEWJxwnXk0wHdnjZC1ggZBjZCn1jaRGfSl7H3HuNHHDlGm9SD1s216Gfe9lgrTJpCdVI4AKMseiGrCjeKiZAVGd4fp3mob5ZBOEW";
+	    "EAAJQZBZANTOG0BAHFanKkdeWByg5UweRwvFM32sS4ZCXpbCtvh4Un8mGvi2C6rS88ZCeM3ZC8uQHvMyFP1y4g5tlXzHvE2dHPXttULcaCWeCOqLIk38U1DfvyLOJtWaGI6iRRWj17H0Bt4JhndQQwcqS7knBsCrvf8EXJgCaZBjfJB0R5VDTOrlciMj5Br68hGvjTfAoXsaKZCHu0hS21rc";
             // ömer's access token
-            string omer_token = "EAAJQZBZANTOG0BABZCVG9wTj2bXEHn1oOf7uxxdpPoBlSZA0hrkEX4lvf6ixCOABEn7pebvVztnAuc82lsAA2AF3Vn0T1ZC2AXASsJtqZBtIliZBFzZCNWGXXr2ka9ZAaWgObwZAV6md3tCZBlMA6ZC6KIGfIVWFfNW3bVg50aYVB3YVAk6KMyIZBKZCYgWf2yxDAYRAYZD";
+            string omer_token = "EAAJQZBZANTOG0BALDbLhxI0U2NYnCyxjE30few0bR9P5Vbq0CEieUA0hzMaATgAWRLPUbixVy86cEnjziLFO8kaGALJpOkrIpy3pAbGFq4weZAOn9JgpgDy6YA7bMAAsW1ISPkXVRA6WTwvu4ejvQtoSYQwSluaFWSKTFWcuC0EUfZCD92wFW72NyATzGFMZD";
             string access_token;
             if (input == 5)
                 access_token = omer_token;
@@ -307,7 +314,7 @@ void start_manuel_mode(int sockfd) {
         }
         else if (input == 10) {
             // send game finish request
-            mlog.log_debug("sending cancel match request...");
+            mlog.log_debug("sending game finish request...");
             GameClient *game = GameClient::get_instance();
             uint8_t category = 1;
             
