@@ -23,12 +23,16 @@
 #include <mutex>
 
 #define CONTINOUS_CONN 1
-
+#define CLIENT_ANSWER_DELAY_US (2000*1000)
 #define HOST_ADDR "0.0.0.0"
 #define HOST_PORT 1903
 #define BUFFER_SIZE 4096
 #define HOST_ADDR_SIZE 64
+
+
 using namespace std;
+
+
 
 void *listener(void *arg);
 void *listen_for_notifications(void *arg);
@@ -134,7 +138,7 @@ void start_bot(int sockfd) {
             json_data["category"] = (uint8_t)1;
             
             
-            useconds_t answer_delay = 1000*1000;
+            useconds_t answer_delay = CLIENT_ANSWER_DELAY_US;
             usleep(answer_delay);
             request.send_request(REQ_GAME_START, json_data.dump());
             request.set_next_requets(REQ_IDLE);
@@ -157,7 +161,7 @@ void start_bot(int sockfd) {
                 mlog.log_info("your answer is wrong");
             }
             
-            useconds_t answer_delay = 1000*1000;
+            useconds_t answer_delay = CLIENT_ANSWER_DELAY_US;
             usleep(answer_delay);
             request.send_request(REQ_GAME_ANSWER, json_data.dump());
             request.set_next_requets(REQ_IDLE);
@@ -193,7 +197,7 @@ void start_bot(int sockfd) {
             results["users"] = users;
             json_data["results"] = results;
             
-            useconds_t answer_delay = 1000*1000;
+            useconds_t answer_delay = CLIENT_ANSWER_DELAY_US;
             usleep(answer_delay);
             request.send_request(REQ_GAME_FINISH, json_data.dump());
             break;
