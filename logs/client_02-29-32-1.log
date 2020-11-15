@@ -1,0 +1,1228 @@
+2020-05-10 02:29:32 INFO  client.cpp:  70: new client started
+2020-05-10 02:29:32 DEBUG client.cpp:  77: host: 0.0.0.0
+2020-05-10 02:29:32 DEBUG client.cpp:  78: port: 1903
+2020-05-10 02:29:32 INFO  client.cpp: 564: 0.0.0.0 connected to 1903
+2020-05-10 02:29:32 INFO  client.cpp: 498: 1: send 'fb login' request
+2020-05-10 02:29:32 INFO  client.cpp: 499: 2: send 'get online clients' request
+2020-05-10 02:29:32 INFO  client.cpp: 500: 3: send 'logout' request
+2020-05-10 02:29:32 INFO  client.cpp: 501: 4: send 'match' request
+2020-05-10 02:29:32 INFO  client.cpp: 502: 5: send 'login as ömer' request
+2020-05-10 02:29:32 INFO  client.cpp: 503: 6: send 'accept game' request
+2020-05-10 02:29:32 INFO  client.cpp: 504: 7: send 'reject game' request
+2020-05-10 02:29:32 INFO  client.cpp: 505: 8: send 'game answer' request
+2020-05-10 02:29:32 INFO  client.cpp: 506: 9: send 'resign' request
+2020-05-10 02:29:32 INFO  client.cpp: 507: 10: send 'game finish' request
+2020-05-10 02:29:32 INFO  client.cpp: 100: bot mode
+2020-05-10 02:29:32 DEBUG client.cpp: 394: listening for notifications...
+2020-05-10 02:29:32 DEBUG Requests.cpp: 294: clear out packet
+2020-05-10 02:29:32 DEBUG client.cpp: 124: sending facebook login request
+2020-05-10 02:29:32 DEBUG Protocol.cpp: 150: [tx packet]: (206)
+---------------------------------------------------
+             00 10 20 30 40 50 60 70 80 90 A0 B0 C0 D0 E0 F0
+             -----------------------------------------------
+0x00000000 | 01 c9 00 01 45 41 41 4a 51 5a 42 5a 41 4e 54 4f ....EAAJQZBZANTO
+0x00000010 | 47 30 42 41 4a 66 39 58 4d 53 59 5a 41 74 63 5a G0BAJf9XMSYZAtcZ
+0x00000020 | 43 7a 46 5a 42 4c 7a 70 66 78 4d 65 35 43 55 59 CzFZBLzpfxMe5CUY
+0x00000030 | 49 38 6b 71 30 4d 4b 78 49 6d 7a 57 42 52 41 77 I8kq0MKxImzWBRAw
+0x00000040 | 38 34 4a 49 33 45 58 66 67 5a 41 56 5a 43 57 72 84JI3EXfgZAVZCWr
+0x00000050 | 66 56 4c 66 61 69 70 6b 61 50 35 34 4e 45 66 6a fVLfaipkaP54NEfj
+0x00000060 | 32 41 30 54 74 46 4d 7a 73 50 71 41 73 54 66 47 2A0TtFMzsPqAsTfG
+0x00000070 | 37 70 6d 53 72 4b 66 66 50 50 70 4f 76 44 69 50 7pmSrKffPPpOvDiP
+0x00000080 | 63 51 5a 42 32 6b 51 37 6c 6a 68 31 35 32 52 6a cQZB2kQ7ljh152Rj
+0x00000090 | 62 44 49 71 50 42 78 48 42 46 6c 7a 54 76 50 6d bDIqPBxHBFlzTvPm
+0x000000a0 | 4d 70 74 78 4f 4b 47 38 76 38 62 4b 48 6b 4b 5a MptxOKG8v8bKHkKZ
+0x000000b0 | 43 4f 31 37 36 68 6d 56 76 39 71 69 70 72 59 31 CO176hmVv9qiprY1
+0x000000c0 | 35 73 68 33 64 30 64 5a 42 73 5a 44 4a 55 00 00 15sh3d0dZBsZDJ..
+
+2020-05-10 02:29:33 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:33 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:33 DEBUG Protocol.cpp:  64: [rx packet]: (140)
+---------------------------------------------------
+             00 10 20 30 40 50 60 70 80 90 A0 B0 C0 D0 E0 F0
+             -----------------------------------------------
+0x00000000 | 01 87 00 01 65 79 4a 68 62 47 63 69 4f 69 4a 49 ....eyJhbGciOiJI
+0x00000010 | 55 7a 49 31 4e 69 49 73 49 6e 52 35 63 43 49 36 UzI1NiIsInR5cCI6
+0x00000020 | 49 6b 70 58 56 43 4a 39 2e 65 79 4a 6c 65 48 42 IkpXVCJ9.eyJleHB
+0x00000030 | 70 63 6d 55 69 4f 6a 45 31 4f 44 6b 77 4e 6a 59 pcmUiOjE1ODkwNjY
+0x00000040 | 35 4e 7a 4d 73 49 6d 6c 6b 49 6a 6f 69 4d 44 41 5NzMsImlkIjoiMDA
+0x00000050 | 78 4d 44 41 77 4d 44 41 77 4d 53 4a 39 2e 43 52 xMDAwMDAwMSJ9.CR
+0x00000060 | 4c 76 2b 5a 34 43 2f 66 55 46 66 49 57 58 35 53 Lv+Z4C/fUFfIWX5S
+0x00000070 | 58 34 6f 73 66 72 4a 32 36 32 64 34 6b 51 79 32 X4osfrJ262d4kQy2
+0x00000080 | 77 68 74 71 7a 43 36 78 6b 3d 43 98 00 00 00 00 2whtqzC6xk=C....
+
+2020-05-10 02:29:33 DEBUG Requests.cpp: 130: Request code: 1
+2020-05-10 02:29:33 DEBUG Requests.cpp: 136: token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHBpcmUiOjE1ODkwNjY5NzMsImlkIjoiMDAxMDAwMDAwMSJ9.CRLv+Z4C/fUFfIWX5SX4osfrJ262d4kQy2whtqzC6xk=
+2020-05-10 02:29:33 DEBUG Requests.cpp: 294: clear out packet
+2020-05-10 02:29:33 DEBUG client.cpp: 129: sending match request
+2020-05-10 02:29:33 DEBUG Protocol.cpp: 150: [tx packet]: (140)
+---------------------------------------------------
+             00 10 20 30 40 50 60 70 80 90 A0 B0 C0 D0 E0 F0
+             -----------------------------------------------
+0x00000000 | 01 87 00 04 65 79 4a 68 62 47 63 69 4f 69 4a 49 ....eyJhbGciOiJI
+0x00000010 | 55 7a 49 31 4e 69 49 73 49 6e 52 35 63 43 49 36 UzI1NiIsInR5cCI6
+0x00000020 | 49 6b 70 58 56 43 4a 39 2e 65 79 4a 6c 65 48 42 IkpXVCJ9.eyJleHB
+0x00000030 | 70 63 6d 55 69 4f 6a 45 31 4f 44 6b 77 4e 6a 59 pcmUiOjE1ODkwNjY
+0x00000040 | 35 4e 7a 4d 73 49 6d 6c 6b 49 6a 6f 69 4d 44 41 5NzMsImlkIjoiMDA
+0x00000050 | 78 4d 44 41 77 4d 44 41 77 4d 53 4a 39 2e 43 52 xMDAwMDAwMSJ9.CR
+0x00000060 | 4c 76 2b 5a 34 43 2f 66 55 46 66 49 57 58 35 53 Lv+Z4C/fUFfIWX5S
+0x00000070 | 58 34 6f 73 66 72 4a 32 36 32 64 34 6b 51 79 32 X4osfrJ262d4kQy2
+0x00000080 | 77 68 74 71 7a 43 36 78 6b 3d 79 f4 00 00 00 00 2whtqzC6xk=y....
+
+2020-05-10 02:29:33 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:33 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:33 DEBUG Protocol.cpp:  64: [rx packet]: (7)
+---------------------------------------------------
+             00 10 20 30 40 50 60 70 80 90 A0 B0 C0 D0 E0 F0
+             -----------------------------------------------
+0x00000000 | 01 02 00 04 01 c3 00 00 00 00 00 00 00 00 00 00 .........
+
+2020-05-10 02:29:33 DEBUG Requests.cpp: 130: Request code: 4
+2020-05-10 02:29:33 DEBUG Requests.cpp: 164: send match requests' ack received
+2020-05-10 02:29:33 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:33 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:33 DEBUG Protocol.cpp:  64: [rx packet]: (338)
+---------------------------------------------------
+             00 10 20 30 40 50 60 70 80 90 A0 B0 C0 D0 E0 F0
+             -----------------------------------------------
+0x00000000 | 01 4d 01 04 7b 22 66 62 5f 69 64 22 3a 31 30 39 .M..{"fb_id":109
+0x00000010 | 37 31 33 38 30 37 33 30 31 37 30 34 2c 22 67 61 713807301704,"ga
+0x00000020 | 6d 65 5f 69 64 22 3a 35 2c 22 69 64 22 3a 31 30 me_id":5,"id":10
+0x00000030 | 30 30 30 30 30 30 2c 22 6e 61 6d 65 22 3a 22 41 000000,"name":"A
+0x00000040 | 6c 69 20 56 65 6c 69 22 2c 22 75 72 6c 22 3a 22 li Veli","url":"
+0x00000050 | 68 74 74 70 73 3a 2f 2f 73 63 6f 6e 74 65 6e 74 https://scontent
+0x00000060 | 2e 66 69 73 74 37 2d 32 2e 66 6e 61 2e 66 62 63 .fist7-2.fna.fbc
+0x00000070 | 64 6e 2e 6e 65 74 2f 76 2f 74 31 2e 33 30 34 39 dn.net/v/t1.3049
+0x00000080 | 37 2d 31 2f 63 70 30 2f 63 31 35 2e 30 2e 35 30 7-1/cp0/c15.0.50
+0x00000090 | 2e 35 30 61 2f 70 35 30 78 35 30 2f 38 34 36 32 .50a/p50x50/8462
+0x000000a0 | 38 32 37 33 5f 31 37 36 31 35 39 38 33 30 32 37 8273_17615983027
+0x000000b0 | 37 38 35 36 5f 39 37 32 36 39 33 33 36 33 39 32 7856_97269336392
+0x000000c0 | 32 38 32 39 33 31 32 5f 6e 2e 6a 70 67 3f 5f 6e 2829312_n.jpg?_n
+0x000000d0 | 63 5f 63 61 74 3d 31 26 5f 6e 63 5f 73 69 64 3d c_cat=1&_nc_sid=
+0x000000e0 | 66 37 32 34 38 39 26 5f 6e 63 5f 6f 68 63 3d 6f f72489&_nc_ohc=o
+0x000000f0 | 56 4b 46 65 43 76 52 62 57 59 41 58 39 53 55 77 VKFeCvRbWYAX9SUw
+0x00000100 | 66 5f 26 5f 6e 63 5f 68 74 3d 73 63 6f 6e 74 65 f_&_nc_ht=sconte
+0x00000110 | 6e 74 2e 66 69 73 74 37 2d 32 2e 66 6e 61 26 6f nt.fist7-2.fna&o
+0x00000120 | 68 3d 66 36 34 32 37 37 39 38 30 34 62 38 32 34 h=f642779804b824
+0x00000130 | 66 62 64 61 65 63 34 31 33 31 62 64 39 64 38 36 fbdaec4131bd9d86
+0x00000140 | 33 62 26 6f 65 3d 35 45 43 33 36 30 33 38 22 7d 3b&oe=5EC36038"}
+0x00000150 | a8 0b 00 00 00 00 00 00 00 00 00 00 00 00 00 00 }...............
+
+2020-05-10 02:29:33 DEBUG Requests.cpp: 130: Request code: 4
+2020-05-10 02:29:33 DEBUG Requests.cpp: 172: matched with Ali Veli [10000000]
+2020-05-10 02:29:33 DEBUG Requests.cpp: 294: clear out packet
+2020-05-10 02:29:33 DEBUG client.cpp: 134: sending start game request
+2020-05-10 02:29:33 DEBUG Protocol.cpp: 150: [tx packet]: (166)
+---------------------------------------------------
+             00 10 20 30 40 50 60 70 80 90 A0 B0 C0 D0 E0 F0
+             -----------------------------------------------
+0x00000000 | 01 a1 00 09 65 79 4a 68 62 47 63 69 4f 69 4a 49 ....eyJhbGciOiJI
+0x00000010 | 55 7a 49 31 4e 69 49 73 49 6e 52 35 63 43 49 36 UzI1NiIsInR5cCI6
+0x00000020 | 49 6b 70 58 56 43 4a 39 2e 65 79 4a 6c 65 48 42 IkpXVCJ9.eyJleHB
+0x00000030 | 70 63 6d 55 69 4f 6a 45 31 4f 44 6b 77 4e 6a 59 pcmUiOjE1ODkwNjY
+0x00000040 | 35 4e 7a 4d 73 49 6d 6c 6b 49 6a 6f 69 4d 44 41 5NzMsImlkIjoiMDA
+0x00000050 | 78 4d 44 41 77 4d 44 41 77 4d 53 4a 39 2e 43 52 xMDAwMDAwMSJ9.CR
+0x00000060 | 4c 76 2b 5a 34 43 2f 66 55 46 66 49 57 58 35 53 Lv+Z4C/fUFfIWX5S
+0x00000070 | 58 34 6f 73 66 72 4a 32 36 32 64 34 6b 51 79 32 X4osfrJ262d4kQy2
+0x00000080 | 77 68 74 71 7a 43 36 78 6b 3d 7b 22 63 61 74 65 whtqzC6xk={"cate
+0x00000090 | 67 6f 72 79 22 3a 31 2c 22 67 61 6d 65 5f 69 64 gory":1,"game_id
+0x000000a0 | 22 3a 35 7d 4a d9 00 00 00 00 00 00 00 00 00 00 d":5}J..........
+
+2020-05-10 02:29:33 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:33 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:33 DEBUG Protocol.cpp:  64: [rx packet]: (7)
+---------------------------------------------------
+             00 10 20 30 40 50 60 70 80 90 A0 B0 C0 D0 E0 F0
+             -----------------------------------------------
+0x00000000 | 01 02 00 09 01 c7 90 00 00 00 00 00 00 00 00 00 .........
+
+2020-05-10 02:29:33 DEBUG Requests.cpp: 130: Request code: 9
+2020-05-10 02:29:33 DEBUG Requests.cpp: 189: game start ack
+2020-05-10 02:29:33 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:33 DEBUG Protocol.cpp:  64: [rx packet]: (3733)
+---------------------------------------------------
+             00 10 20 30 40 50 60 70 80 90 A0 B0 C0 D0 E0 F0
+             -----------------------------------------------
+0x00000000 | 01 90 0e 0a 7b 22 74 6f 75 72 73 22 3a 5b 7b 22 ....{"tours":[{"
+0x00000010 | 63 61 74 65 67 6f 72 79 22 3a 31 2c 22 71 75 65 category":1,"que
+0x00000020 | 73 74 69 6f 6e 73 22 3a 5b 7b 22 61 22 3a 22 4b stions":[{"a":"K
+0x00000030 | 79 6c 69 61 6e 20 4d 62 61 70 70 65 22 2c 22 61 ylian Mbappe","a
+0x00000040 | 6e 73 77 65 72 22 3a 22 64 22 2c 22 62 22 3a 22 nswer":"d","b":"
+0x00000050 | 50 61 75 6c 20 50 6f 67 62 61 22 2c 22 63 22 3a Paul Pogba","c":
+0x00000060 | 22 41 6e 74 6f 69 6e 65 20 47 72 69 65 7a 6d 61 "Antoine Griezma
+0x00000070 | 6e 6e 22 2c 22 64 22 3a 22 53 61 6d 75 65 6c 20 nn","d":"Samuel 
+0x00000080 | 55 6d 74 69 74 69 22 2c 22 71 75 65 73 74 69 6f Umtiti","questio
+0x00000090 | 6e 22 3a 22 32 30 31 38 20 44 c3 bc 6e 79 61 20 n":"2018 D..nya 
+0x000000a0 | 4b 75 70 61 73 c4 b1 27 6e c4 b1 20 6b 61 7a 61 Kupas..'n.. kaza
+0x000000b0 | 6e 61 6e 20 46 72 61 6e 73 61 2c 20 79 61 72 c4 nan Fransa, yar.
+0x000000c0 | b1 20 66 69 6e 61 6c 64 65 6b 69 20 72 61 6b 69 . finaldeki raki
+0x000000d0 | 62 69 20 42 65 6c c3 a7 69 6b 61 27 79 c4 b1 20 bi Bel..ika'y.. 
+0x000000e0 | 74 65 6b 20 67 6f 6c 6c 65 20 67 65 c3 a7 6d 69 tek golle ge..mi
+0x000000f0 | c5 9f 74 69 2e 20 4f 20 67 6f 6c 20 6b 69 6d 65 ..ti. O gol kime
+0x00000100 | 20 61 69 74 74 69 3f 22 7d 2c 7b 22 61 22 3a 22  aitti?"},{"a":"
+0x00000110 | 4a 75 76 65 6e 74 75 73 22 2c 22 61 6e 73 77 65 Juventus","answe
+0x00000120 | 72 22 3a 22 61 22 2c 22 62 22 3a 22 4c 69 76 65 r":"a","b":"Live
+0x00000130 | 72 70 6f 6f 6c 22 2c 22 63 22 3a 22 42 6f 72 75 rpool","c":"Boru
+0x00000140 | 73 73 69 61 20 44 6f 72 74 6d 75 6e 64 22 2c 22 ssia Dortmund","
+0x00000150 | 64 22 3a 22 50 61 72 69 73 20 53 61 69 6e 74 20 d":"Paris Saint 
+0x00000160 | 47 65 72 6d 61 69 6e 22 2c 22 71 75 65 73 74 69 Germain","questi
+0x00000170 | 6f 6e 22 3a 22 53 c3 bc 70 65 72 20 4c 69 67 27 on":"S..per Lig'
+0x00000180 | 65 20 74 72 61 6e 73 66 65 72 20 6f 6c 64 75 c4 e transfer oldu.
+0x00000190 | 9f 75 20 32 30 31 38 20 79 c4 b1 6c c4 b1 6e 64 .u 2018 y..l..nd
+0x000001a0 | 61 20 33 32 20 67 6f 6c 65 20 69 6d 7a 61 20 61 a 32 gole imza a
+0x000001b0 | 74 61 72 61 6b 20 68 61 72 69 6b 61 6c 61 72 20 tarak harikalar 
+0x000001c0 | 79 61 72 61 74 61 6e 20 4d 62 61 79 65 20 44 69 yaratan Mbaye Di
+0x000001d0 | 61 67 6e 65 2c 20 67 65 6e c3 a7 20 79 61 c5 9f agne, gen.. ya..
+0x000001e0 | 6c 61 72 c4 b1 6e 64 61 20 68 61 6e 67 69 20 64 lar..nda hangi d
+0x000001f0 | 65 76 20 6b 75 6c c3 bc 70 20 74 61 72 61 66 c4 ev kul..p taraf.
+0x00000200 | b1 6e 64 61 6e 20 74 72 61 6e 73 66 65 72 20 65 .ndan transfer e
+0x00000210 | 64 69 6c 6d 69 c5 9f 74 69 3f 22 7d 2c 7b 22 61 dilmi..ti?"},{"a
+0x00000220 | 22 3a 22 4a 61 6d 65 73 20 4d 61 64 64 69 73 6f ":"James Maddiso
+0x00000230 | 6e 22 2c 22 61 6e 73 77 65 72 22 3a 22 62 22 2c n","answer":"b",
+0x00000240 | 22 62 22 3a 22 44 61 76 69 64 20 42 72 6f 6f 6b "b":"David Brook
+0x00000250 | 73 22 2c 22 63 22 3a 22 47 65 72 61 72 64 20 44 s","c":"Gerard D
+0x00000260 | 65 75 6c 6f 66 65 75 22 2c 22 64 22 3a 22 52 79 eulofeu","d":"Ry
+0x00000270 | 61 6e 20 46 72 61 73 65 72 22 2c 22 71 75 65 73 an Fraser","ques
+0x00000280 | 74 69 6f 6e 22 3a 22 4d 61 6e 20 43 69 74 79 20 tion":"Man City 
+0x00000290 | 61 6c 74 20 79 61 70 c4 b1 73 c4 b1 6e 64 61 20 alt yap..s..nda 
+0x000002a0 | 79 65 74 69 c5 9f 65 6e 2c 20 62 75 20 73 65 7a yeti..en, bu sez
+0x000002b0 | 6f 6e 20 42 6f 75 72 6e 65 6d 6f 75 74 68 27 75 on Bournemouth'u
+0x000002c0 | 6e 20 73 61 c4 9f 20 6b 61 6e 61 64 c4 b1 6e 64 n sa.. kanad..nd
+0x000002d0 | 61 20 68 61 72 69 6b 61 6c 61 72 20 79 61 72 61 a harikalar yara
+0x000002e0 | 74 61 72 61 6b 20 64 65 76 20 6b 75 6c c3 bc 70 tarak dev kul..p
+0x000002f0 | 6c 65 72 69 6e 20 72 61 64 61 72 c4 b1 6e 61 20 lerin radar..na 
+0x00000300 | 67 69 72 65 6e 20 66 75 74 62 6f 6c 63 75 20 6b giren futbolcu k
+0x00000310 | 69 6d 64 69 72 3f 22 7d 2c 7b 22 61 22 3a 22 4c imdir?"},{"a":"L
+0x00000320 | 69 6f 6e 65 6c 20 4d 65 73 73 69 22 2c 22 61 6e ionel Messi","an
+0x00000330 | 73 77 65 72 22 3a 22 63 22 2c 22 62 22 3a 22 4b swer":"c","b":"K
+0x00000340 | 65 76 69 6e 20 44 65 20 42 72 75 79 6e 65 22 2c evin De Bruyne",
+0x00000350 | 22 63 22 3a 22 4c 75 69 73 20 53 75 61 72 65 7a "c":"Luis Suarez
+0x00000360 | 22 2c 22 64 22 3a 22 45 64 65 6e 20 48 61 7a 61 ","d":"Eden Haza
+0x00000370 | 72 64 22 2c 22 71 75 65 73 74 69 6f 6e 22 3a 22 rd","question":"
+0x00000380 | 4c 75 6b 61 20 4d 6f 64 72 69 63 27 69 6e 20 62 Luka Modric'in b
+0x00000390 | 69 72 69 6e 63 69 20 6f 6c 64 75 c4 9f 75 20 42 irinci oldu..u B
+0x000003a0 | 61 6c 6c 6f 6e 20 64 27 4f 72 20 73 c4 b1 72 61 allon d'Or s..ra
+0x000003b0 | 6c 61 6d 61 73 c4 b1 6e 64 61 20 68 61 6e 67 69 lamas..nda hangi
+0x000003c0 | 20 6f 79 75 6e 63 75 20 54 6f 70 20 31 30 20 64  oyuncu Top 10 d
+0x000003d0 | c4 b1 c5 9f c4 b1 6e 64 61 20 6b 61 6c 64 c4 b1 ......nda kald..
+0x000003e0 | 3f 22 7d 2c 7b 22 61 22 3a 22 4a 61 6d 65 73 20 ?"},{"a":"James 
+0x000003f0 | 4d 61 64 64 69 73 6f 6e 22 2c 22 61 6e 73 77 65 Maddison","answe
+0x00000400 | 72 22 3a 22 62 22 2c 22 62 22 3a 22 44 61 76 69 r":"b","b":"Davi
+0x00000410 | 64 20 42 72 6f 6f 6b 73 22 2c 22 63 22 3a 22 47 d Brooks","c":"G
+0x00000420 | 65 72 61 72 64 20 44 65 75 6c 6f 66 65 75 22 2c erard Deulofeu",
+0x00000430 | 22 64 22 3a 22 52 79 61 6e 20 46 72 61 73 65 72 "d":"Ryan Fraser
+0x00000440 | 22 2c 22 71 75 65 73 74 69 6f 6e 22 3a 22 4d 61 ","question":"Ma
+0x00000450 | 6e 20 43 69 74 79 20 61 6c 74 20 79 61 70 c4 b1 n City alt yap..
+0x00000460 | 73 c4 b1 6e 64 61 20 79 65 74 69 c5 9f 65 6e 2c s..nda yeti..en,
+0x00000470 | 20 62 75 20 73 65 7a 6f 6e 20 42 6f 75 72 6e 65  bu sezon Bourne
+0x00000480 | 6d 6f 75 74 68 27 75 6e 20 73 61 c4 9f 20 6b 61 mouth'un sa.. ka
+0x00000490 | 6e 61 64 c4 b1 6e 64 61 20 68 61 72 69 6b 61 6c nad..nda harikal
+0x000004a0 | 61 72 20 79 61 72 61 74 61 72 61 6b 20 64 65 76 ar yaratarak dev
+0x000004b0 | 20 6b 75 6c c3 bc 70 6c 65 72 69 6e 20 72 61 64  kul..plerin rad
+0x000004c0 | 61 72 c4 b1 6e 61 20 67 69 72 65 6e 20 66 75 74 ar..na giren fut
+0x000004d0 | 62 6f 6c 63 75 20 6b 69 6d 64 69 72 3f 22 7d 5d bolcu kimdir?"}]
+0x000004e0 | 7d 2c 7b 22 63 61 74 65 67 6f 72 79 22 3a 31 2c },{"category":1,
+0x000004f0 | 22 71 75 65 73 74 69 6f 6e 73 22 3a 5b 7b 22 61 "questions":[{"a
+0x00000500 | 22 3a 22 46 61 62 69 6f 20 51 75 61 67 6c 69 61 ":"Fabio Quaglia
+0x00000510 | 72 65 6c 6c 61 22 2c 22 61 6e 73 77 65 72 22 3a rella","answer":
+0x00000520 | 22 63 22 2c 22 62 22 3a 22 53 65 72 67 69 6f 20 "c","b":"Sergio 
+0x00000530 | 46 6c 6f 63 63 61 72 69 22 2c 22 63 22 3a 22 53 Floccari","c":"S
+0x00000540 | 65 72 67 69 6f 20 50 65 6c 69 73 73 69 65 72 22 ergio Pelissier"
+0x00000550 | 2c 22 64 22 3a 22 41 6e 64 72 65 61 20 43 61 72 ,"d":"Andrea Car
+0x00000560 | 61 63 63 69 6f 6c 6f 22 2c 22 71 75 65 73 74 69 acciolo","questi
+0x00000570 | 6f 6e 22 3a 22 32 30 31 39 27 64 61 20 34 30 20 on":"2019'da 40 
+0x00000580 | 79 61 c5 9f c4 b1 6e c4 b1 20 64 6f 6c 64 75 72 ya....n.. doldur
+0x00000590 | 61 63 61 6b 20 6f 6c 6d 61 73 c4 b1 6e 61 20 72 acak olmas..na r
+0x000005a0 | 61 c4 9f 6d 65 6e 2c 20 53 65 72 69 65 20 41 27 a..men, Serie A'
+0x000005b0 | 64 61 20 6c 69 67 69 6e 20 69 6c 6b 20 79 61 72 da ligin ilk yar
+0x000005c0 | c4 b1 73 c4 b1 6e 64 61 20 33 20 67 6f 6c 20 61 ..s..nda 3 gol a
+0x000005d0 | 74 61 6e 20 76 65 20 68 61 6c 61 20 61 6b 74 69 tan ve hala akti
+0x000005e0 | 66 20 66 75 74 62 6f 6c 20 68 61 79 61 74 c4 b1 f futbol hayat..
+0x000005f0 | 6e c4 b1 20 73 c3 bc 72 64 c3 bc 72 65 6e 20 79 n.. s..rd..ren y
+0x00000600 | 61 c5 9f 6c c4 b1 20 6b 75 72 74 20 6b 69 6d 64 a..l.. kurt kimd
+0x00000610 | 69 72 3f 22 7d 2c 7b 22 61 22 3a 22 52 69 79 61 ir?"},{"a":"Riya
+0x00000620 | 64 20 4d 61 68 72 65 7a 20 2d 3e 20 4d 61 6e 63 d Mahrez -> Manc
+0x00000630 | 68 65 73 74 65 72 20 43 69 74 79 22 2c 22 61 6e hester City","an
+0x00000640 | 73 77 65 72 22 3a 22 64 22 2c 22 62 22 3a 22 54 swer":"d","b":"T
+0x00000650 | 68 6f 6d 61 73 20 4c 65 6d 61 72 20 2d 3e 20 41 homas Lemar -> A
+0x00000660 | 74 6c 65 74 69 63 6f 20 4d 61 64 72 69 64 22 2c tletico Madrid",
+0x00000670 | 22 63 22 3a 22 41 6c 69 73 73 6f 6e 20 2d 3e 20 "c":"Alisson -> 
+0x00000680 | 4c 69 76 65 72 70 6f 6f 6c 22 2c 22 64 22 3a 22 Liverpool","d":"
+0x00000690 | 4b 65 70 61 20 2d 3e 20 43 68 65 6c 73 65 61 22 Kepa -> Chelsea"
+0x000006a0 | 2c 22 71 75 65 73 74 69 6f 6e 22 3a 22 32 30 31 ,"question":"201
+0x000006b0 | 38 2f 31 39 20 73 65 7a 6f 6e 75 6e 61 20 67 69 8/19 sezonuna gi
+0x000006c0 | 72 69 6c 69 72 6b 65 6e 20 27 65 6e 20 70 61 68 rilirken 'en pah
+0x000006d0 | 61 6c c4 b1 20 74 72 61 6e 73 66 65 72 27 20 6b al.. transfer' k
+0x000006e0 | 6f 6e 75 73 75 6e 64 61 20 43 72 69 73 74 69 61 onusunda Cristia
+0x000006f0 | 6e 6f 20 52 6f 6e 61 6c 64 6f 27 6e 75 6e 20 4a no Ronaldo'nun J
+0x00000700 | 75 76 65 6e 74 75 73 27 61 20 67 65 c3 a7 69 c5 uventus'a ge..i.
+0x00000710 | 9f 69 20 79 c4 b1 6c c4 b1 6e 20 72 65 6b 6f 72 .i y..l..n rekor
+0x00000720 | 75 79 64 75 2e 20 50 65 6b 69 2c 20 69 6b 69 6e uydu. Peki, ikin
+0x00000730 | 63 69 20 73 c4 b1 72 61 64 61 6b 69 20 70 61 68 ci s..radaki pah
+0x00000740 | 61 6c c4 b1 20 74 72 61 6e 73 66 65 72 20 68 61 al.. transfer ha
+0x00000750 | 6e 67 69 73 69 79 64 69 3f 22 7d 2c 7b 22 61 22 ngisiydi?"},{"a"
+0x00000760 | 3a 22 41 63 68 72 61 66 20 48 61 6b 69 6d 69 22 :"Achraf Hakimi"
+0x00000770 | 2c 22 61 6e 73 77 65 72 22 3a 22 62 22 2c 22 62 ,"answer":"b","b
+0x00000780 | 22 3a 22 44 61 6e 69 65 6c 20 41 72 7a 61 6e 69 ":"Daniel Arzani
+0x00000790 | 22 2c 22 63 22 3a 22 49 73 6d 61 69 6c 61 20 53 ","c":"Ismaila S
+0x000007a0 | 61 72 72 22 2c 22 64 22 3a 22 4a 75 6c 69 61 6e arr","d":"Julian
+0x000007b0 | 20 42 72 61 6e 64 74 22 2c 22 71 75 65 73 74 69  Brandt","questi
+0x000007c0 | 6f 6e 22 3a 22 32 30 31 38 20 44 c3 bc 6e 79 61 on":"2018 D..nya
+0x000007d0 | 20 4b 75 70 61 73 c4 b1 27 6e 64 61 20 66 6f 72  Kupas..'nda for
+0x000007e0 | 6d 61 20 67 69 79 65 6e 20 65 6e 20 67 65 6e c3 ma giyen en gen.
+0x000007f0 | a7 20 6f 79 75 6e 63 75 20 6b 69 6d 64 69 72 3f . oyuncu kimdir?
+0x00000800 | 22 7d 2c 7b 22 61 22 3a 22 41 63 68 72 61 66 20 "},{"a":"Achraf 
+0x00000810 | 48 61 6b 69 6d 69 22 2c 22 61 6e 73 77 65 72 22 Hakimi","answer"
+0x00000820 | 3a 22 62 22 2c 22 62 22 3a 22 44 61 6e 69 65 6c :"b","b":"Daniel
+0x00000830 | 20 41 72 7a 61 6e 69 22 2c 22 63 22 3a 22 49 73  Arzani","c":"Is
+0x00000840 | 6d 61 69 6c 61 20 53 61 72 72 22 2c 22 64 22 3a maila Sarr","d":
+0x00000850 | 22 4a 75 6c 69 61 6e 20 42 72 61 6e 64 74 22 2c "Julian Brandt",
+0x00000860 | 22 71 75 65 73 74 69 6f 6e 22 3a 22 32 30 31 38 "question":"2018
+0x00000870 | 20 44 c3 bc 6e 79 61 20 4b 75 70 61 73 c4 b1 27  D..nya Kupas..'
+0x00000880 | 6e 64 61 20 66 6f 72 6d 61 20 67 69 79 65 6e 20 nda forma giyen 
+0x00000890 | 65 6e 20 67 65 6e c3 a7 20 6f 79 75 6e 63 75 20 en gen.. oyuncu 
+0x000008a0 | 6b 69 6d 64 69 72 3f 22 7d 2c 7b 22 61 22 3a 22 kimdir?"},{"a":"
+0x000008b0 | 46 61 62 69 6f 20 51 75 61 67 6c 69 61 72 65 6c Fabio Quagliarel
+0x000008c0 | 6c 61 22 2c 22 61 6e 73 77 65 72 22 3a 22 63 22 la","answer":"c"
+0x000008d0 | 2c 22 62 22 3a 22 53 65 72 67 69 6f 20 46 6c 6f ,"b":"Sergio Flo
+0x000008e0 | 63 63 61 72 69 22 2c 22 63 22 3a 22 53 65 72 67 ccari","c":"Serg
+0x000008f0 | 69 6f 20 50 65 6c 69 73 73 69 65 72 22 2c 22 64 io Pelissier","d
+0x00000900 | 22 3a 22 41 6e 64 72 65 61 20 43 61 72 61 63 63 ":"Andrea Caracc
+0x00000910 | 69 6f 6c 6f 22 2c 22 71 75 65 73 74 69 6f 6e 22 iolo","question"
+0x00000920 | 3a 22 32 30 31 39 27 64 61 20 34 30 20 79 61 c5 :"2019'da 40 ya.
+0x00000930 | 9f c4 b1 6e c4 b1 20 64 6f 6c 64 75 72 61 63 61 ...n.. dolduraca
+0x00000940 | 6b 20 6f 6c 6d 61 73 c4 b1 6e 61 20 72 61 c4 9f k olmas..na ra..
+0x00000950 | 6d 65 6e 2c 20 53 65 72 69 65 20 41 27 64 61 20 men, Serie A'da 
+0x00000960 | 6c 69 67 69 6e 20 69 6c 6b 20 79 61 72 c4 b1 73 ligin ilk yar..s
+0x00000970 | c4 b1 6e 64 61 20 33 20 67 6f 6c 20 61 74 61 6e ..nda 3 gol atan
+0x00000980 | 20 76 65 20 68 61 6c 61 20 61 6b 74 69 66 20 66  ve hala aktif f
+0x00000990 | 75 74 62 6f 6c 20 68 61 79 61 74 c4 b1 6e c4 b1 utbol hayat..n..
+0x000009a0 | 20 73 c3 bc 72 64 c3 bc 72 65 6e 20 79 61 c5 9f  s..rd..ren ya..
+0x000009b0 | 6c c4 b1 20 6b 75 72 74 20 6b 69 6d 64 69 72 3f l.. kurt kimdir?
+0x000009c0 | 22 7d 5d 7d 2c 7b 22 63 61 74 65 67 6f 72 79 22 "}]},{"category"
+0x000009d0 | 3a 31 2c 22 71 75 65 73 74 69 6f 6e 73 22 3a 5b :1,"questions":[
+0x000009e0 | 7b 22 61 22 3a 22 4c 69 6f 6e 65 6c 20 4d 65 73 {"a":"Lionel Mes
+0x000009f0 | 73 69 22 2c 22 61 6e 73 77 65 72 22 3a 22 63 22 si","answer":"c"
+0x00000a00 | 2c 22 62 22 3a 22 4b 65 76 69 6e 20 44 65 20 42 ,"b":"Kevin De B
+0x00000a10 | 72 75 79 6e 65 22 2c 22 63 22 3a 22 4c 75 69 73 ruyne","c":"Luis
+0x00000a20 | 20 53 75 61 72 65 7a 22 2c 22 64 22 3a 22 45 64  Suarez","d":"Ed
+0x00000a30 | 65 6e 20 48 61 7a 61 72 64 22 2c 22 71 75 65 73 en Hazard","ques
+0x00000a40 | 74 69 6f 6e 22 3a 22 4c 75 6b 61 20 4d 6f 64 72 tion":"Luka Modr
+0x00000a50 | 69 63 27 69 6e 20 62 69 72 69 6e 63 69 20 6f 6c ic'in birinci ol
+0x00000a60 | 64 75 c4 9f 75 20 42 61 6c 6c 6f 6e 20 64 27 4f du..u Ballon d'O
+0x00000a70 | 72 20 73 c4 b1 72 61 6c 61 6d 61 73 c4 b1 6e 64 r s..ralamas..nd
+0x00000a80 | 61 20 68 61 6e 67 69 20 6f 79 75 6e 63 75 20 54 a hangi oyuncu T
+0x00000a90 | 6f 70 20 31 30 20 64 c4 b1 c5 9f c4 b1 6e 64 61 op 10 d......nda
+0x00000aa0 | 20 6b 61 6c 64 c4 b1 3f 22 7d 2c 7b 22 61 22 3a  kald..?"},{"a":
+0x00000ab0 | 22 4a 61 6d 65 73 20 4d 61 64 64 69 73 6f 6e 22 "James Maddison"
+0x00000ac0 | 2c 22 61 6e 73 77 65 72 22 3a 22 62 22 2c 22 62 ,"answer":"b","b
+0x00000ad0 | 22 3a 22 44 61 76 69 64 20 42 72 6f 6f 6b 73 22 ":"David Brooks"
+0x00000ae0 | 2c 22 63 22 3a 22 47 65 72 61 72 64 20 44 65 75 ,"c":"Gerard Deu
+0x00000af0 | 6c 6f 66 65 75 22 2c 22 64 22 3a 22 52 79 61 6e lofeu","d":"Ryan
+0x00000b00 | 20 46 72 61 73 65 72 22 2c 22 71 75 65 73 74 69  Fraser","questi
+0x00000b10 | 6f 6e 22 3a 22 4d 61 6e 20 43 69 74 79 20 61 6c on":"Man City al
+0x00000b20 | 74 20 79 61 70 c4 b1 73 c4 b1 6e 64 61 20 79 65 t yap..s..nda ye
+0x00000b30 | 74 69 c5 9f 65 6e 2c 20 62 75 20 73 65 7a 6f 6e ti..en, bu sezon
+0x00000b40 | 20 42 6f 75 72 6e 65 6d 6f 75 74 68 27 75 6e 20  Bournemouth'un 
+0x00000b50 | 73 61 c4 9f 20 6b 61 6e 61 64 c4 b1 6e 64 61 20 sa.. kanad..nda 
+0x00000b60 | 68 61 72 69 6b 61 6c 61 72 20 79 61 72 61 74 61 harikalar yarata
+0x00000b70 | 72 61 6b 20 64 65 76 20 6b 75 6c c3 bc 70 6c 65 rak dev kul..ple
+0x00000b80 | 72 69 6e 20 72 61 64 61 72 c4 b1 6e 61 20 67 69 rin radar..na gi
+0x00000b90 | 72 65 6e 20 66 75 74 62 6f 6c 63 75 20 6b 69 6d ren futbolcu kim
+0x00000ba0 | 64 69 72 3f 22 7d 2c 7b 22 61 22 3a 22 4b 65 76 dir?"},{"a":"Kev
+0x00000bb0 | 69 6e 2d 50 72 69 6e 63 65 20 42 6f 61 74 65 6e in-Prince Boaten
+0x00000bc0 | 67 22 2c 22 61 6e 73 77 65 72 22 3a 22 61 22 2c g","answer":"a",
+0x00000bd0 | 22 62 22 3a 22 49 67 6e 61 7a 69 6f 20 41 62 61 "b":"Ignazio Aba
+0x00000be0 | 74 65 22 2c 22 63 22 3a 22 41 6e 74 6f 6e 69 6f te","c":"Antonio
+0x00000bf0 | 20 4e 6f 63 65 72 69 6e 6f 22 2c 22 64 22 3a 22  Nocerino","d":"
+0x00000c00 | 47 69 61 6d 70 61 6f 6c 6f 20 50 61 7a 7a 69 6e Giampaolo Pazzin
+0x00000c10 | 69 22 2c 22 71 75 65 73 74 69 6f 6e 22 3a 22 42 i","question":"B
+0x00000c20 | 75 20 73 65 7a 6f 6e 20 53 61 73 73 75 6f 6c 6f u sezon Sassuolo
+0x00000c30 | 27 64 61 20 69 7a 6c 65 64 69 c4 9f 69 6d 69 7a 'da izledi..imiz
+0x00000c40 | 2c 20 64 61 68 61 20 c3 b6 6e 63 65 20 4d 69 6c , daha ..nce Mil
+0x00000c50 | 61 6e 27 64 61 20 79 c4 b1 6c 6c 61 72 63 61 20 an'da y..llarca 
+0x00000c60 | 66 6f 72 6d 61 20 67 69 79 6d 69 c5 9f 20 66 75 forma giymi.. fu
+0x00000c70 | 74 62 6f 6c 63 75 20 6b 69 6d 64 69 72 3f 22 7d tbolcu kimdir?"}
+0x00000c80 | 2c 7b 22 61 22 3a 22 4a 75 76 65 6e 74 75 73 22 ,{"a":"Juventus"
+0x00000c90 | 2c 22 61 6e 73 77 65 72 22 3a 22 61 22 2c 22 62 ,"answer":"a","b
+0x00000ca0 | 22 3a 22 4c 69 76 65 72 70 6f 6f 6c 22 2c 22 63 ":"Liverpool","c
+0x00000cb0 | 22 3a 22 42 6f 72 75 73 73 69 61 20 44 6f 72 74 ":"Borussia Dort
+0x00000cc0 | 6d 75 6e 64 22 2c 22 64 22 3a 22 50 61 72 69 73 mund","d":"Paris
+0x00000cd0 | 20 53 61 69 6e 74 20 47 65 72 6d 61 69 6e 22 2c  Saint Germain",
+0x00000ce0 | 22 71 75 65 73 74 69 6f 6e 22 3a 22 53 c3 bc 70 "question":"S..p
+0x00000cf0 | 65 72 20 4c 69 67 27 65 20 74 72 61 6e 73 66 65 er Lig'e transfe
+0x00000d00 | 72 20 6f 6c 64 75 c4 9f 75 20 32 30 31 38 20 79 r oldu..u 2018 y
+0x00000d10 | c4 b1 6c c4 b1 6e 64 61 20 33 32 20 67 6f 6c 65 ..l..nda 32 gole
+0x00000d20 | 20 69 6d 7a 61 20 61 74 61 72 61 6b 20 68 61 72  imza atarak har
+0x00000d30 | 69 6b 61 6c 61 72 20 79 61 72 61 74 61 6e 20 4d ikalar yaratan M
+0x00000d40 | 62 61 79 65 20 44 69 61 67 6e 65 2c 20 67 65 6e baye Diagne, gen
+0x00000d50 | c3 a7 20 79 61 c5 9f 6c 61 72 c4 b1 6e 64 61 20 .. ya..lar..nda 
+0x00000d60 | 68 61 6e 67 69 20 64 65 76 20 6b 75 6c c3 bc 70 hangi dev kul..p
+0x00000d70 | 20 74 61 72 61 66 c4 b1 6e 64 61 6e 20 74 72 61  taraf..ndan tra
+0x00000d80 | 6e 73 66 65 72 20 65 64 69 6c 6d 69 c5 9f 74 69 nsfer edilmi..ti
+0x00000d90 | 3f 22 7d 2c 7b 22 61 22 3a 22 4a 61 6d 65 73 20 ?"},{"a":"James 
+0x00000da0 | 4d 61 64 64 69 73 6f 6e 22 2c 22 61 6e 73 77 65 Maddison","answe
+0x00000db0 | 72 22 3a 22 62 22 2c 22 62 22 3a 22 44 61 76 69 r":"b","b":"Davi
+0x00000dc0 | 64 20 42 72 6f 6f 6b 73 22 2c 22 63 22 3a 22 47 d Brooks","c":"G
+0x00000dd0 | 65 72 61 72 64 20 44 65 75 6c 6f 66 65 75 22 2c erard Deulofeu",
+0x00000de0 | 22 64 22 3a 22 52 79 61 6e 20 46 72 61 73 65 72 "d":"Ryan Fraser
+0x00000df0 | 22 2c 22 71 75 65 73 74 69 6f 6e 22 3a 22 4d 61 ","question":"Ma
+0x00000e00 | 6e 20 43 69 74 79 20 61 6c 74 20 79 61 70 c4 b1 n City alt yap..
+0x00000e10 | 73 c4 b1 6e 64 61 20 79 65 74 69 c5 9f 65 6e 2c s..nda yeti..en,
+0x00000e20 | 20 62 75 20 73 65 7a 6f 6e 20 42 6f 75 72 6e 65  bu sezon Bourne
+0x00000e30 | 6d 6f 75 74 68 27 75 6e 20 73 61 c4 9f 20 6b 61 mouth'un sa.. ka
+0x00000e40 | 6e 61 64 c4 b1 6e 64 61 20 68 61 72 69 6b 61 6c nad..nda harikal
+0x00000e50 | 61 72 20 79 61 72 61 74 61 72 61 6b 20 64 65 76 ar yaratarak dev
+0x00000e60 | 20 6b 75 6c c3 bc 70 6c 65 72 69 6e 20 72 61 64  kul..plerin rad
+0x00000e70 | 61 72 c4 b1 6e 61 20 67 69 72 65 6e 20 66 75 74 ar..na giren fut
+0x00000e80 | 62 6f 6c 63 75 20 6b 69 6d 64 69 72 3f 22 7d 5d bolcu kimdir?"}]
+0x00000e90 | 7d 5d 7d 61 fa 00 00 00 00 00 00 00 00 00 00 00 ]}]}a...........
+
+2020-05-10 02:29:33 DEBUG Requests.cpp: 130: Request code: 10
+2020-05-10 02:29:33 DEBUG Requests.cpp: 192: game started
+2020-05-10 02:29:33 DEBUG Requests.cpp: 294: clear out packet
+2020-05-10 02:29:33 DEBUG client.cpp: 147: sending game answer request
+2020-05-10 02:29:33 DEBUG GameClient.cpp:  48: check answer uid : 10000001 (10000001-10000000)
+2020-05-10 02:29:33 INFO  client.cpp: 161: your answer is wrong
+2020-05-10 02:29:33 DEBUG Protocol.cpp: 150: [tx packet]: (166)
+---------------------------------------------------
+             00 10 20 30 40 50 60 70 80 90 A0 B0 C0 D0 E0 F0
+             -----------------------------------------------
+0x00000000 | 01 a1 00 0b 65 79 4a 68 62 47 63 69 4f 69 4a 49 ....eyJhbGciOiJI
+0x00000010 | 55 7a 49 31 4e 69 49 73 49 6e 52 35 63 43 49 36 UzI1NiIsInR5cCI6
+0x00000020 | 49 6b 70 58 56 43 4a 39 2e 65 79 4a 6c 65 48 42 IkpXVCJ9.eyJleHB
+0x00000030 | 70 63 6d 55 69 4f 6a 45 31 4f 44 6b 77 4e 6a 59 pcmUiOjE1ODkwNjY
+0x00000040 | 35 4e 7a 4d 73 49 6d 6c 6b 49 6a 6f 69 4d 44 41 5NzMsImlkIjoiMDA
+0x00000050 | 78 4d 44 41 77 4d 44 41 77 4d 53 4a 39 2e 43 52 xMDAwMDAwMSJ9.CR
+0x00000060 | 4c 76 2b 5a 34 43 2f 66 55 46 66 49 57 58 35 53 Lv+Z4C/fUFfIWX5S
+0x00000070 | 58 34 6f 73 66 72 4a 32 36 32 64 34 6b 51 79 32 X4osfrJ262d4kQy2
+0x00000080 | 77 68 74 71 7a 43 36 78 6b 3d 7b 22 61 6e 73 77 whtqzC6xk={"answ
+0x00000090 | 65 72 22 3a 22 61 22 2c 22 67 61 6d 65 5f 69 64 er":"a","game_id
+0x000000a0 | 22 3a 35 7d e8 a7 00 00 00 00 00 00 00 00 00 00 d":5}...........
+
+2020-05-10 02:29:33 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:33 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:33 DEBUG Protocol.cpp:  64: [rx packet]: (7)
+---------------------------------------------------
+             00 10 20 30 40 50 60 70 80 90 A0 B0 C0 D0 E0 F0
+             -----------------------------------------------
+0x00000000 | 01 02 00 0b 01 c6 f0 00 00 00 00 00 00 00 00 00 .........
+
+2020-05-10 02:29:33 DEBUG Requests.cpp: 130: Request code: 11
+2020-05-10 02:29:33 DEBUG Requests.cpp: 203: send answer's ack received
+2020-05-10 02:29:33 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:33 DEBUG Protocol.cpp:  64: [rx packet]: (32)
+---------------------------------------------------
+             00 10 20 30 40 50 60 70 80 90 A0 B0 C0 D0 E0 F0
+             -----------------------------------------------
+0x00000000 | 01 1b 00 0c 7b 22 61 6e 73 77 65 72 22 3a 22 61 ....{"answer":"a
+0x00000010 | 22 2c 22 67 61 6d 65 5f 69 64 22 3a 35 7d ee 91 ","game_id":5}..
+
+2020-05-10 02:29:33 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:33 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:33 DEBUG Requests.cpp: 130: Request code: 12
+2020-05-10 02:29:33 DEBUG Requests.cpp: 207: opponent answer received
+2020-05-10 02:29:33 DEBUG Requests.cpp: 208: {"answer":"a","game_id":5}
+2020-05-10 02:29:33 DEBUG GameClient.cpp:  48: check answer uid : 10000000 (10000001-10000000)
+2020-05-10 02:29:33 INFO  Requests.cpp: 218: opponent's answer is wrong
+2020-05-10 02:29:33 DEBUG Protocol.cpp:  64: [rx packet]: (6)
+---------------------------------------------------
+             00 10 20 30 40 50 60 70 80 90 A0 B0 C0 D0 E0 F0
+             -----------------------------------------------
+0x00000000 | 01 01 00 0d c1 c5 00 00 00 00 00 00 00 00 00 00 ..........
+
+2020-05-10 02:29:33 DEBUG Requests.cpp: 130: Request code: 13
+2020-05-10 02:29:33 DEBUG Requests.cpp: 225: next question 1
+
+2020-05-10 02:29:33 DEBUG Requests.cpp: 294: clear out packet
+2020-05-10 02:29:33 DEBUG client.cpp: 147: sending game answer request
+2020-05-10 02:29:33 DEBUG GameClient.cpp:  48: check answer uid : 10000001 (10000001-10000000)
+2020-05-10 02:29:33 INFO  client.cpp: 158: your answer is right
+2020-05-10 02:29:33 DEBUG Protocol.cpp: 150: [tx packet]: (166)
+---------------------------------------------------
+             00 10 20 30 40 50 60 70 80 90 A0 B0 C0 D0 E0 F0
+             -----------------------------------------------
+0x00000000 | 01 a1 00 0b 65 79 4a 68 62 47 63 69 4f 69 4a 49 ....eyJhbGciOiJI
+0x00000010 | 55 7a 49 31 4e 69 49 73 49 6e 52 35 63 43 49 36 UzI1NiIsInR5cCI6
+0x00000020 | 49 6b 70 58 56 43 4a 39 2e 65 79 4a 6c 65 48 42 IkpXVCJ9.eyJleHB
+0x00000030 | 70 63 6d 55 69 4f 6a 45 31 4f 44 6b 77 4e 6a 59 pcmUiOjE1ODkwNjY
+0x00000040 | 35 4e 7a 4d 73 49 6d 6c 6b 49 6a 6f 69 4d 44 41 5NzMsImlkIjoiMDA
+0x00000050 | 78 4d 44 41 77 4d 44 41 77 4d 53 4a 39 2e 43 52 xMDAwMDAwMSJ9.CR
+0x00000060 | 4c 76 2b 5a 34 43 2f 66 55 46 66 49 57 58 35 53 Lv+Z4C/fUFfIWX5S
+0x00000070 | 58 34 6f 73 66 72 4a 32 36 32 64 34 6b 51 79 32 X4osfrJ262d4kQy2
+0x00000080 | 77 68 74 71 7a 43 36 78 6b 3d 7b 22 61 6e 73 77 whtqzC6xk={"answ
+0x00000090 | 65 72 22 3a 22 61 22 2c 22 67 61 6d 65 5f 69 64 er":"a","game_id
+0x000000a0 | 22 3a 35 7d e8 a7 00 00 00 00 00 00 00 00 00 00 d":5}...........
+
+2020-05-10 02:29:33 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:33 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:33 DEBUG Protocol.cpp:  64: [rx packet]: (7)
+---------------------------------------------------
+             00 10 20 30 40 50 60 70 80 90 A0 B0 C0 D0 E0 F0
+             -----------------------------------------------
+0x00000000 | 01 02 00 0b 01 c6 f0 00 00 00 00 00 00 00 00 00 .........
+
+2020-05-10 02:29:33 DEBUG Requests.cpp: 130: Request code: 11
+2020-05-10 02:29:33 DEBUG Requests.cpp: 203: send answer's ack received
+2020-05-10 02:29:33 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:33 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:33 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:33 DEBUG Protocol.cpp:  64: [rx packet]: (32)
+---------------------------------------------------
+             00 10 20 30 40 50 60 70 80 90 A0 B0 C0 D0 E0 F0
+             -----------------------------------------------
+0x00000000 | 01 1b 00 0c 7b 22 61 6e 73 77 65 72 22 3a 22 61 ....{"answer":"a
+0x00000010 | 22 2c 22 67 61 6d 65 5f 69 64 22 3a 35 7d ee 91 ","game_id":5}..
+
+2020-05-10 02:29:33 DEBUG Requests.cpp: 130: Request code: 12
+2020-05-10 02:29:33 DEBUG Requests.cpp: 207: opponent answer received
+2020-05-10 02:29:33 DEBUG Requests.cpp: 208: {"answer":"a","game_id":5}
+2020-05-10 02:29:33 DEBUG GameClient.cpp:  48: check answer uid : 10000000 (10000001-10000000)
+2020-05-10 02:29:33 INFO  Requests.cpp: 215: opponent's answer is right
+2020-05-10 02:29:33 DEBUG Protocol.cpp:  64: [rx packet]: (6)
+---------------------------------------------------
+             00 10 20 30 40 50 60 70 80 90 A0 B0 C0 D0 E0 F0
+             -----------------------------------------------
+0x00000000 | 01 01 00 0d c1 c5 00 00 00 00 00 00 00 00 00 00 ..........
+
+2020-05-10 02:29:33 DEBUG Requests.cpp: 130: Request code: 13
+2020-05-10 02:29:33 DEBUG Requests.cpp: 225: next question 2
+
+2020-05-10 02:29:33 DEBUG Requests.cpp: 294: clear out packet
+2020-05-10 02:29:33 DEBUG client.cpp: 147: sending game answer request
+2020-05-10 02:29:33 DEBUG GameClient.cpp:  48: check answer uid : 10000001 (10000001-10000000)
+2020-05-10 02:29:33 INFO  client.cpp: 161: your answer is wrong
+2020-05-10 02:29:33 DEBUG Protocol.cpp: 150: [tx packet]: (166)
+---------------------------------------------------
+             00 10 20 30 40 50 60 70 80 90 A0 B0 C0 D0 E0 F0
+             -----------------------------------------------
+0x00000000 | 01 a1 00 0b 65 79 4a 68 62 47 63 69 4f 69 4a 49 ....eyJhbGciOiJI
+0x00000010 | 55 7a 49 31 4e 69 49 73 49 6e 52 35 63 43 49 36 UzI1NiIsInR5cCI6
+0x00000020 | 49 6b 70 58 56 43 4a 39 2e 65 79 4a 6c 65 48 42 IkpXVCJ9.eyJleHB
+0x00000030 | 70 63 6d 55 69 4f 6a 45 31 4f 44 6b 77 4e 6a 59 pcmUiOjE1ODkwNjY
+0x00000040 | 35 4e 7a 4d 73 49 6d 6c 6b 49 6a 6f 69 4d 44 41 5NzMsImlkIjoiMDA
+0x00000050 | 78 4d 44 41 77 4d 44 41 77 4d 53 4a 39 2e 43 52 xMDAwMDAwMSJ9.CR
+0x00000060 | 4c 76 2b 5a 34 43 2f 66 55 46 66 49 57 58 35 53 Lv+Z4C/fUFfIWX5S
+0x00000070 | 58 34 6f 73 66 72 4a 32 36 32 64 34 6b 51 79 32 X4osfrJ262d4kQy2
+0x00000080 | 77 68 74 71 7a 43 36 78 6b 3d 7b 22 61 6e 73 77 whtqzC6xk={"answ
+0x00000090 | 65 72 22 3a 22 61 22 2c 22 67 61 6d 65 5f 69 64 er":"a","game_id
+0x000000a0 | 22 3a 35 7d e8 a7 00 00 00 00 00 00 00 00 00 00 d":5}...........
+
+2020-05-10 02:29:33 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:33 DEBUG Protocol.cpp:  64: [rx packet]: (32)
+---------------------------------------------------
+             00 10 20 30 40 50 60 70 80 90 A0 B0 C0 D0 E0 F0
+             -----------------------------------------------
+0x00000000 | 01 1b 00 0c 7b 22 61 6e 73 77 65 72 22 3a 22 61 ....{"answer":"a
+0x00000010 | 22 2c 22 67 61 6d 65 5f 69 64 22 3a 35 7d ee 91 ","game_id":5}..
+
+2020-05-10 02:29:33 DEBUG Requests.cpp: 130: Request code: 12
+2020-05-10 02:29:33 DEBUG Requests.cpp: 207: opponent answer received
+2020-05-10 02:29:33 DEBUG Requests.cpp: 208: {"answer":"a","game_id":5}
+2020-05-10 02:29:33 DEBUG GameClient.cpp:  48: check answer uid : 10000000 (10000001-10000000)
+2020-05-10 02:29:33 INFO  Requests.cpp: 218: opponent's answer is wrong
+2020-05-10 02:29:33 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:33 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:33 DEBUG Protocol.cpp:  64: [rx packet]: (7)
+---------------------------------------------------
+             00 10 20 30 40 50 60 70 80 90 A0 B0 C0 D0 E0 F0
+             -----------------------------------------------
+0x00000000 | 01 02 00 0b 01 c6 f0 00 00 00 00 00 00 00 00 00 .........
+
+2020-05-10 02:29:33 DEBUG Requests.cpp: 130: Request code: 11
+2020-05-10 02:29:33 DEBUG Requests.cpp: 203: send answer's ack received
+2020-05-10 02:29:33 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:33 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:33 DEBUG Protocol.cpp:  64: [rx packet]: (6)
+---------------------------------------------------
+             00 10 20 30 40 50 60 70 80 90 A0 B0 C0 D0 E0 F0
+             -----------------------------------------------
+0x00000000 | 01 01 00 0d c1 c5 00 00 00 00 00 00 00 00 00 00 ..........
+
+2020-05-10 02:29:33 DEBUG Requests.cpp: 130: Request code: 13
+2020-05-10 02:29:33 DEBUG Requests.cpp: 225: next question 3
+
+2020-05-10 02:29:33 DEBUG Requests.cpp: 294: clear out packet
+2020-05-10 02:29:33 DEBUG client.cpp: 147: sending game answer request
+2020-05-10 02:29:33 DEBUG GameClient.cpp:  48: check answer uid : 10000001 (10000001-10000000)
+2020-05-10 02:29:33 INFO  client.cpp: 161: your answer is wrong
+2020-05-10 02:29:33 DEBUG Protocol.cpp: 150: [tx packet]: (166)
+---------------------------------------------------
+             00 10 20 30 40 50 60 70 80 90 A0 B0 C0 D0 E0 F0
+             -----------------------------------------------
+0x00000000 | 01 a1 00 0b 65 79 4a 68 62 47 63 69 4f 69 4a 49 ....eyJhbGciOiJI
+0x00000010 | 55 7a 49 31 4e 69 49 73 49 6e 52 35 63 43 49 36 UzI1NiIsInR5cCI6
+0x00000020 | 49 6b 70 58 56 43 4a 39 2e 65 79 4a 6c 65 48 42 IkpXVCJ9.eyJleHB
+0x00000030 | 70 63 6d 55 69 4f 6a 45 31 4f 44 6b 77 4e 6a 59 pcmUiOjE1ODkwNjY
+0x00000040 | 35 4e 7a 4d 73 49 6d 6c 6b 49 6a 6f 69 4d 44 41 5NzMsImlkIjoiMDA
+0x00000050 | 78 4d 44 41 77 4d 44 41 77 4d 53 4a 39 2e 43 52 xMDAwMDAwMSJ9.CR
+0x00000060 | 4c 76 2b 5a 34 43 2f 66 55 46 66 49 57 58 35 53 Lv+Z4C/fUFfIWX5S
+0x00000070 | 58 34 6f 73 66 72 4a 32 36 32 64 34 6b 51 79 32 X4osfrJ262d4kQy2
+0x00000080 | 77 68 74 71 7a 43 36 78 6b 3d 7b 22 61 6e 73 77 whtqzC6xk={"answ
+0x00000090 | 65 72 22 3a 22 62 22 2c 22 67 61 6d 65 5f 69 64 er":"b","game_id
+0x000000a0 | 22 3a 35 7d ab a6 00 00 00 00 00 00 00 00 00 00 d":5}...........
+
+2020-05-10 02:29:33 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:33 DEBUG Protocol.cpp:  64: [rx packet]: (32)
+---------------------------------------------------
+             00 10 20 30 40 50 60 70 80 90 A0 B0 C0 D0 E0 F0
+             -----------------------------------------------
+0x00000000 | 01 1b 00 0c 7b 22 61 6e 73 77 65 72 22 3a 22 62 ....{"answer":"b
+0x00000010 | 22 2c 22 67 61 6d 65 5f 69 64 22 3a 35 7d ad 90 ","game_id":5}..
+
+2020-05-10 02:29:33 DEBUG Requests.cpp: 130: Request code: 12
+2020-05-10 02:29:33 DEBUG Requests.cpp: 207: opponent answer received
+2020-05-10 02:29:33 DEBUG Requests.cpp: 208: {"answer":"b","game_id":5}
+2020-05-10 02:29:33 DEBUG GameClient.cpp:  48: check answer uid : 10000000 (10000001-10000000)
+2020-05-10 02:29:33 INFO  Requests.cpp: 218: opponent's answer is wrong
+2020-05-10 02:29:33 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:33 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:33 DEBUG Protocol.cpp:  64: [rx packet]: (7)
+---------------------------------------------------
+             00 10 20 30 40 50 60 70 80 90 A0 B0 C0 D0 E0 F0
+             -----------------------------------------------
+0x00000000 | 01 02 00 0b 01 c6 f0 00 00 00 00 00 00 00 00 00 .........
+
+2020-05-10 02:29:33 DEBUG Requests.cpp: 130: Request code: 11
+2020-05-10 02:29:33 DEBUG Requests.cpp: 203: send answer's ack received
+2020-05-10 02:29:33 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:33 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:33 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:33 DEBUG Protocol.cpp:  64: [rx packet]: (6)
+---------------------------------------------------
+             00 10 20 30 40 50 60 70 80 90 A0 B0 C0 D0 E0 F0
+             -----------------------------------------------
+0x00000000 | 01 01 00 0d c1 c5 00 00 00 00 00 00 00 00 00 00 ..........
+
+2020-05-10 02:29:33 DEBUG Requests.cpp: 130: Request code: 13
+2020-05-10 02:29:33 DEBUG Requests.cpp: 225: next question 4
+
+2020-05-10 02:29:33 DEBUG Requests.cpp: 294: clear out packet
+2020-05-10 02:29:33 DEBUG client.cpp: 147: sending game answer request
+2020-05-10 02:29:33 DEBUG GameClient.cpp:  48: check answer uid : 10000001 (10000001-10000000)
+2020-05-10 02:29:33 INFO  client.cpp: 161: your answer is wrong
+2020-05-10 02:29:33 DEBUG Protocol.cpp:  64: [rx packet]: (32)
+---------------------------------------------------
+             00 10 20 30 40 50 60 70 80 90 A0 B0 C0 D0 E0 F0
+             -----------------------------------------------
+0x00000000 | 01 1b 00 0c 7b 22 61 6e 73 77 65 72 22 3a 22 64 ....{"answer":"d
+0x00000010 | 22 2c 22 67 61 6d 65 5f 69 64 22 3a 35 7d 2b 92 ","game_id":5}+.
+
+2020-05-10 02:29:33 DEBUG Requests.cpp: 130: Request code: 12
+2020-05-10 02:29:33 DEBUG Requests.cpp: 207: opponent answer received
+2020-05-10 02:29:33 DEBUG Requests.cpp: 208: {"answer":"d","game_id":5}
+2020-05-10 02:29:33 DEBUG GameClient.cpp:  48: check answer uid : 10000000 (10000001-10000000)
+2020-05-10 02:29:33 INFO  Requests.cpp: 218: opponent's answer is wrong
+2020-05-10 02:29:33 DEBUG Protocol.cpp: 150: [tx packet]: (166)
+---------------------------------------------------
+             00 10 20 30 40 50 60 70 80 90 A0 B0 C0 D0 E0 F0
+             -----------------------------------------------
+0x00000000 | 01 a1 00 0b 65 79 4a 68 62 47 63 69 4f 69 4a 49 ....eyJhbGciOiJI
+0x00000010 | 55 7a 49 31 4e 69 49 73 49 6e 52 35 63 43 49 36 UzI1NiIsInR5cCI6
+0x00000020 | 49 6b 70 58 56 43 4a 39 2e 65 79 4a 6c 65 48 42 IkpXVCJ9.eyJleHB
+0x00000030 | 70 63 6d 55 69 4f 6a 45 31 4f 44 6b 77 4e 6a 59 pcmUiOjE1ODkwNjY
+0x00000040 | 35 4e 7a 4d 73 49 6d 6c 6b 49 6a 6f 69 4d 44 41 5NzMsImlkIjoiMDA
+0x00000050 | 78 4d 44 41 77 4d 44 41 77 4d 53 4a 39 2e 43 52 xMDAwMDAwMSJ9.CR
+0x00000060 | 4c 76 2b 5a 34 43 2f 66 55 46 66 49 57 58 35 53 Lv+Z4C/fUFfIWX5S
+0x00000070 | 58 34 6f 73 66 72 4a 32 36 32 64 34 6b 51 79 32 X4osfrJ262d4kQy2
+0x00000080 | 77 68 74 71 7a 43 36 78 6b 3d 7b 22 61 6e 73 77 whtqzC6xk={"answ
+0x00000090 | 65 72 22 3a 22 64 22 2c 22 67 61 6d 65 5f 69 64 er":"d","game_id
+0x000000a0 | 22 3a 35 7d 2d a4 00 00 00 00 00 00 00 00 00 00 d":5}-..........
+
+2020-05-10 02:29:33 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:33 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:33 DEBUG Protocol.cpp:  64: [rx packet]: (7)
+---------------------------------------------------
+             00 10 20 30 40 50 60 70 80 90 A0 B0 C0 D0 E0 F0
+             -----------------------------------------------
+0x00000000 | 01 02 00 0b 01 c6 f0 00 00 00 00 00 00 00 00 00 .........
+
+2020-05-10 02:29:33 DEBUG Requests.cpp: 130: Request code: 11
+2020-05-10 02:29:33 DEBUG Requests.cpp: 203: send answer's ack received
+2020-05-10 02:29:33 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:33 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:33 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:33 DEBUG Protocol.cpp:  64: [rx packet]: (6)
+---------------------------------------------------
+             00 10 20 30 40 50 60 70 80 90 A0 B0 C0 D0 E0 F0
+             -----------------------------------------------
+0x00000000 | 01 01 00 0d c1 c5 00 00 00 00 00 00 00 00 00 00 ..........
+
+2020-05-10 02:29:33 DEBUG Requests.cpp: 130: Request code: 13
+2020-05-10 02:29:33 DEBUG Requests.cpp: 225: next question 5
+
+2020-05-10 02:29:33 DEBUG Requests.cpp: 294: clear out packet
+2020-05-10 02:29:33 DEBUG client.cpp: 147: sending game answer request
+2020-05-10 02:29:33 DEBUG GameClient.cpp:  48: check answer uid : 10000001 (10000001-10000000)
+2020-05-10 02:29:33 INFO  client.cpp: 161: your answer is wrong
+2020-05-10 02:29:33 DEBUG Protocol.cpp: 150: [tx packet]: (166)
+---------------------------------------------------
+             00 10 20 30 40 50 60 70 80 90 A0 B0 C0 D0 E0 F0
+             -----------------------------------------------
+0x00000000 | 01 a1 00 0b 65 79 4a 68 62 47 63 69 4f 69 4a 49 ....eyJhbGciOiJI
+0x00000010 | 55 7a 49 31 4e 69 49 73 49 6e 52 35 63 43 49 36 UzI1NiIsInR5cCI6
+0x00000020 | 49 6b 70 58 56 43 4a 39 2e 65 79 4a 6c 65 48 42 IkpXVCJ9.eyJleHB
+0x00000030 | 70 63 6d 55 69 4f 6a 45 31 4f 44 6b 77 4e 6a 59 pcmUiOjE1ODkwNjY
+0x00000040 | 35 4e 7a 4d 73 49 6d 6c 6b 49 6a 6f 69 4d 44 41 5NzMsImlkIjoiMDA
+0x00000050 | 78 4d 44 41 77 4d 44 41 77 4d 53 4a 39 2e 43 52 xMDAwMDAwMSJ9.CR
+0x00000060 | 4c 76 2b 5a 34 43 2f 66 55 46 66 49 57 58 35 53 Lv+Z4C/fUFfIWX5S
+0x00000070 | 58 34 6f 73 66 72 4a 32 36 32 64 34 6b 51 79 32 X4osfrJ262d4kQy2
+0x00000080 | 77 68 74 71 7a 43 36 78 6b 3d 7b 22 61 6e 73 77 whtqzC6xk={"answ
+0x00000090 | 65 72 22 3a 22 64 22 2c 22 67 61 6d 65 5f 69 64 er":"d","game_id
+0x000000a0 | 22 3a 35 7d 2d a4 00 00 00 00 00 00 00 00 00 00 d":5}-..........
+
+2020-05-10 02:29:33 DEBUG Protocol.cpp:  64: [rx packet]: (32)
+---------------------------------------------------
+             00 10 20 30 40 50 60 70 80 90 A0 B0 C0 D0 E0 F0
+             -----------------------------------------------
+0x00000000 | 01 1b 00 0c 7b 22 61 6e 73 77 65 72 22 3a 22 64 ....{"answer":"d
+0x00000010 | 22 2c 22 67 61 6d 65 5f 69 64 22 3a 35 7d 2b 92 ","game_id":5}+.
+
+2020-05-10 02:29:33 DEBUG Requests.cpp: 130: Request code: 12
+2020-05-10 02:29:33 DEBUG Requests.cpp: 207: opponent answer received
+2020-05-10 02:29:33 DEBUG Requests.cpp: 208: {"answer":"d","game_id":5}
+2020-05-10 02:29:33 DEBUG GameClient.cpp:  48: check answer uid : 10000000 (10000001-10000000)
+2020-05-10 02:29:33 INFO  Requests.cpp: 218: opponent's answer is wrong
+2020-05-10 02:29:33 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:33 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:33 DEBUG Protocol.cpp:  64: [rx packet]: (7)
+---------------------------------------------------
+             00 10 20 30 40 50 60 70 80 90 A0 B0 C0 D0 E0 F0
+             -----------------------------------------------
+0x00000000 | 01 02 00 0b 01 c6 f0 00 00 00 00 00 00 00 00 00 .........
+
+2020-05-10 02:29:33 DEBUG Requests.cpp: 130: Request code: 11
+2020-05-10 02:29:33 DEBUG Requests.cpp: 203: send answer's ack received
+2020-05-10 02:29:33 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:33 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:33 DEBUG Protocol.cpp:  64: [rx packet]: (6)
+---------------------------------------------------
+             00 10 20 30 40 50 60 70 80 90 A0 B0 C0 D0 E0 F0
+             -----------------------------------------------
+0x00000000 | 01 01 00 0d c1 c5 00 00 00 00 00 00 00 00 00 00 ..........
+
+2020-05-10 02:29:33 DEBUG Requests.cpp: 130: Request code: 13
+2020-05-10 02:29:33 DEBUG Requests.cpp: 225: next question 6
+
+2020-05-10 02:29:33 DEBUG Requests.cpp: 294: clear out packet
+2020-05-10 02:29:33 DEBUG client.cpp: 147: sending game answer request
+2020-05-10 02:29:33 DEBUG GameClient.cpp:  48: check answer uid : 10000001 (10000001-10000000)
+2020-05-10 02:29:33 INFO  client.cpp: 158: your answer is right
+2020-05-10 02:29:33 DEBUG Protocol.cpp: 150: [tx packet]: (166)
+---------------------------------------------------
+             00 10 20 30 40 50 60 70 80 90 A0 B0 C0 D0 E0 F0
+             -----------------------------------------------
+0x00000000 | 01 a1 00 0b 65 79 4a 68 62 47 63 69 4f 69 4a 49 ....eyJhbGciOiJI
+0x00000010 | 55 7a 49 31 4e 69 49 73 49 6e 52 35 63 43 49 36 UzI1NiIsInR5cCI6
+0x00000020 | 49 6b 70 58 56 43 4a 39 2e 65 79 4a 6c 65 48 42 IkpXVCJ9.eyJleHB
+0x00000030 | 70 63 6d 55 69 4f 6a 45 31 4f 44 6b 77 4e 6a 59 pcmUiOjE1ODkwNjY
+0x00000040 | 35 4e 7a 4d 73 49 6d 6c 6b 49 6a 6f 69 4d 44 41 5NzMsImlkIjoiMDA
+0x00000050 | 78 4d 44 41 77 4d 44 41 77 4d 53 4a 39 2e 43 52 xMDAwMDAwMSJ9.CR
+0x00000060 | 4c 76 2b 5a 34 43 2f 66 55 46 66 49 57 58 35 53 Lv+Z4C/fUFfIWX5S
+0x00000070 | 58 34 6f 73 66 72 4a 32 36 32 64 34 6b 51 79 32 X4osfrJ262d4kQy2
+0x00000080 | 77 68 74 71 7a 43 36 78 6b 3d 7b 22 61 6e 73 77 whtqzC6xk={"answ
+0x00000090 | 65 72 22 3a 22 64 22 2c 22 67 61 6d 65 5f 69 64 er":"d","game_id
+0x000000a0 | 22 3a 35 7d 2d a4 00 00 00 00 00 00 00 00 00 00 d":5}-..........
+
+2020-05-10 02:29:33 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:33 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:33 DEBUG Protocol.cpp:  64: [rx packet]: (7)
+---------------------------------------------------
+             00 10 20 30 40 50 60 70 80 90 A0 B0 C0 D0 E0 F0
+             -----------------------------------------------
+0x00000000 | 01 02 00 0b 01 c6 f0 00 00 00 00 00 00 00 00 00 .........
+
+2020-05-10 02:29:33 DEBUG Requests.cpp: 130: Request code: 11
+2020-05-10 02:29:33 DEBUG Requests.cpp: 203: send answer's ack received
+2020-05-10 02:29:33 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:33 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:33 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:33 DEBUG Protocol.cpp:  64: [rx packet]: (32)
+---------------------------------------------------
+             00 10 20 30 40 50 60 70 80 90 A0 B0 C0 D0 E0 F0
+             -----------------------------------------------
+0x00000000 | 01 1b 00 0c 7b 22 61 6e 73 77 65 72 22 3a 22 64 ....{"answer":"d
+0x00000010 | 22 2c 22 67 61 6d 65 5f 69 64 22 3a 35 7d 2b 92 ","game_id":5}+.
+
+2020-05-10 02:29:33 DEBUG Requests.cpp: 130: Request code: 12
+2020-05-10 02:29:33 DEBUG Requests.cpp: 207: opponent answer received
+2020-05-10 02:29:33 DEBUG Requests.cpp: 208: {"answer":"d","game_id":5}
+2020-05-10 02:29:33 DEBUG GameClient.cpp:  48: check answer uid : 10000000 (10000001-10000000)
+2020-05-10 02:29:33 INFO  Requests.cpp: 215: opponent's answer is right
+2020-05-10 02:29:33 DEBUG Protocol.cpp:  64: [rx packet]: (6)
+---------------------------------------------------
+             00 10 20 30 40 50 60 70 80 90 A0 B0 C0 D0 E0 F0
+             -----------------------------------------------
+0x00000000 | 01 01 00 0d c1 c5 00 00 00 00 00 00 00 00 00 00 ..........
+
+2020-05-10 02:29:33 DEBUG Requests.cpp: 130: Request code: 13
+2020-05-10 02:29:33 DEBUG Requests.cpp: 225: next question 7
+
+2020-05-10 02:29:33 DEBUG Requests.cpp: 294: clear out packet
+2020-05-10 02:29:33 DEBUG client.cpp: 147: sending game answer request
+2020-05-10 02:29:33 DEBUG GameClient.cpp:  48: check answer uid : 10000001 (10000001-10000000)
+2020-05-10 02:29:33 INFO  client.cpp: 161: your answer is wrong
+2020-05-10 02:29:33 DEBUG Protocol.cpp: 150: [tx packet]: (166)
+---------------------------------------------------
+             00 10 20 30 40 50 60 70 80 90 A0 B0 C0 D0 E0 F0
+             -----------------------------------------------
+0x00000000 | 01 a1 00 0b 65 79 4a 68 62 47 63 69 4f 69 4a 49 ....eyJhbGciOiJI
+0x00000010 | 55 7a 49 31 4e 69 49 73 49 6e 52 35 63 43 49 36 UzI1NiIsInR5cCI6
+0x00000020 | 49 6b 70 58 56 43 4a 39 2e 65 79 4a 6c 65 48 42 IkpXVCJ9.eyJleHB
+0x00000030 | 70 63 6d 55 69 4f 6a 45 31 4f 44 6b 77 4e 6a 59 pcmUiOjE1ODkwNjY
+0x00000040 | 35 4e 7a 4d 73 49 6d 6c 6b 49 6a 6f 69 4d 44 41 5NzMsImlkIjoiMDA
+0x00000050 | 78 4d 44 41 77 4d 44 41 77 4d 53 4a 39 2e 43 52 xMDAwMDAwMSJ9.CR
+0x00000060 | 4c 76 2b 5a 34 43 2f 66 55 46 66 49 57 58 35 53 Lv+Z4C/fUFfIWX5S
+0x00000070 | 58 34 6f 73 66 72 4a 32 36 32 64 34 6b 51 79 32 X4osfrJ262d4kQy2
+0x00000080 | 77 68 74 71 7a 43 36 78 6b 3d 7b 22 61 6e 73 77 whtqzC6xk={"answ
+0x00000090 | 65 72 22 3a 22 63 22 2c 22 67 61 6d 65 5f 69 64 er":"c","game_id
+0x000000a0 | 22 3a 35 7d 6a a6 00 00 00 00 00 00 00 00 00 00 d":5}j..........
+
+2020-05-10 02:29:33 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:33 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:33 DEBUG Protocol.cpp:  64: [rx packet]: (7)
+---------------------------------------------------
+             00 10 20 30 40 50 60 70 80 90 A0 B0 C0 D0 E0 F0
+             -----------------------------------------------
+0x00000000 | 01 02 00 0b 01 c6 f0 00 00 00 00 00 00 00 00 00 .........
+
+2020-05-10 02:29:33 DEBUG Requests.cpp: 130: Request code: 11
+2020-05-10 02:29:33 DEBUG Requests.cpp: 203: send answer's ack received
+2020-05-10 02:29:33 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:33 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:33 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:33 DEBUG Protocol.cpp:  64: [rx packet]: (32)
+---------------------------------------------------
+             00 10 20 30 40 50 60 70 80 90 A0 B0 C0 D0 E0 F0
+             -----------------------------------------------
+0x00000000 | 01 1b 00 0c 7b 22 61 6e 73 77 65 72 22 3a 22 63 ....{"answer":"c
+0x00000010 | 22 2c 22 67 61 6d 65 5f 69 64 22 3a 35 7d 6c 90 ","game_id":5}l.
+
+2020-05-10 02:29:33 DEBUG Requests.cpp: 130: Request code: 12
+2020-05-10 02:29:33 DEBUG Requests.cpp: 207: opponent answer received
+2020-05-10 02:29:33 DEBUG Requests.cpp: 208: {"answer":"c","game_id":5}
+2020-05-10 02:29:33 DEBUG GameClient.cpp:  48: check answer uid : 10000000 (10000001-10000000)
+2020-05-10 02:29:33 INFO  Requests.cpp: 218: opponent's answer is wrong
+2020-05-10 02:29:33 DEBUG Protocol.cpp:  64: [rx packet]: (6)
+---------------------------------------------------
+             00 10 20 30 40 50 60 70 80 90 A0 B0 C0 D0 E0 F0
+             -----------------------------------------------
+0x00000000 | 01 01 00 0d c1 c5 00 00 00 00 00 00 00 00 00 00 ..........
+
+2020-05-10 02:29:33 DEBUG Requests.cpp: 130: Request code: 13
+2020-05-10 02:29:33 DEBUG Requests.cpp: 225: next question 8
+
+2020-05-10 02:29:33 DEBUG Requests.cpp: 294: clear out packet
+2020-05-10 02:29:33 DEBUG client.cpp: 147: sending game answer request
+2020-05-10 02:29:33 DEBUG GameClient.cpp:  48: check answer uid : 10000001 (10000001-10000000)
+2020-05-10 02:29:33 INFO  client.cpp: 158: your answer is right
+2020-05-10 02:29:33 DEBUG Protocol.cpp: 150: [tx packet]: (166)
+---------------------------------------------------
+             00 10 20 30 40 50 60 70 80 90 A0 B0 C0 D0 E0 F0
+             -----------------------------------------------
+0x00000000 | 01 a1 00 0b 65 79 4a 68 62 47 63 69 4f 69 4a 49 ....eyJhbGciOiJI
+0x00000010 | 55 7a 49 31 4e 69 49 73 49 6e 52 35 63 43 49 36 UzI1NiIsInR5cCI6
+0x00000020 | 49 6b 70 58 56 43 4a 39 2e 65 79 4a 6c 65 48 42 IkpXVCJ9.eyJleHB
+0x00000030 | 70 63 6d 55 69 4f 6a 45 31 4f 44 6b 77 4e 6a 59 pcmUiOjE1ODkwNjY
+0x00000040 | 35 4e 7a 4d 73 49 6d 6c 6b 49 6a 6f 69 4d 44 41 5NzMsImlkIjoiMDA
+0x00000050 | 78 4d 44 41 77 4d 44 41 77 4d 53 4a 39 2e 43 52 xMDAwMDAwMSJ9.CR
+0x00000060 | 4c 76 2b 5a 34 43 2f 66 55 46 66 49 57 58 35 53 Lv+Z4C/fUFfIWX5S
+0x00000070 | 58 34 6f 73 66 72 4a 32 36 32 64 34 6b 51 79 32 X4osfrJ262d4kQy2
+0x00000080 | 77 68 74 71 7a 43 36 78 6b 3d 7b 22 61 6e 73 77 whtqzC6xk={"answ
+0x00000090 | 65 72 22 3a 22 62 22 2c 22 67 61 6d 65 5f 69 64 er":"b","game_id
+0x000000a0 | 22 3a 35 7d ab a6 00 00 00 00 00 00 00 00 00 00 d":5}...........
+
+2020-05-10 02:29:33 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:33 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:33 DEBUG Protocol.cpp:  64: [rx packet]: (7)
+---------------------------------------------------
+             00 10 20 30 40 50 60 70 80 90 A0 B0 C0 D0 E0 F0
+             -----------------------------------------------
+0x00000000 | 01 02 00 0b 01 c6 f0 00 00 00 00 00 00 00 00 00 .........
+
+2020-05-10 02:29:33 DEBUG Requests.cpp: 130: Request code: 11
+2020-05-10 02:29:33 DEBUG Requests.cpp: 203: send answer's ack received
+2020-05-10 02:29:33 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:33 DEBUG Protocol.cpp:  64: [rx packet]: (32)
+2020-05-10 02:29:33 DEBUG client.cpp: 414: header received
+---------------------------------------------------
+             00 10 20 30 40 50 60 70 80 90 A0 B0 C0 D0 E0 F0
+             -----------------------------------------------
+0x00000000 | 01 1b 00 0c 7b 22 61 6e 73 77 65 72 22 3a 22 62 ....{"answer":"b
+0x00000010 | 22 2c 22 67 61 6d 65 5f 69 64 22 3a 35 7d ad 90 ","game_id":5}..
+
+2020-05-10 02:29:33 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:33 DEBUG Requests.cpp: 130: Request code: 12
+2020-05-10 02:29:33 DEBUG Requests.cpp: 207: opponent answer received
+2020-05-10 02:29:33 DEBUG Requests.cpp: 208: {"answer":"b","game_id":5}
+2020-05-10 02:29:33 DEBUG GameClient.cpp:  48: check answer uid : 10000000 (10000001-10000000)
+2020-05-10 02:29:33 INFO  Requests.cpp: 215: opponent's answer is right
+2020-05-10 02:29:33 DEBUG Protocol.cpp:  64: [rx packet]: (6)
+---------------------------------------------------
+             00 10 20 30 40 50 60 70 80 90 A0 B0 C0 D0 E0 F0
+             -----------------------------------------------
+0x00000000 | 01 01 00 0d c1 c5 00 00 00 00 00 00 00 00 00 00 ..........
+
+2020-05-10 02:29:33 DEBUG Requests.cpp: 130: Request code: 13
+2020-05-10 02:29:33 DEBUG Requests.cpp: 225: next question 9
+
+2020-05-10 02:29:33 DEBUG Requests.cpp: 294: clear out packet
+2020-05-10 02:29:33 DEBUG client.cpp: 147: sending game answer request
+2020-05-10 02:29:33 DEBUG GameClient.cpp:  48: check answer uid : 10000001 (10000001-10000000)
+2020-05-10 02:29:33 INFO  client.cpp: 158: your answer is right
+2020-05-10 02:29:33 DEBUG Protocol.cpp: 150: [tx packet]: (166)
+---------------------------------------------------
+             00 10 20 30 40 50 60 70 80 90 A0 B0 C0 D0 E0 F0
+             -----------------------------------------------
+0x00000000 | 01 a1 00 0b 65 79 4a 68 62 47 63 69 4f 69 4a 49 ....eyJhbGciOiJI
+0x00000010 | 55 7a 49 31 4e 69 49 73 49 6e 52 35 63 43 49 36 UzI1NiIsInR5cCI6
+0x00000020 | 49 6b 70 58 56 43 4a 39 2e 65 79 4a 6c 65 48 42 IkpXVCJ9.eyJleHB
+0x00000030 | 70 63 6d 55 69 4f 6a 45 31 4f 44 6b 77 4e 6a 59 pcmUiOjE1ODkwNjY
+0x00000040 | 35 4e 7a 4d 73 49 6d 6c 6b 49 6a 6f 69 4d 44 41 5NzMsImlkIjoiMDA
+0x00000050 | 78 4d 44 41 77 4d 44 41 77 4d 53 4a 39 2e 43 52 xMDAwMDAwMSJ9.CR
+0x00000060 | 4c 76 2b 5a 34 43 2f 66 55 46 66 49 57 58 35 53 Lv+Z4C/fUFfIWX5S
+0x00000070 | 58 34 6f 73 66 72 4a 32 36 32 64 34 6b 51 79 32 X4osfrJ262d4kQy2
+0x00000080 | 77 68 74 71 7a 43 36 78 6b 3d 7b 22 61 6e 73 77 whtqzC6xk={"answ
+0x00000090 | 65 72 22 3a 22 63 22 2c 22 67 61 6d 65 5f 69 64 er":"c","game_id
+0x000000a0 | 22 3a 35 7d 6a a6 00 00 00 00 00 00 00 00 00 00 d":5}j..........
+
+2020-05-10 02:29:34 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:34 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:34 DEBUG Protocol.cpp:  64: [rx packet]: (7)
+---------------------------------------------------
+             00 10 20 30 40 50 60 70 80 90 A0 B0 C0 D0 E0 F0
+             -----------------------------------------------
+0x00000000 | 01 02 00 0b 01 c6 f0 00 00 00 00 00 00 00 00 00 .........
+
+2020-05-10 02:29:34 DEBUG Requests.cpp: 130: Request code: 11
+2020-05-10 02:29:34 DEBUG Requests.cpp: 203: send answer's ack received
+2020-05-10 02:29:34 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:34 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:34 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:34 DEBUG Protocol.cpp:  64: [rx packet]: (32)
+---------------------------------------------------
+             00 10 20 30 40 50 60 70 80 90 A0 B0 C0 D0 E0 F0
+             -----------------------------------------------
+0x00000000 | 01 1b 00 0c 7b 22 61 6e 73 77 65 72 22 3a 22 63 ....{"answer":"c
+0x00000010 | 22 2c 22 67 61 6d 65 5f 69 64 22 3a 35 7d 6c 90 ","game_id":5}l.
+
+2020-05-10 02:29:34 DEBUG Requests.cpp: 130: Request code: 12
+2020-05-10 02:29:34 DEBUG Requests.cpp: 207: opponent answer received
+2020-05-10 02:29:34 DEBUG Requests.cpp: 208: {"answer":"c","game_id":5}
+2020-05-10 02:29:34 DEBUG GameClient.cpp:  48: check answer uid : 10000000 (10000001-10000000)
+2020-05-10 02:29:34 INFO  Requests.cpp: 215: opponent's answer is right
+2020-05-10 02:29:34 DEBUG Protocol.cpp:  64: [rx packet]: (6)
+---------------------------------------------------
+             00 10 20 30 40 50 60 70 80 90 A0 B0 C0 D0 E0 F0
+             -----------------------------------------------
+0x00000000 | 01 01 00 0d c1 c5 00 00 00 00 00 00 00 00 00 00 ..........
+
+2020-05-10 02:29:34 DEBUG Requests.cpp: 130: Request code: 13
+2020-05-10 02:29:34 DEBUG Requests.cpp: 225: next question 10
+
+2020-05-10 02:29:34 DEBUG Requests.cpp: 294: clear out packet
+2020-05-10 02:29:34 DEBUG client.cpp: 147: sending game answer request
+2020-05-10 02:29:34 DEBUG GameClient.cpp:  48: check answer uid : 10000001 (10000001-10000000)
+2020-05-10 02:29:34 INFO  client.cpp: 161: your answer is wrong
+2020-05-10 02:29:34 DEBUG Protocol.cpp: 150: [tx packet]: (166)
+---------------------------------------------------
+             00 10 20 30 40 50 60 70 80 90 A0 B0 C0 D0 E0 F0
+             -----------------------------------------------
+0x00000000 | 01 a1 00 0b 65 79 4a 68 62 47 63 69 4f 69 4a 49 ....eyJhbGciOiJI
+0x00000010 | 55 7a 49 31 4e 69 49 73 49 6e 52 35 63 43 49 36 UzI1NiIsInR5cCI6
+0x00000020 | 49 6b 70 58 56 43 4a 39 2e 65 79 4a 6c 65 48 42 IkpXVCJ9.eyJleHB
+0x00000030 | 70 63 6d 55 69 4f 6a 45 31 4f 44 6b 77 4e 6a 59 pcmUiOjE1ODkwNjY
+0x00000040 | 35 4e 7a 4d 73 49 6d 6c 6b 49 6a 6f 69 4d 44 41 5NzMsImlkIjoiMDA
+0x00000050 | 78 4d 44 41 77 4d 44 41 77 4d 53 4a 39 2e 43 52 xMDAwMDAwMSJ9.CR
+0x00000060 | 4c 76 2b 5a 34 43 2f 66 55 46 66 49 57 58 35 53 Lv+Z4C/fUFfIWX5S
+0x00000070 | 58 34 6f 73 66 72 4a 32 36 32 64 34 6b 51 79 32 X4osfrJ262d4kQy2
+0x00000080 | 77 68 74 71 7a 43 36 78 6b 3d 7b 22 61 6e 73 77 whtqzC6xk={"answ
+0x00000090 | 65 72 22 3a 22 64 22 2c 22 67 61 6d 65 5f 69 64 er":"d","game_id
+0x000000a0 | 22 3a 35 7d 2d a4 00 00 00 00 00 00 00 00 00 00 d":5}-..........
+
+2020-05-10 02:29:34 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:34 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:34 DEBUG Protocol.cpp:  64: [rx packet]: (7)
+---------------------------------------------------
+             00 10 20 30 40 50 60 70 80 90 A0 B0 C0 D0 E0 F0
+             -----------------------------------------------
+0x00000000 | 01 02 00 0b 01 c6 f0 00 00 00 00 00 00 00 00 00 .........
+
+2020-05-10 02:29:34 DEBUG Requests.cpp: 130: Request code: 11
+2020-05-10 02:29:34 DEBUG Requests.cpp: 203: send answer's ack received
+2020-05-10 02:29:34 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:34 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:34 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:34 DEBUG Protocol.cpp:  64: [rx packet]: (32)
+---------------------------------------------------
+             00 10 20 30 40 50 60 70 80 90 A0 B0 C0 D0 E0 F0
+             -----------------------------------------------
+0x00000000 | 01 1b 00 0c 7b 22 61 6e 73 77 65 72 22 3a 22 64 ....{"answer":"d
+0x00000010 | 22 2c 22 67 61 6d 65 5f 69 64 22 3a 35 7d 2b 92 ","game_id":5}+.
+
+2020-05-10 02:29:34 DEBUG Requests.cpp: 130: Request code: 12
+2020-05-10 02:29:34 DEBUG Requests.cpp: 207: opponent answer received
+2020-05-10 02:29:34 DEBUG Requests.cpp: 208: {"answer":"d","game_id":5}
+2020-05-10 02:29:34 DEBUG GameClient.cpp:  48: check answer uid : 10000000 (10000001-10000000)
+2020-05-10 02:29:34 INFO  Requests.cpp: 218: opponent's answer is wrong
+2020-05-10 02:29:34 DEBUG Protocol.cpp:  64: [rx packet]: (6)
+---------------------------------------------------
+             00 10 20 30 40 50 60 70 80 90 A0 B0 C0 D0 E0 F0
+             -----------------------------------------------
+0x00000000 | 01 01 00 0d c1 c5 00 00 00 00 00 00 00 00 00 00 ..........
+
+2020-05-10 02:29:34 DEBUG Requests.cpp: 130: Request code: 13
+2020-05-10 02:29:34 DEBUG Requests.cpp: 225: next question 11
+
+2020-05-10 02:29:34 DEBUG Requests.cpp: 294: clear out packet
+2020-05-10 02:29:34 DEBUG client.cpp: 147: sending game answer request
+2020-05-10 02:29:34 DEBUG GameClient.cpp:  48: check answer uid : 10000001 (10000001-10000000)
+2020-05-10 02:29:34 INFO  client.cpp: 158: your answer is right
+2020-05-10 02:29:34 DEBUG Protocol.cpp: 150: [tx packet]: (166)
+---------------------------------------------------
+             00 10 20 30 40 50 60 70 80 90 A0 B0 C0 D0 E0 F0
+             -----------------------------------------------
+0x00000000 | 01 a1 00 0b 65 79 4a 68 62 47 63 69 4f 69 4a 49 ....eyJhbGciOiJI
+0x00000010 | 55 7a 49 31 4e 69 49 73 49 6e 52 35 63 43 49 36 UzI1NiIsInR5cCI6
+0x00000020 | 49 6b 70 58 56 43 4a 39 2e 65 79 4a 6c 65 48 42 IkpXVCJ9.eyJleHB
+0x00000030 | 70 63 6d 55 69 4f 6a 45 31 4f 44 6b 77 4e 6a 59 pcmUiOjE1ODkwNjY
+0x00000040 | 35 4e 7a 4d 73 49 6d 6c 6b 49 6a 6f 69 4d 44 41 5NzMsImlkIjoiMDA
+0x00000050 | 78 4d 44 41 77 4d 44 41 77 4d 53 4a 39 2e 43 52 xMDAwMDAwMSJ9.CR
+0x00000060 | 4c 76 2b 5a 34 43 2f 66 55 46 66 49 57 58 35 53 Lv+Z4C/fUFfIWX5S
+0x00000070 | 58 34 6f 73 66 72 4a 32 36 32 64 34 6b 51 79 32 X4osfrJ262d4kQy2
+0x00000080 | 77 68 74 71 7a 43 36 78 6b 3d 7b 22 61 6e 73 77 whtqzC6xk={"answ
+0x00000090 | 65 72 22 3a 22 62 22 2c 22 67 61 6d 65 5f 69 64 er":"b","game_id
+0x000000a0 | 22 3a 35 7d ab a6 00 00 00 00 00 00 00 00 00 00 d":5}...........
+
+2020-05-10 02:29:34 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:34 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:34 DEBUG Protocol.cpp:  64: [rx packet]: (7)
+---------------------------------------------------
+             00 10 20 30 40 50 60 70 80 90 A0 B0 C0 D0 E0 F0
+             -----------------------------------------------
+0x00000000 | 01 02 00 0b 01 c6 f0 00 00 00 00 00 00 00 00 00 .........
+
+2020-05-10 02:29:34 DEBUG Requests.cpp: 130: Request code: 11
+2020-05-10 02:29:34 DEBUG Requests.cpp: 203: send answer's ack received
+2020-05-10 02:29:34 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:34 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:34 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:34 DEBUG Protocol.cpp:  64: [rx packet]: (32)
+---------------------------------------------------
+             00 10 20 30 40 50 60 70 80 90 A0 B0 C0 D0 E0 F0
+             -----------------------------------------------
+0x00000000 | 01 1b 00 0c 7b 22 61 6e 73 77 65 72 22 3a 22 62 ....{"answer":"b
+0x00000010 | 22 2c 22 67 61 6d 65 5f 69 64 22 3a 35 7d ad 90 ","game_id":5}..
+
+2020-05-10 02:29:34 DEBUG Requests.cpp: 130: Request code: 12
+2020-05-10 02:29:34 DEBUG Requests.cpp: 207: opponent answer received
+2020-05-10 02:29:34 DEBUG Requests.cpp: 208: {"answer":"b","game_id":5}
+2020-05-10 02:29:34 DEBUG GameClient.cpp:  48: check answer uid : 10000000 (10000001-10000000)
+2020-05-10 02:29:34 INFO  Requests.cpp: 215: opponent's answer is right
+2020-05-10 02:29:34 DEBUG Protocol.cpp:  64: [rx packet]: (6)
+---------------------------------------------------
+             00 10 20 30 40 50 60 70 80 90 A0 B0 C0 D0 E0 F0
+             -----------------------------------------------
+0x00000000 | 01 01 00 0d c1 c5 00 00 00 00 00 00 00 00 00 00 ..........
+
+2020-05-10 02:29:34 DEBUG Requests.cpp: 130: Request code: 13
+2020-05-10 02:29:34 DEBUG Requests.cpp: 225: next question 12
+
+2020-05-10 02:29:34 DEBUG Requests.cpp: 294: clear out packet
+2020-05-10 02:29:34 DEBUG client.cpp: 147: sending game answer request
+2020-05-10 02:29:34 DEBUG GameClient.cpp:  48: check answer uid : 10000001 (10000001-10000000)
+2020-05-10 02:29:34 INFO  client.cpp: 161: your answer is wrong
+2020-05-10 02:29:34 DEBUG Protocol.cpp: 150: [tx packet]: (166)
+---------------------------------------------------
+             00 10 20 30 40 50 60 70 80 90 A0 B0 C0 D0 E0 F0
+             -----------------------------------------------
+0x00000000 | 01 a1 00 0b 65 79 4a 68 62 47 63 69 4f 69 4a 49 ....eyJhbGciOiJI
+0x00000010 | 55 7a 49 31 4e 69 49 73 49 6e 52 35 63 43 49 36 UzI1NiIsInR5cCI6
+0x00000020 | 49 6b 70 58 56 43 4a 39 2e 65 79 4a 6c 65 48 42 IkpXVCJ9.eyJleHB
+0x00000030 | 70 63 6d 55 69 4f 6a 45 31 4f 44 6b 77 4e 6a 59 pcmUiOjE1ODkwNjY
+0x00000040 | 35 4e 7a 4d 73 49 6d 6c 6b 49 6a 6f 69 4d 44 41 5NzMsImlkIjoiMDA
+0x00000050 | 78 4d 44 41 77 4d 44 41 77 4d 53 4a 39 2e 43 52 xMDAwMDAwMSJ9.CR
+0x00000060 | 4c 76 2b 5a 34 43 2f 66 55 46 66 49 57 58 35 53 Lv+Z4C/fUFfIWX5S
+0x00000070 | 58 34 6f 73 66 72 4a 32 36 32 64 34 6b 51 79 32 X4osfrJ262d4kQy2
+0x00000080 | 77 68 74 71 7a 43 36 78 6b 3d 7b 22 61 6e 73 77 whtqzC6xk={"answ
+0x00000090 | 65 72 22 3a 22 63 22 2c 22 67 61 6d 65 5f 69 64 er":"c","game_id
+0x000000a0 | 22 3a 35 7d 6a a6 00 00 00 00 00 00 00 00 00 00 d":5}j..........
+
+2020-05-10 02:29:34 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:34 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:34 DEBUG Protocol.cpp:  64: [rx packet]: (7)
+---------------------------------------------------
+             00 10 20 30 40 50 60 70 80 90 A0 B0 C0 D0 E0 F0
+             -----------------------------------------------
+0x00000000 | 01 02 00 0b 01 c6 f0 00 00 00 00 00 00 00 00 00 .........
+
+2020-05-10 02:29:34 DEBUG Requests.cpp: 130: Request code: 11
+2020-05-10 02:29:34 DEBUG Requests.cpp: 203: send answer's ack received
+2020-05-10 02:29:34 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:34 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:34 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:34 DEBUG Protocol.cpp:  64: [rx packet]: (32)
+---------------------------------------------------
+             00 10 20 30 40 50 60 70 80 90 A0 B0 C0 D0 E0 F0
+             -----------------------------------------------
+0x00000000 | 01 1b 00 0c 7b 22 61 6e 73 77 65 72 22 3a 22 63 ....{"answer":"c
+0x00000010 | 22 2c 22 67 61 6d 65 5f 69 64 22 3a 35 7d 6c 90 ","game_id":5}l.
+
+2020-05-10 02:29:34 DEBUG Requests.cpp: 130: Request code: 12
+2020-05-10 02:29:34 DEBUG Requests.cpp: 207: opponent answer received
+2020-05-10 02:29:34 DEBUG Requests.cpp: 208: {"answer":"c","game_id":5}
+2020-05-10 02:29:34 DEBUG GameClient.cpp:  48: check answer uid : 10000000 (10000001-10000000)
+2020-05-10 02:29:34 INFO  Requests.cpp: 218: opponent's answer is wrong
+2020-05-10 02:29:34 DEBUG Protocol.cpp:  64: [rx packet]: (6)
+---------------------------------------------------
+             00 10 20 30 40 50 60 70 80 90 A0 B0 C0 D0 E0 F0
+             -----------------------------------------------
+0x00000000 | 01 01 00 0d c1 c5 00 00 00 00 00 00 00 00 00 00 ..........
+
+2020-05-10 02:29:34 DEBUG Requests.cpp: 130: Request code: 13
+2020-05-10 02:29:34 DEBUG Requests.cpp: 225: next question 13
+
+2020-05-10 02:29:34 DEBUG Requests.cpp: 294: clear out packet
+2020-05-10 02:29:34 DEBUG client.cpp: 147: sending game answer request
+2020-05-10 02:29:34 DEBUG GameClient.cpp:  48: check answer uid : 10000001 (10000001-10000000)
+2020-05-10 02:29:34 INFO  client.cpp: 161: your answer is wrong
+2020-05-10 02:29:34 DEBUG Protocol.cpp: 150: [tx packet]: (166)
+---------------------------------------------------
+             00 10 20 30 40 50 60 70 80 90 A0 B0 C0 D0 E0 F0
+             -----------------------------------------------
+0x00000000 | 01 a1 00 0b 65 79 4a 68 62 47 63 69 4f 69 4a 49 ....eyJhbGciOiJI
+0x00000010 | 55 7a 49 31 4e 69 49 73 49 6e 52 35 63 43 49 36 UzI1NiIsInR5cCI6
+0x00000020 | 49 6b 70 58 56 43 4a 39 2e 65 79 4a 6c 65 48 42 IkpXVCJ9.eyJleHB
+0x00000030 | 70 63 6d 55 69 4f 6a 45 31 4f 44 6b 77 4e 6a 59 pcmUiOjE1ODkwNjY
+0x00000040 | 35 4e 7a 4d 73 49 6d 6c 6b 49 6a 6f 69 4d 44 41 5NzMsImlkIjoiMDA
+0x00000050 | 78 4d 44 41 77 4d 44 41 77 4d 53 4a 39 2e 43 52 xMDAwMDAwMSJ9.CR
+0x00000060 | 4c 76 2b 5a 34 43 2f 66 55 46 66 49 57 58 35 53 Lv+Z4C/fUFfIWX5S
+0x00000070 | 58 34 6f 73 66 72 4a 32 36 32 64 34 6b 51 79 32 X4osfrJ262d4kQy2
+0x00000080 | 77 68 74 71 7a 43 36 78 6b 3d 7b 22 61 6e 73 77 whtqzC6xk={"answ
+0x00000090 | 65 72 22 3a 22 63 22 2c 22 67 61 6d 65 5f 69 64 er":"c","game_id
+0x000000a0 | 22 3a 35 7d 6a a6 00 00 00 00 00 00 00 00 00 00 d":5}j..........
+
+2020-05-10 02:29:34 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:34 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:34 DEBUG Protocol.cpp:  64: [rx packet]: (7)
+---------------------------------------------------
+             00 10 20 30 40 50 60 70 80 90 A0 B0 C0 D0 E0 F0
+             -----------------------------------------------
+0x00000000 | 01 02 00 0b 01 c6 f0 00 00 00 00 00 00 00 00 00 .........
+
+2020-05-10 02:29:34 DEBUG Requests.cpp: 130: Request code: 11
+2020-05-10 02:29:34 DEBUG Requests.cpp: 203: send answer's ack received
+2020-05-10 02:29:34 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:34 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:34 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:34 DEBUG Protocol.cpp:  64: [rx packet]: (32)
+---------------------------------------------------
+             00 10 20 30 40 50 60 70 80 90 A0 B0 C0 D0 E0 F0
+             -----------------------------------------------
+0x00000000 | 01 1b 00 0c 7b 22 61 6e 73 77 65 72 22 3a 22 63 ....{"answer":"c
+0x00000010 | 22 2c 22 67 61 6d 65 5f 69 64 22 3a 35 7d 6c 90 ","game_id":5}l.
+
+2020-05-10 02:29:34 DEBUG Requests.cpp: 130: Request code: 12
+2020-05-10 02:29:34 DEBUG Requests.cpp: 207: opponent answer received
+2020-05-10 02:29:34 DEBUG Requests.cpp: 208: {"answer":"c","game_id":5}
+2020-05-10 02:29:34 DEBUG GameClient.cpp:  48: check answer uid : 10000000 (10000001-10000000)
+2020-05-10 02:29:34 INFO  Requests.cpp: 218: opponent's answer is wrong
+2020-05-10 02:29:34 DEBUG Protocol.cpp:  64: [rx packet]: (6)
+---------------------------------------------------
+             00 10 20 30 40 50 60 70 80 90 A0 B0 C0 D0 E0 F0
+             -----------------------------------------------
+0x00000000 | 01 01 00 0d c1 c5 00 00 00 00 00 00 00 00 00 00 ..........
+
+2020-05-10 02:29:34 DEBUG Requests.cpp: 130: Request code: 13
+2020-05-10 02:29:34 DEBUG Requests.cpp: 225: next question 14
+
+2020-05-10 02:29:34 DEBUG Requests.cpp: 294: clear out packet
+2020-05-10 02:29:34 DEBUG client.cpp: 147: sending game answer request
+2020-05-10 02:29:34 DEBUG GameClient.cpp:  48: check answer uid : 10000001 (10000001-10000000)
+2020-05-10 02:29:34 INFO  client.cpp: 161: your answer is wrong
+2020-05-10 02:29:34 DEBUG Protocol.cpp: 150: [tx packet]: (166)
+---------------------------------------------------
+             00 10 20 30 40 50 60 70 80 90 A0 B0 C0 D0 E0 F0
+             -----------------------------------------------
+0x00000000 | 01 a1 00 0b 65 79 4a 68 62 47 63 69 4f 69 4a 49 ....eyJhbGciOiJI
+0x00000010 | 55 7a 49 31 4e 69 49 73 49 6e 52 35 63 43 49 36 UzI1NiIsInR5cCI6
+0x00000020 | 49 6b 70 58 56 43 4a 39 2e 65 79 4a 6c 65 48 42 IkpXVCJ9.eyJleHB
+0x00000030 | 70 63 6d 55 69 4f 6a 45 31 4f 44 6b 77 4e 6a 59 pcmUiOjE1ODkwNjY
+0x00000040 | 35 4e 7a 4d 73 49 6d 6c 6b 49 6a 6f 69 4d 44 41 5NzMsImlkIjoiMDA
+0x00000050 | 78 4d 44 41 77 4d 44 41 77 4d 53 4a 39 2e 43 52 xMDAwMDAwMSJ9.CR
+0x00000060 | 4c 76 2b 5a 34 43 2f 66 55 46 66 49 57 58 35 53 Lv+Z4C/fUFfIWX5S
+0x00000070 | 58 34 6f 73 66 72 4a 32 36 32 64 34 6b 51 79 32 X4osfrJ262d4kQy2
+0x00000080 | 77 68 74 71 7a 43 36 78 6b 3d 7b 22 61 6e 73 77 whtqzC6xk={"answ
+0x00000090 | 65 72 22 3a 22 63 22 2c 22 67 61 6d 65 5f 69 64 er":"c","game_id
+0x000000a0 | 22 3a 35 7d 6a a6 00 00 00 00 00 00 00 00 00 00 d":5}j..........
+
+2020-05-10 02:29:34 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:34 DEBUG Protocol.cpp:  64: [rx packet]: (32)
+---------------------------------------------------
+             00 10 20 30 40 50 60 70 80 90 A0 B0 C0 D0 E0 F0
+             -----------------------------------------------
+0x00000000 | 01 1b 00 0c 7b 22 61 6e 73 77 65 72 22 3a 22 63 ....{"answer":"c
+0x00000010 | 22 2c 22 67 61 6d 65 5f 69 64 22 3a 35 7d 6c 90 ","game_id":5}l.
+
+2020-05-10 02:29:34 DEBUG Requests.cpp: 130: Request code: 12
+2020-05-10 02:29:34 DEBUG Requests.cpp: 207: opponent answer received
+2020-05-10 02:29:34 DEBUG Requests.cpp: 208: {"answer":"c","game_id":5}
+2020-05-10 02:29:34 DEBUG GameClient.cpp:  48: check answer uid : 10000000 (10000001-10000000)
+2020-05-10 02:29:34 INFO  Requests.cpp: 218: opponent's answer is wrong
+2020-05-10 02:29:34 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:34 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:34 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:34 DEBUG client.cpp: 414: header received
+2020-05-10 02:29:34 DEBUG Protocol.cpp:  64: [rx packet]: (7)
+---------------------------------------------------
+             00 10 20 30 40 50 60 70 80 90 A0 B0 C0 D0 E0 F0
+             -----------------------------------------------
+0x00000000 | 01 02 00 0b 01 c6 f0 00 00 00 00 00 00 00 00 00 .........
+
+2020-05-10 02:29:34 DEBUG Requests.cpp: 130: Request code: 11
+2020-05-10 02:29:34 DEBUG Requests.cpp: 203: send answer's ack received
+2020-05-10 02:29:34 DEBUG Protocol.cpp:  64: [rx packet]: (6)
+---------------------------------------------------
+             00 10 20 30 40 50 60 70 80 90 A0 B0 C0 D0 E0 F0
+             -----------------------------------------------
+0x00000000 | 01 01 00 0d c1 c5 00 00 00 00 00 00 00 00 00 00 ..........
+
+2020-05-10 02:29:34 DEBUG Requests.cpp: 130: Request code: 13
+2020-05-10 02:29:34 DEBUG Requests.cpp: 225: next question 15
+
+2020-05-10 02:29:34 DEBUG Requests.cpp: 294: clear out packet
+2020-05-10 02:29:34 DEBUG client.cpp: 170: sending game finish request
+2020-05-10 02:29:34 DEBUG Protocol.cpp: 150: [tx packet]: (457)
+---------------------------------------------------
+             00 10 20 30 40 50 60 70 80 90 A0 B0 C0 D0 E0 F0
+             -----------------------------------------------
+0x00000000 | 01 c4 01 11 65 79 4a 68 62 47 63 69 4f 69 4a 49 ....eyJhbGciOiJI
+0x00000010 | 55 7a 49 31 4e 69 49 73 49 6e 52 35 63 43 49 36 UzI1NiIsInR5cCI6
+0x00000020 | 49 6b 70 58 56 43 4a 39 2e 65 79 4a 6c 65 48 42 IkpXVCJ9.eyJleHB
+0x00000030 | 70 63 6d 55 69 4f 6a 45 31 4f 44 6b 77 4e 6a 59 pcmUiOjE1ODkwNjY
+0x00000040 | 35 4e 7a 4d 73 49 6d 6c 6b 49 6a 6f 69 4d 44 41 5NzMsImlkIjoiMDA
+0x00000050 | 78 4d 44 41 77 4d 44 41 77 4d 53 4a 39 2e 43 52 xMDAwMDAwMSJ9.CR
+0x00000060 | 4c 76 2b 5a 34 43 2f 66 55 46 66 49 57 58 35 53 Lv+Z4C/fUFfIWX5S
+0x00000070 | 58 34 6f 73 66 72 4a 32 36 32 64 34 6b 51 79 32 X4osfrJ262d4kQy2
+0x00000080 | 77 68 74 71 7a 43 36 78 6b 3d 7b 22 67 61 6d 65 whtqzC6xk={"game
+0x00000090 | 5f 69 64 22 3a 35 2c 22 72 65 73 75 6c 74 73 22 _id":5,"results"
+0x000000a0 | 3a 7b 22 75 73 65 72 73 22 3a 5b 7b 22 74 6f 75 :{"users":[{"tou
+0x000000b0 | 72 73 22 3a 5b 7b 22 63 61 74 65 67 6f 72 79 22 rs":[{"category"
+0x000000c0 | 3a 31 2c 22 72 69 67 68 74 22 3a 31 2c 22 77 72 :1,"right":1,"wr
+0x000000d0 | 6f 6e 67 22 3a 34 7d 2c 7b 22 63 61 74 65 67 6f ong":4},{"catego
+0x000000e0 | 72 79 22 3a 31 2c 22 72 69 67 68 74 22 3a 33 2c ry":1,"right":3,
+0x000000f0 | 22 77 72 6f 6e 67 22 3a 32 7d 2c 7b 22 63 61 74 "wrong":2},{"cat
+0x00000100 | 65 67 6f 72 79 22 3a 31 2c 22 72 69 67 68 74 22 egory":1,"right"
+0x00000110 | 3a 31 2c 22 77 72 6f 6e 67 22 3a 34 7d 5d 2c 22 :1,"wrong":4}],"
+0x00000120 | 75 69 64 22 3a 31 30 30 30 30 30 30 30 7d 2c 7b uid":10000000},{
+0x00000130 | 22 74 6f 75 72 73 22 3a 5b 7b 22 63 61 74 65 67 "tours":[{"categ
+0x00000140 | 6f 72 79 22 3a 31 2c 22 72 69 67 68 74 22 3a 31 ory":1,"right":1
+0x00000150 | 2c 22 77 72 6f 6e 67 22 3a 34 7d 2c 7b 22 63 61 ,"wrong":4},{"ca
+0x00000160 | 74 65 67 6f 72 79 22 3a 31 2c 22 72 69 67 68 74 tegory":1,"right
+0x00000170 | 22 3a 33 2c 22 77 72 6f 6e 67 22 3a 32 7d 2c 7b ":3,"wrong":2},{
+0x00000180 | 22 63 61 74 65 67 6f 72 79 22 3a 31 2c 22 72 69 "category":1,"ri
+0x00000190 | 67 68 74 22 3a 31 2c 22 77 72 6f 6e 67 22 3a 34 ght":1,"wrong":4
+0x000001a0 | 7d 5d 2c 22 75 69 64 22 3a 31 30 30 30 30 30 30 }],"uid":1000000
+0x000001b0 | 31 7d 5d 2c 22 77 69 6e 6e 65 72 22 3a 31 30 30 1}],"winner":100
+0x000001c0 | 30 30 30 30 30 7d 7d fe ae 00 00 00 00 00 00 00 000000}}........
+
+2020-05-10 02:29:34 DEBUG Requests.cpp:  29: request destructor
